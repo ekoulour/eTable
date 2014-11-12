@@ -1,1 +1,9 @@
-hello
+Things to download:
+
+1- If the application is not working switch off your anti-virus
+2- JavaFX Scene Builder 1.1
+	http://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html
+3- Library need to be implemented:
+	javax.mail.jar
+	javax.mail-1.5.2.jar
+ 	
