@@ -8,90 +8,43 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<AnchorPane prefHeight="678.0" prefWidth="1048.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
+<AnchorPane prefHeight="565.0" prefWidth="860.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
   <children>
-    <Pane fx:id="panNotifications" layoutX="589.0" layoutY="14.0" prefHeight="368.0" prefWidth="445.0">
+    <Pane fx:id="panNotifications" layoutX="460.0" layoutY="14.0" prefHeight="461.0" prefWidth="386.0">
       <children>
-        <Text layoutX="32.0" layoutY="60.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Inbox Mail" underline="false">
+        <Text layoutX="14.0" layoutY="46.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
           <font>
             <Font name="Arial" size="42.0" />
           </font>
         </Text>
-        <Label fx:id="countMailText" layoutX="16.0" layoutY="70.0" prefHeight="48.295798437502526" prefWidth="340.0" text="" textAlignment="LEFT" wrapText="true">
-          <font>
-            <Font name="Arial" size="14.0" />
-          </font>
-        </Label>
-        <ListView fx:id="listView1" layoutX="0.0" layoutY="132.0" onMousePressed="#openMailContent" prefHeight="236.0" prefWidth="445.0" />
+        <ListView id="listView1" fx:id="ListView" layoutX="14.0" layoutY="74.0" onKeyPressed="#ListViewOnSwipeUp" onMouseClicked="#ListViewOnMouseClicked" prefHeight="236.0" prefWidth="358.0" />
+        <Button id="btnAuth" fx:id="btnStartAuthToGmail" layoutX="227.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#btnStartAuthOnMouseClick" text="Authorize to Gmail.com" />
+        <Button fx:id="btnRefresh" layoutX="322.0" layoutY="312.0" mnemonicParsing="false" onMouseClicked="#btnRefreshOnClicked" prefHeight="30.0" prefWidth="50.0" text="" />
+        <ImageView id="btnRefresh" fx:id="picRefresh" fitHeight="25.0" fitWidth="25.0" layoutX="335.0" layoutY="314.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="@../../img/refresh.png" />
+          </image>
+        </ImageView>
+        <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="14.0" layoutY="313.0" mouseTransparent="false" onKeyPressed="#EmileContentOnSwipeRight" onSwipeUp="#EmileContentOnSwipeUP" opacity="1.0" prefHeight="59.9999915527369" prefWidth="298.0" visible="true" wrapText="true" />
+        <ProgressIndicator fx:id="progresInd" layoutX="179.0" layoutY="173.0" progress="0.0" />
+        <Label fx:id="textCount" layoutX="14.0" layoutY="52.0" text="Inbox:" />
       </children>
     </Pane>
-    <Pane fx:id="panShort" layoutX="20.0" layoutY="24.0" prefHeight="654.0" prefWidth="399.0">
+    <Pane fx:id="panShort" layoutX="14.0" layoutY="475.0" prefHeight="90.0" prefWidth="252.0">
       <children>
-        <Button fx:id="btnDown" layoutX="14.0" layoutY="540.0" mnemonicParsing="false" onMouseClicked="#openDown" prefHeight="100.0" prefWidth="170.0" text="" />
-        <Button fx:id="btnChrome" layoutX="214.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#openChrome" prefHeight="100.0" prefWidth="170.0" text="" />
-        <ImageView id="btnpicChrme" fitHeight="90.0" fitWidth="90.0" layoutX="254.0" layoutY="14.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+        <Button fx:id="btnDown" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#openDown" prefHeight="60.0" prefWidth="100.0" text="" />
+        <ImageView id="btnpicDown" fitHeight="50.0" fitWidth="50.0" layoutX="39.0" layoutY="21.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../img/Google_Chrome.png" />
+            <Image url="@../../img/power.png" />
           </image>
         </ImageView>
-        <Button fx:id="btnFF" cancelButton="false" defaultButton="false" layoutX="20.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#openFireff" prefHeight="100.0" prefWidth="170.0" text="" textOverrun="ELLIPSIS" underline="false" />
-        <ImageView id="btnpicFF" fitHeight="100.0" fitWidth="100.0" layoutX="55.0" layoutY="12.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="true" visible="true">
+        <Button fx:id="btnLock" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#lockDesctop" prefHeight="60.0" prefWidth="100.0" text="" />
+        <ImageView id="btnpicLock" fitHeight="50.0" fitWidth="50.0" layoutX="151.0" layoutY="21.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../img/firefox-512.png" />
-          </image>
-        </ImageView>
-        <Button fx:id="btnCMD" layoutX="214.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#openCMD" prefHeight="100.0" prefWidth="170.0" text="" />
-        <ImageView id="btnpicCMD" fitHeight="150.0" fitWidth="100.0" layoutX="254.0" layoutY="150.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/cmd.png" />
-          </image>
-        </ImageView>
-        <Button fx:id="btnLock" layoutX="14.0" layoutY="148.0" mnemonicParsing="false" onMouseClicked="#lockDesctop" prefHeight="100.0" prefWidth="170.0" text="" />
-        <ImageView id="btnpicLock" fitHeight="100.0" fitWidth="100.0" layoutX="47.0" layoutY="152.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/lock.png" />
-          </image>
-        </ImageView>
-        <Button fx:id="btnPaint" layoutX="214.0" layoutY="287.0" mnemonicParsing="false" onMouseClicked="#openPaint" prefHeight="100.0" prefWidth="170.0" text="Button" />
-        <ImageView id="btnpicPaint" fitHeight="150.0" fitWidth="100.0" layoutX="254.0" layoutY="287.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/paint.PNG" />
-          </image>
-        </ImageView>
-        <Button fx:id="btnCalc" layoutX="20.0" layoutY="287.0" mnemonicParsing="false" onMouseClicked="#openCalc" prefHeight="100.0" prefWidth="170.0" text="Button" />
-        <ImageView id="btnpicCalc" fitHeight="100.0" fitWidth="100.0" layoutX="55.0" layoutY="287.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/calculator.png" />
-          </image>
-        </ImageView>
-        <ImageView id="btnpicDown" fitHeight="90.0" fitWidth="90.0" layoutX="52.0" layoutY="545.0" mouseTransparent="false" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/down.png" />
-          </image>
-        </ImageView>
-        <Button id="btnDown" layoutX="20.0" layoutY="414.0" mnemonicParsing="false" onMouseClicked="#openFacebook" prefHeight="100.0" prefWidth="170.0" text="" />
-        <Button id="btnDown" layoutX="214.0" layoutY="414.0" mnemonicParsing="false" onMouseClicked="#openTwitter" prefHeight="100.0" prefWidth="170.0" text="" />
-        <Button id="btnDown" layoutX="214.0" layoutY="540.0" mnemonicParsing="false" onMouseClicked="#openMin" prefHeight="100.0" prefWidth="170.0" text="" />
-        <ImageView fx:id="btnpicFacebook" fitHeight="90.0" fitWidth="90.0" layoutX="55.0" layoutY="420.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/facebook.png" />
-          </image>
-        </ImageView>
-        <ImageView fx:id="btnpicTwitter" fitHeight="150.0" fitWidth="90.0" layoutX="254.0" layoutY="419.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/twitter.png" />
-          </image>
-        </ImageView>
-        <ImageView fx:id="btnpicMin" fitHeight="150.0" fitWidth="90.0" layoutX="254.0" layoutY="545.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@../../img/minimize.png" />
+            <Image url="@../../img/lockBlack.png" />
           </image>
         </ImageView>
       </children>
     </Pane>
-    <Button fx:id="btnFoo" layoutX="431.0" layoutY="606.0" mnemonicParsing="false" onAction="#changeText" text="Button" />
-    <Label fx:id="txtBar" layoutX="419.0" layoutY="556.0" text="text wil change" />
-    <Button fx:id="btntest" layoutX="459.0" layoutY="382.0" mnemonicParsing="false" onMouseClicked="#clicktest" text="Button" />
-    <TextArea fx:id="emailContent" layoutX="589.0" layoutY="394.0" prefWidth="445.0" wrapText="true" />
   </children>
 </AnchorPane>

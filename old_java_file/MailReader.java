@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import javax.activation.DataHandler;
 import javax.lang.model.util.Elements;
 import javax.mail.*;
+import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.text.Document;
  
@@ -80,9 +81,10 @@ public class MailReader
 		 
 		 for (int i = 0; i < msgs.length; i++) {
 			 fromSubject = printEnvel(msgs[i]);
-		 }
+		 } 
 		 return fromSubject;
 	 }
+	 
 	 
 	 /*  Print the envelope(FromAddress,ReceivedDate,Subject)  */
 	 public ArrayList<String> printEnvel(Message message) throws Exception {
@@ -93,7 +95,7 @@ public class MailReader
 			 for (int j = 0; j < a.length; j++) {
 				 
 				String subject = message.getSubject(); 
-				 
+				
 				String mailFrom = a[j].toString(); 
 				Pattern MY_PATTERN = Pattern.compile("\\<(.*?)\\>");
 				

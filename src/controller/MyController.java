@@ -1,105 +1,44 @@
 package controller;
 
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import application.CountMails;
-import application.MailReader;
+import application.Philosopher;
+import application.connectGmail;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 public class MyController implements Initializable {
-
+	//Initialize ArrayList<ArrayList<Philosopher>>
+	ArrayList<ArrayList<Philosopher>> MessagesList = new ArrayList<ArrayList<Philosopher>>();
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//To show mail from and sube=ject in viewList1
-		ArrayList<String> fromSubject = new ArrayList<String>();
-		fromSubject = new MailReader().ReadMails();
-		ObservableList<String> fromAndSubject = FXCollections.observableArrayList(fromSubject);
-		listView1.setItems(fromAndSubject);
 		
-		//Print total messages in text label countMailText
-		String cc = new CountMails().Counts();
-		countMailText.setText(cc);
+		EmileContent.setVisible(false);
+		progresInd.setVisible(false);
 	}
 	
-	@FXML public void openMailContent() {
-		emailContent.setText("Test of email");
-		
-//		//listview riws id of click
-		Integer xMail = listView1.getSelectionModel().getSelectedIndex();
-		System.out.println(listView1.getSelectionModel().getSelectedIndex());
-		
-		ArrayList<String> aa = new MailReader().ReadContent(xMail);
-		//emailContent.setText(aa);
-//		String bb = toString(aa);
-//		emailContent.setText(bb);
-		
-	}
-	@FXML private TextArea emailContent;
-	
-	
-	
-	@FXML private Button btntest;
-	@FXML public void clicktest(){
+	@FXML private Pane panNotifications;
+	@FXML private Pane panShort;
 
-	}
+	@FXML private Label textCount;
 	
-	
-	@FXML private Button btnFoo;
-	
-	@FXML private Label txtBar;
-	
-	public void changeText(ActionEvent event){
-	System.out.print("click!");	
-	txtBar.setText("You did it!");
-	}
-
-//______________________________________________________________________________________
-	//ListView : Show From and subject in listview
-	@FXML ListView<String> listView1;
-	
-	
-	//Get Total message count and Unread message Count
-	@FXML private Label countMailText; 
-	
-	//FireFox
-	@FXML private ImageView btnpicFF;
-	
-	@FXML private Button btnFF;
-	
-	@FXML public void openFireff(MouseEvent event) throws Exception{
-		System.out.print("Fox");	
-//		String openFirefox = "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe";
-//		Runtime.getRuntime().exec(openFirefox);
-		Runtime.getRuntime().exec(new String[]{"cmd", "/c","start firefox "});
-	}
-	
-	//Chrome
-	@FXML private ImageView btnpicChrme;
-	
-	@FXML private Button btnChrome;
-	
-	@FXML public void openChrome(MouseEvent event) throws Exception{
-		System.out.print("Chrome");	
-		//String openFirefox = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
-		//Runtime.getRuntime().exec(openFirefox);
-		Runtime.getRuntime().exec(new String[]{"cmd", "/c","start chrome "}); //chrome
-	}
+	@FXML private ProgressIndicator progresInd;
 	
 	//Lock
 	@FXML private ImageView btnpicLock;
@@ -111,41 +50,7 @@ public class MyController implements Initializable {
 		String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 		Runtime.getRuntime().exec(lockDesctop);
 	}
-
-
-	//CMD
-	@FXML private ImageView btnpicCMD;
 	
-	@FXML private Button btnCMD;
-	
-	@FXML public void openCMD(MouseEvent event) throws Exception{
-		String cmd = "cmd.exe /c start cd C:\\windows";
-		Runtime.getRuntime().exec(cmd); 
-//		Runtime.getRuntime().exec("cmd.exe /c start"); 
-	    System.out.print("CMD");
-	}
-	
-	//Calculator
-	@FXML private ImageView btnpicCalc;
-	
-	@FXML private Button btnCalc;
-	
-	@FXML public void openCalc(MouseEvent event) throws Exception{
-		System.out.print("Calculator");	
-		String openCalc = "C:\\Windows\\system32\\calc.exe";
-		Runtime.getRuntime().exec(openCalc);
-	}
-	
-	//Paint
-	@FXML private ImageView btnpicPaint;
-	
-	@FXML private Button btnPaint;	
-
-	@FXML public void openPaint(MouseEvent event) throws Exception{
-		System.out.print("CMD");	
-		String lockDesctop = "C:\\Windows\\system32\\mspaint.exe";
-		Runtime.getRuntime().exec(lockDesctop);
-	}
 	
 	//ShDown
 	@FXML private ImageView btnpicDown;
@@ -158,44 +63,162 @@ public class MyController implements Initializable {
 		Runtime.getRuntime().exec(lockDesctop);
 	}
 	
+	
+	@FXML private ListView<String> ListView;
+	
+	@FXML private TextArea EmileContent;
+	
+	@FXML private ImageView picRefresh;
+	@FXML private Button btnRefresh;
+	
+//	@FXML private TextField authField;
+//	@FXML private Button btnAuth;
+	@FXML private Button btnStartAuthToGmail;
+	
+	@FXML private void btnAuthOnMouseClick(){
+//		try {
+//			MessagesList = new connectGmail().showMessages();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		//Fill email listview with from and subject	
+//		ListView.setItems(FillFromSubject());
+	}
+	
+	@FXML public void btnStartAuthOnMouseClick(MouseEvent event) {
+		//connect to gmail.com
+		new connectGmail().PreMain();
+
 		
-	//Show Desktop
-	@FXML private ImageView btnpicMin;
-	
-	@FXML private Button btnMin;
-	
-	@FXML public void openMin(MouseEvent event){
-	    try  
-	    {  
-	      Robot robot = new Robot();  
-	      robot.keyPress(KeyEvent.VK_WINDOWS);  
-	      robot.keyPress(KeyEvent.VK_D);  
-	      robot.keyRelease(KeyEvent.VK_D);  
-	      robot.keyRelease(KeyEvent.VK_WINDOWS);  
-	    }  
-	    catch(Exception e){e.printStackTrace();}
-	
+		
+		try {
+			MessagesList = new connectGmail().showMessages();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+//Need to put progress bar here
+		
+		if(!MessagesList.isEmpty()){
+			//Fill email listView with from and subject	
+			ListView.setItems(FillFromSubject());
+			
+			//Hide button
+			btnStartAuthToGmail.setVisible(false);
+			
+			//Print Inbox messages count
+			Integer CountMail = MessagesList.size();
+			String ss = "Inbox: " + Integer.toString(CountMail);
+			textCount.setText(ss);
+		}
+		else {
+			ListView.setId("No messages!");
+		}
+		
 	}
 	
-	//openFacebook
-	@FXML private ImageView btnpicFacebook;
 	
-	@FXML private Button btnFacebook;
-	
-	@FXML public void openFacebook(MouseEvent event) throws IOException{
-		String facebook = "http://facebook.com";
-		java.awt.Desktop.getDesktop().browse(java.net.URI.create(facebook));
+	@FXML public void ListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException {
+		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+		String Snippet = null;
+	       if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+	           //open email on browser 
+	    	   if(mouseEvent.getClickCount() == 2){
+	    			String EmailNo = null;
+	    			for(ArrayList<Philosopher> MessageList : MessagesList){
+	    		    	for(Philosopher message : MessageList){
+	    		    		if(message.No.equals(xMail)){
+	    		    			EmailNo = (message.id) ;
+	    		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
+	    		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
+	    		    		}
+	    		    	}
+	    			}
+	            }
+	            //Show content
+	            else if(mouseEvent.getClickCount() == 1){
+	            	
+	            	//set content box visible
+	            	EmileContent.setVisible(true);
+	            	
+	        		for(ArrayList<Philosopher> MessageList : MessagesList){
+	        	    	for(Philosopher Snip : MessageList){
+	        	    		if(Snip.No.equals(xMail)){
+	        	    			Snippet = (Snip.Snippet) ;
+	        	    		}
+	        	    	}
+	        		}
+	            }
+	        }	
+		EmileContent.setText(Snippet);
 	}
 	
 	
-	//openTwitter
-	@FXML private ImageView btnpicTwitter;
+	@FXML public void btnRefreshOnClicked(MouseEvent event) {
+		
+		try {
+			MessagesList = new connectGmail().showMessages();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//Fill email listView with from and subject	
+		ListView.setItems(FillFromSubject());
+	}
 	
-	@FXML private Button btnTwitter;
 	
-	@FXML public void openTwitter(MouseEvent event) throws IOException{
-		String twitter = "http://twitter.com";
-		java.awt.Desktop.getDesktop().browse(java.net.URI.create(twitter));
+	@FXML public void ListViewOnSwipeUp(KeyEvent e) throws IOException {
+		//Open current email on gmail.com browser
+		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+		if(KeyEvent.KEY_PRESSED != null){
+			String EmailNo = null;
+			for(ArrayList<Philosopher> MessageList : MessagesList){
+		    	for(Philosopher message : MessageList){
+		    		if(message.No.equals(xMail)){
+		    			EmailNo = (message.id) ;
+		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
+		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
+		    		}
+		    	}
+			}
+		}
+		 e.consume();
+	}
+	
+	
+	@FXML 
+	public void EmileContentOnSwipeUP() {
+		//Open current email on gmail.com browser
+	}
+	
+	@FXML
+	public void EmileContentOnSwipeRight(KeyEvent e) {
+		//Clear content
+		if(e.isShiftDown()){
+			EmileContent.setText(null);
+			EmileContent.setVisible(false);
+		}
+		e.consume();
+	}
+	
+	
+	public ObservableList<String> FillFromSubject(){
+		// arrayList to print into ListView
+		ArrayList<String> FromSubject = new ArrayList<String>();
+		for(ArrayList<Philosopher> MessageList : MessagesList){
+	    	for(Philosopher ff : MessageList){
+	    		String frSu = (ff.From + "   " + ff.Subject) ;
+	    		FromSubject.add(frSu);
+	    	}
+		}
+		
+		ObservableList<String> fromAndSubject = FXCollections.observableArrayList(FromSubject);
+		return fromAndSubject;
+		
 	}
 	
 }
