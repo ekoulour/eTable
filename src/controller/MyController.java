@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 
 import application.Philosopher;
 import application.connectGmail;
+import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,8 +17,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -29,40 +34,22 @@ public class MyController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
+		//Gmail hide elements
 		EmileContent.setVisible(false);
 		progresInd.setVisible(false);
+		progresInd.setVisible(false);
+		authField.setVisible(false);
+		btnAuth.setVisible(false);
 	}
-	
+
+	/*
+	 * Section for Gmail
+	 */
 	@FXML private Pane panNotifications;
 	@FXML private Pane panShort;
-
+	
 	@FXML private Label textCount;
-	
 	@FXML private ProgressIndicator progresInd;
-	
-	//Lock
-	@FXML private ImageView btnpicLock;
-	
-	@FXML private Button btnLock;
-	
-	@FXML public void lockDesctop(MouseEvent event) throws Exception{
-		System.out.print("Lock");	
-		String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
-		Runtime.getRuntime().exec(lockDesctop);
-	}
-	
-	
-	//ShDown
-	@FXML private ImageView btnpicDown;
-	
-	@FXML private Button btnDown;
-	
-	@FXML public void openDown(MouseEvent event) throws Exception{
-		System.out.print("CMD");	
-		String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
-		Runtime.getRuntime().exec(lockDesctop);
-	}
-	
 	
 	@FXML private ListView<String> ListView;
 	
@@ -71,27 +58,41 @@ public class MyController implements Initializable {
 	@FXML private ImageView picRefresh;
 	@FXML private Button btnRefresh;
 	
-//	@FXML private TextField authField;
-//	@FXML private Button btnAuth;
+	
+	//To start authorization
 	@FXML private Button btnStartAuthToGmail;
 	
-	@FXML private void btnAuthOnMouseClick(){
-//		try {
-//			MessagesList = new connectGmail().showMessages();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		//Fill email listview with from and subject	
-//		ListView.setItems(FillFromSubject());
+	@FXML public void btnStartAuthOnMouseClick(MouseEvent event) throws Exception {		
+		//connect to gmail.com start
+		new connectGmail().authorize();
+		//Hide start Auth button
+		btnStartAuthToGmail.setVisible(false);
+		
+		//Set to visible Auth field and Auth button
+		btnAuth.setVisible(true);
+		authField.setVisible(true);
 	}
 	
-	@FXML public void btnStartAuthOnMouseClick(MouseEvent event) {
-		//connect to gmail.com
-		new connectGmail().PreMain();
-
+	
+	//To give an authorization code and start authorization
+	@FXML private TextField authField;
+	
+	@FXML private Button btnAuth;
+	
+	@FXML private void btnAuthOnMouseClick(){
+		//progress starts
+		progresInd.setVisible(true);
+		progresInd.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
 		
+		//Hide Auth field and button
+		authField.setVisible(false);
+		btnAuth.setVisible(false);
+		
+		//get inserted code
+		String code = authField.getText();
+		
+		//send code to authorization function
+		new connectGmail().PreMain(code);
 		
 		try {
 			MessagesList = new connectGmail().showMessages();
@@ -100,24 +101,24 @@ public class MyController implements Initializable {
 			e.printStackTrace();
 		}
 		
-//Need to put progress bar here
-		
 		if(!MessagesList.isEmpty()){
 			//Fill email listView with from and subject	
 			ListView.setItems(FillFromSubject());
-			
-			//Hide button
-			btnStartAuthToGmail.setVisible(false);
 			
 			//Print Inbox messages count
 			Integer CountMail = MessagesList.size();
 			String ss = "Inbox: " + Integer.toString(CountMail);
 			textCount.setText(ss);
+
 		}
 		else {
 			ListView.setId("No messages!");
+
+			//Show start Auth button
+			btnStartAuthToGmail.setVisible(false);	
 		}
-		
+		//Stop progress
+		progresInd.setVisible(false);
 	}
 	
 	
@@ -158,6 +159,10 @@ public class MyController implements Initializable {
 	
 	
 	@FXML public void btnRefreshOnClicked(MouseEvent event) {
+		//progress starts
+		progresInd.setVisible(true);
+		progresInd.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+
 		
 		try {
 			MessagesList = new connectGmail().showMessages();
@@ -168,6 +173,9 @@ public class MyController implements Initializable {
 
 		//Fill email listView with from and subject	
 		ListView.setItems(FillFromSubject());
+		
+		//stop progress
+		progresInd.setVisible(false);
 	}
 	
 	
@@ -206,6 +214,7 @@ public class MyController implements Initializable {
 	}
 	
 	
+	//Get INBOX list of email (from subject)
 	public ObservableList<String> FillFromSubject(){
 		// arrayList to print into ListView
 		ArrayList<String> FromSubject = new ArrayList<String>();
@@ -221,4 +230,27 @@ public class MyController implements Initializable {
 		
 	}
 	
+	//Lock
+		@FXML private ImageView btnpicLock;
+		@FXML private Button btnLock;
+		@FXML public void lockDesctop(MouseEvent event) throws Exception{
+			System.out.print("Lock");	
+			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
+			Runtime.getRuntime().exec(lockDesctop);
+		}
+		
+		
+		//ShDown
+		@FXML private ImageView btnpicDown;
+		@FXML private Button btnDown;
+		@FXML public void openDown(MouseEvent event) throws Exception{
+			System.out.print("CMD");	
+			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
+			Runtime.getRuntime().exec(lockDesctop);
+		}
+		
+	
+	/*
+	 * End of Gmail section
+	 */
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<AnchorPane prefHeight="565.0" prefWidth="860.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
+<AnchorPane disable="false" focusTraversable="false" prefHeight="565.0" prefWidth="860.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
   <children>
     <Pane fx:id="panNotifications" layoutX="460.0" layoutY="14.0" prefHeight="461.0" prefWidth="386.0">
       <children>
@@ -18,7 +18,7 @@
           </font>
         </Text>
         <ListView id="listView1" fx:id="ListView" layoutX="14.0" layoutY="74.0" onKeyPressed="#ListViewOnSwipeUp" onMouseClicked="#ListViewOnMouseClicked" prefHeight="236.0" prefWidth="358.0" />
-        <Button id="btnAuth" fx:id="btnStartAuthToGmail" layoutX="227.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#btnStartAuthOnMouseClick" text="Authorize to Gmail.com" />
+        <Button id="btnAuth" fx:id="btnStartAuthToGmail" layoutX="227.0" layoutY="41.0" mnemonicParsing="false" onMouseClicked="#btnStartAuthOnMouseClick" text="Authorize to Gmail.com" visible="true" />
         <Button fx:id="btnRefresh" layoutX="322.0" layoutY="312.0" mnemonicParsing="false" onMouseClicked="#btnRefreshOnClicked" prefHeight="30.0" prefWidth="50.0" text="" />
         <ImageView id="btnRefresh" fx:id="picRefresh" fitHeight="25.0" fitWidth="25.0" layoutX="335.0" layoutY="314.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
@@ -26,8 +26,10 @@
           </image>
         </ImageView>
         <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="14.0" layoutY="313.0" mouseTransparent="false" onKeyPressed="#EmileContentOnSwipeRight" onSwipeUp="#EmileContentOnSwipeUP" opacity="1.0" prefHeight="59.9999915527369" prefWidth="298.0" visible="true" wrapText="true" />
-        <ProgressIndicator fx:id="progresInd" layoutX="179.0" layoutY="173.0" progress="0.0" />
+        <ProgressIndicator fx:id="progresInd" layoutX="179.0" layoutY="173.0" progress="-0.41" />
         <Label fx:id="textCount" layoutX="14.0" layoutY="52.0" text="Inbox:" />
+        <TextField fx:id="authField" layoutX="97.0" layoutY="14.0" prefWidth="275.0" promptText="Enter your authorization code here" />
+        <Button fx:id="btnAuth" layoutX="227.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#btnAuthOnMouseClick" prefWidth="145.0" text="Authorize" />
       </children>
     </Pane>
     <Pane fx:id="panShort" layoutX="14.0" layoutY="475.0" prefHeight="90.0" prefWidth="252.0">
