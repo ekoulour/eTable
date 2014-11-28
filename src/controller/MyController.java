@@ -1,9 +1,11 @@
 package controller;
 
+import java.awt.Font;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import application.Philosopher;
 import application.connectGmail;
@@ -27,16 +29,15 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+
 public class MyController implements Initializable {
 	//Initialize ArrayList<ArrayList<Philosopher>>
 	ArrayList<ArrayList<Philosopher>> MessagesList = new ArrayList<ArrayList<Philosopher>>();
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
 		//Gmail hide elements
 		EmileContent.setVisible(false);
-		progresInd.setVisible(false);
 		progresInd.setVisible(false);
 		authField.setVisible(false);
 		btnAuth.setVisible(false);
@@ -80,49 +81,48 @@ public class MyController implements Initializable {
 	@FXML private Button btnAuth;
 	
 	@FXML private void btnAuthOnMouseClick(){
-		//progress starts
 		progresInd.setVisible(true);
-		progresInd.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-		
-		//Hide Auth field and button
-		authField.setVisible(false);
-		btnAuth.setVisible(false);
-		
-		//get inserted code
-		String code = authField.getText();
-		
-		//send code to authorization function
-		new connectGmail().PreMain(code);
-		
-		try {
-			MessagesList = new connectGmail().showMessages();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(!MessagesList.isEmpty()){
-			//Fill email listView with from and subject	
-			ListView.setItems(FillFromSubject());
 			
-			//Print Inbox messages count
-			Integer CountMail = MessagesList.size();
-			String ss = "Inbox: " + Integer.toString(CountMail);
-			textCount.setText(ss);
+			//Hide Auth field and button
+			authField.setVisible(false);
+			btnAuth.setVisible(false);
+			
+			//get inserted code
+			String code = authField.getText();
+			
+			//send code to authorization function
+			new connectGmail().PreMain(code);
+			
+			try {
+				MessagesList = new connectGmail().showMessages();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(!MessagesList.isEmpty()){
+				//Fill email listView with from and subject	
+				ListView.setItems(FillFromSubject());
+				
+				//Print Inbox messages count
+				Integer CountMail = MessagesList.size();
+				String ss = "Inbox: " + Integer.toString(CountMail);
+				textCount.setText(ss);
 
-		}
-		else {
-			ListView.setId("No messages!");
+			}
+			else {
+				ListView.setId("No messages!");
 
-			//Show start Auth button
-			btnStartAuthToGmail.setVisible(false);	
-		}
+				//Show start Auth button
+				btnStartAuthToGmail.setVisible(false);	
+			}
+		
 		//Stop progress
 		progresInd.setVisible(false);
 	}
 	
 	
-	@FXML public void ListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException {
+	@FXML public void ListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException, InterruptedException {
 		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
 		String Snippet = null;
 	       if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
@@ -138,6 +138,9 @@ public class MyController implements Initializable {
 	    		    		}
 	    		    	}
 	    			}
+	    			//wait 3 seconds to do next step!
+	    			TimeUnit.SECONDS.sleep(5);
+	    			btnRefreshOnClicked();
 	            }
 	            //Show content
 	            else if(mouseEvent.getClickCount() == 1){
@@ -158,11 +161,11 @@ public class MyController implements Initializable {
 	}
 	
 	
-	@FXML public void btnRefreshOnClicked(MouseEvent event) {
+	@FXML public void btnRefreshOnClicked() {
+		System.out.println("RR");
 		//progress starts
 		progresInd.setVisible(true);
 		progresInd.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-
 		
 		try {
 			MessagesList = new connectGmail().showMessages();
@@ -219,8 +222,17 @@ public class MyController implements Initializable {
 		// arrayList to print into ListView
 		ArrayList<String> FromSubject = new ArrayList<String>();
 		for(ArrayList<Philosopher> MessageList : MessagesList){
-	    	for(Philosopher ff : MessageList){
-	    		String frSu = (ff.From + "   " + ff.Subject) ;
+	
+			for(Philosopher ff : MessageList){
+	    		String frSu = null;
+	    		String unread = null;
+	    		for(String flag : ff.Flags){
+	    			if(flag.contains("UNREAD")){
+	    				unread = "! ";
+	    			}
+	    			else unread = "";
+	    		}
+	    		frSu = (unread + ff.From + "   " + ff.Subject) ;
 	    		FromSubject.add(frSu);
 	    	}
 		}

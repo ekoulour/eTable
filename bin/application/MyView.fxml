@@ -26,10 +26,10 @@
           </image>
         </ImageView>
         <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="14.0" layoutY="313.0" mouseTransparent="false" onKeyPressed="#EmileContentOnSwipeRight" onSwipeUp="#EmileContentOnSwipeUP" opacity="1.0" prefHeight="59.9999915527369" prefWidth="298.0" visible="true" wrapText="true" />
-        <ProgressIndicator fx:id="progresInd" layoutX="179.0" layoutY="173.0" progress="-0.41" />
         <Label fx:id="textCount" layoutX="14.0" layoutY="52.0" text="Inbox:" />
         <TextField fx:id="authField" layoutX="97.0" layoutY="14.0" prefWidth="275.0" promptText="Enter your authorization code here" />
         <Button fx:id="btnAuth" layoutX="227.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#btnAuthOnMouseClick" prefWidth="145.0" text="Authorize" />
+        <ProgressIndicator fx:id="progresInd" layoutX="179.0" layoutY="122.0" progress="-1.0" />
       </children>
     </Pane>
     <Pane fx:id="panShort" layoutX="14.0" layoutY="475.0" prefHeight="90.0" prefWidth="252.0">

@@ -157,16 +157,15 @@ public class connectGmail {
 		    String Received = null;
 		    
 		    //Get one messages all headers
-		    List<MessagePartHeader> messageHeaders = messageCont.getPayload().getHeaders();
-		    
+		    List<MessagePartHeader> messageHeaders = messageCont.getPayload().getHeaders();		    
 		    
 		    //List of READ UNREAD INBOX...
-		    List<String> messageLabel = messageCont.getLabelIds();
+		    List<String> messageLabel = messageCont.getLabelIds(); 
 		    
 		    for(String lab : messageLabel){
-			    if(lab.contains("INBOX")){
-		    
-				    for (MessagePartHeader header: messageHeaders){
+			    if(lab.contains("INBOX")){	 
+			    	
+				    for (MessagePartHeader header: messageHeaders){				    	
 				        if (header.getName().equals("Subject")){
 				        	Subject = header.getValue();
 				        }
@@ -181,17 +180,15 @@ public class connectGmail {
 				        else if (header.getName().equals("To")){
 				        	To = header.getValue();
 				        }
-				        else if (header.getName().equals("Received")){
+				        else if (header.getName().equals("Date")){
 				        	Received = header.getValue();
 				        }  	
 				    }
-				        
-				    messageList.add(new Philosopher(No, id, Snippet, Subject, From, To, Received));
+				    messageList.add(new Philosopher(No, id, Snippet, Subject, From, To, Received, messageLabel));
 				    No ++;
 				    
-				    messagesList.add(messageList);	
-				    
-				}
+				    messagesList.add(messageList);
+				}	
 		    }
 	 }
   
