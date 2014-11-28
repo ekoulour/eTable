@@ -246,6 +246,7 @@ public class MyController implements Initializable {
 		@FXML private ImageView btnpicLock;
 		@FXML private Button btnLock;
 		@FXML public void lockDesctop(MouseEvent event) throws Exception{
+			System.out.print("Lock");	
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 			Runtime.getRuntime().exec(lockDesctop);
 		}
@@ -254,7 +255,8 @@ public class MyController implements Initializable {
 		//ShDown
 		@FXML private ImageView btnpicDown;
 		@FXML private Button btnDown;
-		@FXML public void openDown(MouseEvent event) throws Exception{	
+		@FXML public void openDown(MouseEvent event) throws Exception{
+			System.out.print("CMD");	
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 			Runtime.getRuntime().exec(lockDesctop);
 		}
