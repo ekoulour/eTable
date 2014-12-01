@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 //import javafx.scene.layout.BorderPane;
 
 
+@SuppressWarnings("restriction")
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {

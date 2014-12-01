@@ -30,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 
+@SuppressWarnings("restriction")
 public class MyController implements Initializable {
 	//Initialize ArrayList<ArrayList<Philosopher>>
 	ArrayList<ArrayList<Philosopher>> MessagesList = new ArrayList<ArrayList<Philosopher>>();
