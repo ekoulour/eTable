@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Krista Puíe
+ * @author Krista PuÄ·e
  */
 public class connectGmail {
 
@@ -39,7 +39,7 @@ public class connectGmail {
   /**
    * Client secret path .json file location
    */
-  private static final String CLIENT_SECRET_PATH = "C:\\Users\\Krista\\Desktop\\For NGUI project\\Workspace\\NNNGUITestProject\\JSON\\client_secret_326005122275-te2r3ju1hu0bqminu3jjgodooj7eo56b.apps.googleusercontent.com.json";
+  private static final String CLIENT_SECRET_PATH = "JSON/client_secret_326005122275-te2r3ju1hu0bqminu3jjgodooj7eo56b.apps.googleusercontent.com.json";
 		  //"C:\\Users\\Krista\\Desktop\\For NGUI project\\Workspace\\testGAPI\\JSON\\client_secret_326005122275-te2r3ju1hu0bqminu3jjgodooj7eo56b.apps.googleusercontent.com.json";
   /**
    * Globally shared instance across your application.
