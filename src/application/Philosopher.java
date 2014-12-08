@@ -10,9 +10,10 @@ public class Philosopher {
     public String From;
     public String To;
     public String Received;
+    public String EMcontent;
     public List<String> Flags;
 
-    public Philosopher(Integer No, String id, String Snippet, String Subject, String From, String To, String Received, List<String> Flags) {
+    public Philosopher(Integer No, String id, String Snippet, String Subject, String From, String To, String Received, String EMcontent, List<String> Flags) {
     	this.No = No;
     	this.id = id;
 		this.Snippet = Snippet;
@@ -20,11 +21,12 @@ public class Philosopher {
 		this.From = From;
 		this.To = To;
 		this.Received = Received;
+		this.EMcontent = EMcontent;
 		this.Flags = Flags;
     }
 
     public String toString() {
 	return "No = " + this.No + ", id = " + this.id + ", Snippet = " + this.Snippet + ", Subject = " + this.Subject + ", From = " + this.From
-			+ ", To = " + this.To + ", Received = " + this.Received + this.Flags;
+			+ ", To = " + this.To + ", Received = " + this.Received +", EMcontent" + EMcontent + ", Flags" + this.Flags;
     }
 }

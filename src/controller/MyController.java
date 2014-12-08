@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+import javax.mail.MessagingException;
+
 import application.Philosopher;
 import application.connectGmail;
 import javafx.application.Platform;
@@ -42,6 +44,8 @@ public class MyController implements Initializable {
 		progresInd.setVisible(false);
 		authField.setVisible(false);
 		btnAuth.setVisible(false);
+		btnRefresh.setVisible(false);
+		picRefresh.setVisible(false);
 	}
 
 	/*
@@ -81,7 +85,7 @@ public class MyController implements Initializable {
 	
 	@FXML private Button btnAuth;
 	
-	@FXML private void btnAuthOnMouseClick(){
+	@FXML private void btnAuthOnMouseClick() throws MessagingException{
 		progresInd.setVisible(true);
 			
 			//Hide Auth field and button
@@ -120,16 +124,22 @@ public class MyController implements Initializable {
 		
 		//Stop progress
 		progresInd.setVisible(false);
+		
+		//Set refresh visible
+		btnRefresh.setVisible(true);
+		picRefresh.setVisible(true);
 	}
 	
 	
-	@FXML public void ListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException, InterruptedException {
+	@FXML public void ListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException, InterruptedException, MessagingException {
 		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-		String Snippet = null;
+		String EMcontent = null;
+		String EmailFrom = null;
 	       if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
 	           //open email on browser 
 	    	   if(mouseEvent.getClickCount() == 2){
 	    			String EmailNo = null;
+
 	    			for(ArrayList<Philosopher> MessageList : MessagesList){
 	    		    	for(Philosopher message : MessageList){
 	    		    		if(message.No.equals(xMail)){
@@ -139,9 +149,14 @@ public class MyController implements Initializable {
 	    		    		}
 	    		    	}
 	    			}
-	    			//wait 3 seconds to do next step!
-	    			TimeUnit.SECONDS.sleep(5);
-	    			btnRefreshOnClicked();
+	    			
+	    			EmailFrom = ListView.getSelectionModel().getSelectedItem();
+	    			System.out.println(EmailFrom);
+	    			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
+//		    			wait 3 seconds to do next step!
+		    			TimeUnit.SECONDS.sleep(5);
+		    			btnRefreshOnClicked();
+	    			}
 	            }
 	            //Show content
 	            else if(mouseEvent.getClickCount() == 1){
@@ -149,20 +164,20 @@ public class MyController implements Initializable {
 	            	//set content box visible
 	            	EmileContent.setVisible(true);
 	            	
-	        		for(ArrayList<Philosopher> MessageList : MessagesList){
-	        	    	for(Philosopher Snip : MessageList){
-	        	    		if(Snip.No.equals(xMail)){
-	        	    			Snippet = (Snip.Snippet) ;
-	        	    		}
-	        	    	}
-	        		}
+	            	for(ArrayList<Philosopher> MessageList : MessagesList){
+	            		for(Philosopher Cont : MessageList){
+	            			if(Cont.No.equals(xMail)){
+	            				EMcontent = (Cont.EMcontent);
+	            			}
+	            		}
+	            	}
 	            }
 	        }	
-		EmileContent.setText(Snippet);
+		EmileContent.setText(EMcontent);
 	}
 	
 	
-	@FXML public void btnRefreshOnClicked() {
+	@FXML public void btnRefreshOnClicked() throws MessagingException {
 		System.out.println("RR");
 		//progress starts
 		progresInd.setVisible(true);
