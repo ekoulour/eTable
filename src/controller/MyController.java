@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +17,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,6 +31,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.SwipeEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 
 
@@ -36,7 +40,7 @@ import javafx.scene.layout.Pane;
 public class MyController implements Initializable {
 	//Initialize ArrayList<ArrayList<Philosopher>>
 	ArrayList<ArrayList<Philosopher>> MessagesList = new ArrayList<ArrayList<Philosopher>>();
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//Gmail hide elements
@@ -47,7 +51,19 @@ public class MyController implements Initializable {
 		btnRefresh.setVisible(false);
 		picRefresh.setVisible(false);
 	}
+	/**
+	 *	On mouse moving around it catches the mouse gesture and print out gesture name and coordinates 
+	**/
+	
+	@FXML
+        public void mouseHandler(MouseEvent mouseEvent) {
+            System.out.println(mouseEvent.getEventType() + "\n"
+                    + "X : Y - " + mouseEvent.getX() + " : " + mouseEvent.getY() + "\n"
+                    + "SceneX : SceneY - " + mouseEvent.getSceneX() + " : " + mouseEvent.getSceneY() + "\n"
+                    + "ScreenX : ScreenY - " + mouseEvent.getScreenX() + " : " + mouseEvent.getScreenY());
 
+        }    
+	
 	/*
 	 * Section for Gmail
 	 */
@@ -137,7 +153,7 @@ public class MyController implements Initializable {
 		String EmailFrom = null;
 	       if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
 	           //open email on browser 
-	    	   if(mouseEvent.getClickCount() == 2){
+	    	   if(mouseEvent.getClickCount() == 3){
 	    			String EmailNo = null;
 
 	    			for(ArrayList<Philosopher> MessageList : MessagesList){
@@ -158,8 +174,8 @@ public class MyController implements Initializable {
 		    			btnRefreshOnClicked();
 	    			}
 	            }
-	            //Show content
-	            else if(mouseEvent.getClickCount() == 1){
+	            //Show content -> new functions 
+	            else if(mouseEvent.getClickCount() == 2){
 	            	
 	            	//set content box visible
 	            	EmileContent.setVisible(true);
@@ -174,6 +190,65 @@ public class MyController implements Initializable {
 	            }
 	        }	
 		EmileContent.setText(EMcontent);
+	}
+	
+	@FXML public List<Double> aaa(MouseEvent mouseEvent){
+	
+		double y = mouseEvent.getY();
+		double x = mouseEvent.getX();
+		List<Double> yx = null;
+		yx.add(y);
+		yx.add(x);
+		
+		return yx;
+	}
+	
+	@FXML public void bbb(MouseEvent mouseEvent){
+		List<Double> yx = aaa(mouseEvent);
+		double preY = yx.get(0);
+		double preX = yx.get(1);
+		
+		double y = mouseEvent.getY();
+		double x = mouseEvent.getX();
+		
+		if(x>preX){
+			System.out.println("Moved right");
+		}
+		else System.out.println("Moved somewhere");
+	}
+	
+	@FXML
+	public void EmileContentMouseClicked(MouseEvent mouseEvent){
+//    	//set content box visible
+//    	EmileContent.setVisible(false);
+//    	//Set email text
+//    	EmileContent.setText(null);
+	}
+	
+	@FXML
+	public void ListViewMousePressed(MouseEvent mouseEvent){
+		mouseEvent.getTarget();
+		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+		String EMcontent = null;
+    	for(ArrayList<Philosopher> MessageList : MessagesList){
+    		for(Philosopher Cont : MessageList){
+    			if(Cont.No.equals(xMail)){
+    				EMcontent = (Cont.EMcontent);
+    			}
+    		}
+    	}
+    	//set content box visible
+    	EmileContent.setVisible(true);
+    	//Set email text
+    	EmileContent.setText(EMcontent);
+	}
+	
+	@FXML
+	public void ListViewMouseReleased(MouseEvent mouseEvent){
+    	//set content box visible
+    	EmileContent.setVisible(false);
+    	//Set email text
+    	EmileContent.setText(null);
 	}
 	
 	
