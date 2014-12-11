@@ -5,14 +5,17 @@ import TUIO.TuioListener;
 import TUIO.TuioObject;
 import TUIO.TuioTime;
 
-/*
- * Keep in mind:
- * - Cursor in/out happens even if you hold finger still, don't rely on it
- * - As such, start time of a cursor is also unreliable if you don't do it
+/**
+ * Example of the events that get triggered and we can make use of.
+ * <p>
+ * Keep in mind
+ * <ul>
+ * 	<li>Cursor in/out happens even if you hold finger still, don't rely on it
+ * 	<li>As such, start time of a cursor is also unreliable if you don't do it
  *   yourself
- * - Instance of this class handles every TuioCursor id (meaning you have to
- *   manually keep track of what different IDs do)
- * - Idea is to have a different class for different gestures that we want to
+ * 	<li>Instance of this class should handle every TuioCursor id (meaning you
+ *   have to manually keep track of what different IDs are doing)
+ * 	<li>Idea is to have a different class for different gestures that we want to
  *   recognise, similar to what we did in the class Lode taught halfway
  *   November.
  */
