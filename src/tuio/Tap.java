@@ -37,29 +37,35 @@ public class Tap implements TuioListener {
 
 	@Override
 	public void removeTuioCursor(TuioCursor arg) {
-		if (start_x.containsKey(arg.getCursorID())) {
-			long local_end = System.currentTimeMillis();
-			end_time.put(arg.getCursorID(), local_end);
-			
-			try {
-				Thread.sleep(TIMEOUT);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (end_time.containsKey(arg.getCursorID())
-				  && end_time.get(arg.getCursorID()) == local_end) {
-				// The cursor is really gone
-				long hold_length = local_end - start_time.get(arg.getCursorID());
-				if (hold_length < MAX_TAP_TIME && closeEnough(arg)) {
-					System.out.println("Tap event!");
+		class LocalThread extends Thread {
+			public void run() {
+				if (start_x.containsKey(arg.getCursorID())) {
+					long local_end = System.currentTimeMillis();
+					end_time.put(arg.getCursorID(), local_end);
+					
+					try {
+						Thread.sleep(TIMEOUT);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					if (end_time.containsKey(arg.getCursorID())
+						  && end_time.get(arg.getCursorID()) == local_end) {
+						// The cursor is really gone
+						long hold_length = local_end - start_time.get(arg.getCursorID());
+						if (hold_length < MAX_TAP_TIME && closeEnough(arg)) {
+							System.out.println("Tap event!");
+						}
+						start_x.remove(arg.getCursorID());
+						start_y.remove(arg.getCursorID());
+						start_time.remove(arg.getCursorID());
+						end_time.remove(arg.getCursorID());
+					}
 				}
-				start_x.remove(arg.getCursorID());
-				start_y.remove(arg.getCursorID());
-				start_time.remove(arg.getCursorID());
-				end_time.remove(arg.getCursorID());
 			}
 		}
+		LocalThread l = new LocalThread();
+		l.start();
 	}
 
 	@Override
@@ -73,7 +79,7 @@ public class Tap implements TuioListener {
 			&& arg.getX() < start_x.get(arg.getCursorID()) + 0.1
 			&& arg.getX() > start_x.get(arg.getCursorID()) - 0.1
 			&& arg.getY() < start_y.get(arg.getCursorID()) + 0.1
-			&& arg.getY() < start_y.get(arg.getCursorID()) - 0.1;
+			&& arg.getY() > start_y.get(arg.getCursorID()) - 0.1;
 	}
 
 	
