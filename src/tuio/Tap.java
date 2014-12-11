@@ -18,9 +18,9 @@ public class Tap implements TuioListener {
 	private Map<Integer,Float> start_y = new HashMap<Integer, Float>();
 	private Map<Integer,Long> start_time = new HashMap<Integer, Long>();
 	private Map<Integer,Long> end_time   = new HashMap<Integer, Long>();
-	// Timeout before checking if the pressing really ended
+	/** Timeout before checking if the pressing really ended */
 	private static final long TIMEOUT = 400;
-	// Maximum hold length to consider a tap
+	/** Maximum hold length to consider a tap */
 	private static final long MAX_TAP_TIME = 500;
 
 	@Override

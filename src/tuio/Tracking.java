@@ -18,6 +18,16 @@ import TUIO.TuioTime;
  * 	<li>Idea is to have a different class for different gestures that we want to
  *   recognise, similar to what we did in the class Lode taught halfway
  *   November.
+ * </ul>
+ * <p>
+ * The coordinate system is as follows (with (x,y))
+ * <pre>
+ * (1,0) ----BACK----- (1,1)
+ *   |                   |
+ *   |                   |
+ *   |                   |
+ * (0,0) ----FRONT---- (0,1)
+ * </pre>
  */
 public class Tracking implements TuioListener {
 

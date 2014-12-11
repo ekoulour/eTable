@@ -19,7 +19,9 @@ public abstract class SwipeAbstract implements TuioListener {
 	protected Map<Integer,Float> previous_y = new HashMap<Integer, Float>();
 	protected Map<Integer,Boolean> still_good = new HashMap<Integer, Boolean>();
 	protected Map<Integer,Long> end_time   = new HashMap<Integer, Long>();
+	/**  Timeout before checking if the pressing really ended */
 	protected static final long TIMEOUT = 400;
+	/** Minimum distance before a swipe is considered triggered */
 	protected static final float MIN_DISTANCE = (float) 0.2;
 
 	/**
