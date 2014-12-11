@@ -44,31 +44,37 @@ public class SwipeUp implements TuioListener {
 
 	@Override
 	public void removeTuioCursor(TuioCursor arg) {
-		if (start_x.containsKey(arg.getCursorID())) {
-			long local_end = System.currentTimeMillis();
-			end_time.put(arg.getCursorID(), local_end);
-			
-			try {
-				Thread.sleep(TIMEOUT);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (end_time.containsKey(arg.getCursorID())
-					&& end_time.get(arg.getCursorID()) == local_end) {
-				// Cursor is really gone
-				float distance = arg.getY() - start_y.get(arg.getCursorID());
-				if (distance > MIN_DISTANCE && still_good.get(arg.getCursorID())) {
-					System.out.println("Swipe up event!");
+		class LocalThread extends Thread {
+			public void run() {
+				if (start_x.containsKey(arg.getCursorID())) {
+					long local_end = System.currentTimeMillis();
+					end_time.put(arg.getCursorID(), local_end);
+					
+					try {
+						Thread.sleep(TIMEOUT);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					if (end_time.containsKey(arg.getCursorID())
+							&& end_time.get(arg.getCursorID()) == local_end) {
+						// Cursor is really gone
+						float distance = arg.getY() - start_y.get(arg.getCursorID());
+						if (distance > MIN_DISTANCE && still_good.get(arg.getCursorID())) {
+							System.out.println("Swipe up event!");
+						}
+						start_x.remove(arg.getCursorID());
+						start_y.remove(arg.getCursorID());
+						previous_x.remove(arg.getCursorID());
+						previous_y.remove(arg.getCursorID());
+						still_good.remove(arg.getCursorID());
+						end_time.remove(arg.getCursorID());
+					}
 				}
-				start_x.remove(arg.getCursorID());
-				start_y.remove(arg.getCursorID());
-				previous_x.remove(arg.getCursorID());
-				previous_y.remove(arg.getCursorID());
-				still_good.remove(arg.getCursorID());
-				end_time.remove(arg.getCursorID());
 			}
 		}
+		LocalThread l = new LocalThread();
+		l.start();
 	}
 	
 	/* Validate that we aren't deviating from going upwards */
