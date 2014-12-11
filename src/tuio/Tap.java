@@ -54,6 +54,10 @@ public class Tap implements TuioListener {
 				if (hold_length < MAX_TAP_TIME && closeEnough(arg)) {
 					System.out.println("Tap event!");
 				}
+				start_x.remove(arg.getCursorID());
+				start_y.remove(arg.getCursorID());
+				start_time.remove(arg.getCursorID());
+				end_time.remove(arg.getCursorID());
 			}
 		}
 	}
