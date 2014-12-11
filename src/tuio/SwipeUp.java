@@ -27,7 +27,7 @@ public class SwipeUp implements TuioListener {
 	private Map<Integer,Boolean> still_good = new HashMap<Integer, Boolean>();
 	private Map<Integer,Long> end_time   = new HashMap<Integer, Long>();
 	private static final long TIMEOUT = 400;
-	private static final float MIN_DISTANCE = (float) 0.3;
+	private static final float MIN_DISTANCE = (float) 0.2;
 
 	@Override
 	public void addTuioCursor(TuioCursor arg) {
@@ -59,7 +59,7 @@ public class SwipeUp implements TuioListener {
 					if (end_time.containsKey(arg.getCursorID())
 							&& end_time.get(arg.getCursorID()) == local_end) {
 						// Cursor is really gone
-						float distance = arg.getY() - start_y.get(arg.getCursorID());
+						float distance = arg.getX() - start_x.get(arg.getCursorID());
 						if (distance > MIN_DISTANCE && still_good.get(arg.getCursorID())) {
 							System.out.println("Swipe up event!");
 						}
@@ -81,11 +81,10 @@ public class SwipeUp implements TuioListener {
 	@Override
 	public void updateTuioCursor(TuioCursor arg) {
 		if (start_x.containsKey(arg.getCursorID())) {
-			if (arg.getX() < start_x.get(arg.getCursorID()) + 0.1
-					&& arg.getX() > start_x.get(arg.getCursorID()) - 0.1
-					&& arg.getY() > start_y.get(arg.getCursorID()) - 0.05
-					&& arg.getY() < previous_y.get(arg.getCursorID()) + 0.15
-					&& arg.getY() > previous_y.get(arg.getCursorID()) - 0.05) {
+			if (arg.getX() > start_x.get(arg.getCursorID()) - 0.05
+					&& arg.getX() > previous_x.get(arg.getCursorID()) - 0.05
+					&& arg.getY() < start_y.get(arg.getCursorID()) + 0.1
+					&& arg.getY() > start_y.get(arg.getCursorID()) - 0.1) {
 				// Still going the right way
 			} else {
 				still_good.put(arg.getCursorID(), false);
