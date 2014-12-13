@@ -3,17 +3,18 @@ package tuio;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import TUIO.TuioCursor;
-import TUIO.TuioListener;
-import TUIO.TuioObject;
-import TUIO.TuioTime;
 
-/*
- * Question is: can we wait x milliseconds on remove to see if it is readded again?
- * Won't this cause very weird racing conditions under the assumption
- * "atomic" variable
+/**
+ * Recognises a tap event.
  */
-public class Tap implements TuioListener {
+@SuppressWarnings("restriction")
+public class Tap extends Gesture {
 	private Map<Integer,Float> start_x = new HashMap<Integer, Float>();
 	private Map<Integer,Float> start_y = new HashMap<Integer, Float>();
 	private Map<Integer,Long> start_time = new HashMap<Integer, Long>();
@@ -22,6 +23,10 @@ public class Tap implements TuioListener {
 	private static final long TIMEOUT = 400;
 	/** Maximum hold length to consider a tap */
 	private static final long MAX_TAP_TIME = 500;
+
+	public Tap(Node p) {
+		super(p);
+	}
 
 	@Override
 	public void addTuioCursor(TuioCursor arg) {
@@ -54,7 +59,7 @@ public class Tap implements TuioListener {
 						// The cursor is really gone
 						long hold_length = local_end - start_time.get(arg.getCursorID());
 						if (hold_length < MAX_TAP_TIME && closeEnough(arg)) {
-							System.out.println("Tap event!");
+							eventTriggered(arg);
 						}
 						start_x.remove(arg.getCursorID());
 						start_y.remove(arg.getCursorID());
@@ -72,8 +77,24 @@ public class Tap implements TuioListener {
 	public void updateTuioCursor(TuioCursor arg0) {
 		//TODO Should invalidate if moving too far
 	}
+	
+	private void eventTriggered(TuioCursor arg) {
+		Point2D p = tuioXYtoJavaFXXY(arg.getX(), arg.getY());
+		Node currenttarget = pickNodeBySceneXY(root, p.getX(), p.getY());
+		Point2D p_local = currenttarget.sceneToLocal(p);
+		MouseEvent mouseclick = new MouseEvent(
+				MouseEvent.MOUSE_CLICKED,
+				p_local.getX(), p_local.getY(),
+				p.getX(), p.getY(),
+				MouseButton.PRIMARY, 1,
+				false, false, false, false, true, false, true, true, false, true, null);
+		currenttarget.fireEvent(mouseclick);
+	}
 
-	/* Makes sure current position is close enough to the start */
+	/**
+	 * Makes sure current position is close enough to the start
+	 * @param arg The Tuiocursor to compare to the starting value
+	 */
 	private boolean closeEnough(TuioCursor arg) {
 		return start_x.containsKey(arg.getCursorID())
 			&& arg.getX() < start_x.get(arg.getCursorID()) + 0.1
@@ -81,24 +102,4 @@ public class Tap implements TuioListener {
 			&& arg.getY() < start_y.get(arg.getCursorID()) + 0.1
 			&& arg.getY() > start_y.get(arg.getCursorID()) - 0.1;
 	}
-
-	
-	/* Unused */
-	@Override
-	public void removeTuioObject(TuioObject arg0) {
-		return;
-	}
-	@Override
-	public void updateTuioObject(TuioObject arg0) {
-		return;
-	}
-	@Override
-	public void addTuioObject(TuioObject arg0) {
-		return;
-	}
-	@Override
-	public void refresh(TuioTime arg0) {
-		return;
-	}
-
 }

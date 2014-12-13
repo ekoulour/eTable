@@ -1,11 +1,19 @@
 package tuio;
 
+import javafx.event.EventType;
+import javafx.scene.Node;
+import javafx.scene.input.SwipeEvent;
 import TUIO.TuioCursor;
 
 /**
  * Catches a swiping down of a user and handles accordingly.
  */
+@SuppressWarnings("restriction")
 public class SwipeLeft extends SwipeAbstract {
+	public SwipeLeft(Node p) {
+		super(p);
+	}
+
 	@Override
 	boolean goingGood(TuioCursor arg) {
 		return arg.getX() < start_x.get(arg.getCursorID()) + 0.1
@@ -20,7 +28,7 @@ public class SwipeLeft extends SwipeAbstract {
 	}
 
 	@Override
-	void eventTriggered(TuioCursor arg) {
-		System.out.println("Swipe left event!");
+	EventType<SwipeEvent> getSwipeType() {
+		return SwipeEvent.SWIPE_LEFT;
 	}
 }

@@ -3,16 +3,18 @@ package tuio;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.scene.Node;
 import TUIO.TuioCursor;
-import TUIO.TuioListener;
-import TUIO.TuioObject;
-import TUIO.TuioTime;
+import javafx.event.EventType;
+import javafx.geometry.Point2D;
+import javafx.scene.input.SwipeEvent;
 
 /**
  * Abstract class to hold the common parts of catching a Swipe event in
  * different directions.
  */
-public abstract class SwipeAbstract implements TuioListener {
+@SuppressWarnings("restriction")
+public abstract class SwipeAbstract extends Gesture {
 	protected Map<Integer,Float> start_x = new HashMap<Integer, Float>();
 	protected Map<Integer,Float> start_y = new HashMap<Integer, Float>();
 	protected Map<Integer,Float> previous_x = new HashMap<Integer, Float>();
@@ -23,6 +25,10 @@ public abstract class SwipeAbstract implements TuioListener {
 	protected static final long TIMEOUT = 400;
 	/** Minimum distance before a swipe is considered triggered */
 	protected static final float MIN_DISTANCE = (float) 0.2;
+
+	public SwipeAbstract(Node p) {
+		super(p);
+	}
 
 	/**
 	 * Used during update events to see if the movement is heading the right
@@ -37,9 +43,9 @@ public abstract class SwipeAbstract implements TuioListener {
 	abstract boolean farEnough(TuioCursor arg);
 	
 	/**
-	 * Called when the swipe event is detected.
+	 * @return The type of swipe event that the subclass should trigger
 	 */
-	abstract void eventTriggered(TuioCursor arg);
+	abstract EventType<SwipeEvent> getSwipeType();
 	
 	/**
 	 * Adds new cursor and checks whether we were already following it.
@@ -113,22 +119,19 @@ public abstract class SwipeAbstract implements TuioListener {
 			previous_y.put(arg.getCursorID(), arg.getY());
 		}
 	}
-
-	/* Unused */
-	@Override
-	public void updateTuioObject(TuioObject arg) {
-		return;
-	}
-	@Override
-	public void addTuioObject(TuioObject arg) {
-		return;
-	}
-	@Override
-	public void refresh(TuioTime arg) {
-		return;
-	}
-	@Override
-	public void removeTuioObject(TuioObject arg) {
-		return;
+	
+	/**
+	 * Called when the swipe event is detected.
+	 */
+	private void eventTriggered(TuioCursor arg) {
+		Point2D p = tuioXYtoJavaFXXY(arg.getX(), arg.getY());
+		Node currenttarget = pickNodeBySceneXY(root, p.getX(), p.getY());
+		Point2D p_local = currenttarget.sceneToLocal(p);
+		SwipeEvent swipe = new SwipeEvent(
+				getSwipeType(),
+				p_local.getX(), p_local.getY(),
+				p.getX(), p.getY(),
+				false, false, false, false, true, 1, null);
+		currenttarget.fireEvent(swipe);
 	}
 }

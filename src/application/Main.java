@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import tuio.ConnectTuioToFX;
 import winAPI.Window;
 //import javafx.scene.layout.BorderPane;
 
@@ -23,7 +24,8 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle(title);
 			primaryStage.show();
-		
+
+			new ConnectTuioToFX(primaryStage.getScene().getRoot());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
