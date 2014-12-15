@@ -25,7 +25,7 @@ public abstract class SwipeAbstract extends Gesture {
 	/**  Timeout before checking if the pressing really ended */
 	protected static final long TIMEOUT = 400;
 	/** Minimum distance before a swipe is considered triggered */
-	protected static final float MIN_DISTANCE = (float) 0.2;
+	protected static final float MIN_DISTANCE = (float) 0.15;
 
 	public SwipeAbstract(Node p) {
 		super(p);
@@ -34,12 +34,20 @@ public abstract class SwipeAbstract extends Gesture {
 	/**
 	 * Used during update events to see if the movement is heading the right
 	 * direction.
+	 * @param arg Tuio cursor that needs checking
+	 * @return    True if it is considered to be going the right direction
+	 *            (up, down, right, left).
 	 */
 	abstract boolean goingGood(TuioCursor arg);
 	
 	/**
 	 * Used during remove event to see if the end point is far enough from
-	 * the source.
+	 * the source. Essentially what this should do in implementation is find
+	 * the difference between two values and compare it to the minimum
+	 * distance constant.
+	 * @param arg Tuio cursor that needs checking
+	 * @return    True if the cursor is considered far enough from a certain
+	 *            spot (most likely: the starting spot).
 	 */
 	abstract boolean farEnough(TuioCursor arg);
 	
@@ -124,9 +132,27 @@ public abstract class SwipeAbstract extends Gesture {
 	
 	/**
 	 * Called when the swipe event is detected.
+	 * Finds the node below the starting location and sends the appropriate
+	 * swipe event that JavaFX understands.
 	 */
 	private void eventTriggered(TuioCursor arg) {
-		Point2D p = tuioXYtoJavaFXXY(arg.getX(), arg.getY());
+		float x;
+		float y;
+		if (start_x.containsKey(arg.getCursorID())
+				&& start_y.containsKey(arg.getCursorID())) {
+			x = start_x.get(arg.getCursorID());
+			y = start_y.get(arg.getCursorID());
+		}
+		else {
+			// How do you say something went wrong in Java without
+			// throwing errors all the way up the chain
+			System.out.println("Couldn't find the start values?");
+			x = arg.getX();
+			y = arg.getY();
+		}
+
+		// Find node and create event
+		Point2D p = tuioXYtoJavaFXXY(x, y);
 		Node currenttarget = pickNodeBySceneXY(root, p.getX(), p.getY());
 		Point2D p_local = currenttarget.sceneToLocal(p);
 		SwipeEvent swipe = new SwipeEvent(
@@ -134,7 +160,9 @@ public abstract class SwipeAbstract extends Gesture {
 				p_local.getX(), p_local.getY(),
 				p.getX(), p.getY(),
 				false, false, false, false, true, 1, null);
-		// Needed since events have to run in JavaFX application thread
+
+		// Fire event. Needs to be done this convoluted way since JavaFX
+		// does not accept event firing from sources besides its own thread.
 		Platform.runLater(new Runnable() {
 			public void run() {
 				currenttarget.fireEvent(swipe);
