@@ -6,8 +6,20 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+import javax.mail.MessagingException;
+
+import com.google.common.collect.Table;
+
+import twitter.TwitterTimeline;
+import twitter.TwitterList;
+import GmailAPI.Philosopher;
+import GmailAPI.connectGmail;
+import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -23,6 +36,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -34,6 +48,8 @@ import twitter.TwitterTimeline;
 import winAPI.Window;
 import GmailAPI.Philosopher;
 import GmailAPI.connectGmail;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 
 @SuppressWarnings("restriction")
@@ -73,47 +89,69 @@ public class MyController implements Initializable {
 	/*
 	 * For Twitter
 	 */
-		
-	@FXML private ListView<String> ListViewTwitter;
-	@FXML private GridPane TWGrid;
-	@FXML private ScrollPane TwittPan;
+	
+	@FXML private GridPane gridTwitt;
 	
 	public void addTwittStreem() {
 		ArrayList<ArrayList<TwitterList>> TweettsList = new ArrayList<ArrayList<TwitterList>>();
 		ArrayList<String> TweetStreemList = new ArrayList<String>();
-		TweettsList = new TwitterTimeline().TwittMain();
+		TweettsList = new TwitterTimeline().TwittMain();		
 		
-		
-		Integer x = 0;
-		Integer TwittArraySize = TweettsList.size();
+		Integer x = 1;
 		
 		for(ArrayList<TwitterList> TweettList : TweettsList){
 	    	for(TwitterList tweet : TweettList){
 	    		
-				String aa = tweet.date + "<b>" + tweet.userName +"</b> @" + tweet.screenName + "\n" + tweet.text;
-	    
-	    		
+				@SuppressWarnings("deprecation")
+				String aa = tweet.date.getDay() + "/" +  tweet.date.getMonth() + "/" + tweet.date.getYear() + " " +
+						tweet.date.getHours() + ":" + tweet.date.getMinutes() +
+						"  @" + tweet.screenName + "\n" + tweet.text;
+				
 				TweetStreemList.add(aa);
-	    		System.out.println(aa);
-	    		TextArea tt = new TextArea("avbhi");
+	    		TextArea tt = new TextArea(aa);
 	    		tt.setPrefHeight(80);
-	    		tt.setPrefWidth(411);
 	    		tt.setWrapText(true);
-//	    		TwitterGrid.getRowConstraints().add(tt);
-	    		TWGrid.addRow(x, tt);
+	    		tt.setEditable(false);
+	    		tt.setMouseTransparent(false);
+	    		tt.setId(Integer.toString(x));
 	    		
+	    		//Tweet link
+	    		String urlTweet = tweet.id;
+	    		
+	    		tt.setOnSwipeRight(new EventHandler<SwipeEvent>() {
+	    	        @Override public void handle(SwipeEvent event) {
+
+		    			try {
+							java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		    			
+	    	            event.consume();
+	    	        }
+	    		}); 
+	    		
+	    		
+	    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	    	        @Override public void handle(MouseEvent event) {
+	    	        	
+		    			try {
+							java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		    			
+	    	            event.consume();
+	    	        }
+	    	}); 
+	    		
+	    		gridTwitt.addRow(x, tt);
 	    		x+=1;
-	    		
 	    		}
 	    	}
 		}
-	
-	@FXML
-	public void TwitterSwipeUP(){
-		
-	}
-	
-	
 	
 	
 	/*
@@ -199,7 +237,7 @@ public class MyController implements Initializable {
 	}
 	
 	
-	@FXML public void ListViewOnMouseClicked(MouseEvent mouseEvent) throws IOException, InterruptedException, MessagingException {
+	@FXML public void ListViewOnMouseClickedd(MouseEvent mouseEvent) throws IOException, InterruptedException, MessagingException {
 		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
 		String EMcontent = null;
 		String EmailFrom = null;
@@ -246,29 +284,21 @@ public class MyController implements Initializable {
 	
 	
 	@FXML
-	public void EmileContentMouseClicked(MouseEvent mouseEvent){
-//    	//set content box visible
-//    	EmileContent.setVisible(false);
-//    	//Set email text
-//    	EmileContent.setText(null);
-	}
-	
-	@FXML
-	public void ListViewMousePressed(MouseEvent mouseEvent){
-//		mouseEvent.getTarget();
-//		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-//		String EMcontent = null;
-//    	for(ArrayList<Philosopher> MessageList : MessagesList){
-//    		for(Philosopher Cont : MessageList){
-//    			if(Cont.No.equals(xMail)){
-//    				EMcontent = (Cont.EMcontent);
-//    			}
-//    		}
-//    	}
-//    	//set content box visible
-//    	EmileContent.setVisible(true);
-//    	//Set email text
-//    	EmileContent.setText(EMcontent);
+	public void ListViewOnMouseClicked(MouseEvent mouseEvent){
+		mouseEvent.getTarget();
+		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+		String EMcontent = null;
+    	for(ArrayList<Philosopher> MessageList : MessagesList){
+    		for(Philosopher Cont : MessageList){
+    			if(Cont.No.equals(xMail)){
+    				EMcontent = (Cont.EMcontent);
+    			}
+    		}
+    	}
+    	//set content box visible
+    	EmileContent.setVisible(true);
+    	//Set email text
+    	EmileContent.setText(EMcontent);
 	}
 	
 	@FXML
@@ -300,10 +330,10 @@ public class MyController implements Initializable {
 	}
 	
 	
-	@FXML public void ListViewOnSwipeUp(KeyEvent e) throws IOException {
+	@FXML public void ListViewOnSwipeUp(SwipeEvent e) throws IOException {
 		//Open current email on gmail.com browser
 		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-		if(KeyEvent.KEY_PRESSED != null){
+//		if(KeyEvent.KEY_PRESSED != null){
 			String EmailNo = null;
 			for(ArrayList<Philosopher> MessageList : MessagesList){
 		    	for(Philosopher message : MessageList){
@@ -314,7 +344,7 @@ public class MyController implements Initializable {
 		    		}
 		    	}
 			}
-		}
+//		}
 		 e.consume();
 	}
 	

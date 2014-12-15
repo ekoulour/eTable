@@ -27,10 +27,9 @@ public class TwitterTimeline {
 			for (Status status : result) {
 				ArrayList<TwitterList> TweetList = new ArrayList<>();
 				
-//				System.out.println("[" + status.getCreatedAt() + "] @" + status.getUser().getScreenName() + ":" + status.getText());
-//				System.out.println("https://twitter.com/" + status.getUser().getScreenName() + "/status/" + status.getId());
-			
-				TweetList.add(new TwitterList(No, status.getUser().getScreenName(), status.getText(), 
+				String link = ( "https://twitter.com/" + status.getUser().getScreenName() + "/status/"+ status.getId());
+				
+				TweetList.add(new TwitterList(No, link, status.getText(), 
 						status.getUser().getName(), status.getUser().getScreenName(), status.getCreatedAt()));
 				No ++;
 				
