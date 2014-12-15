@@ -17,7 +17,7 @@
             <Font name="Arial" size="28.0" fx:id="x1" />
           </font>
         </Text>
-        <ListView id="listView1" fx:id="ListView" layoutX="0.0" layoutY="61.0" onMouseClicked="#ListViewOnMouseClicked" onSwipeUp="#ListViewOnSwipeUp" prefHeight="174.0" prefWidth="367.9999000000025" />
+        <ListView id="listView1" fx:id="ListView" focusTraversable="false" layoutX="0.0" layoutY="61.0" onMouseClicked="#ListViewOnMouseClicked" onSwipeDown="#ListViewOnSwipeDown" onSwipeUp="#ListViewOnSwipeUp" prefHeight="174.0" prefWidth="367.9999000000025" />
         <Button id="btnAuth" fx:id="btnStartAuthToGmail" layoutX="223.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#btnStartAuthOnMouseClick" text="Authorize to Gmail.com" visible="true" />
         <Button fx:id="btnRefresh" layoutX="300.0" layoutY="25.0" mnemonicParsing="false" onMouseClicked="#btnRefreshOnClicked" prefHeight="30.0" prefWidth="50.0" text="" />
         <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="4.0" layoutY="235.0" mouseTransparent="false" opacity="1.0" prefHeight="151.00008310547128" prefWidth="362.99995585936995" visible="true" wrapText="true" />
@@ -50,7 +50,7 @@
       </children>
     </Pane>
     <Text font="$x1" layoutX="852.0" layoutY="453.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Twitter" underline="false" />
-    <ScrollPane hbarPolicy="NEVER" layoutX="895.0" layoutY="475.0" prefHeight="200.0" prefWidth="363.0">
+    <ScrollPane fx:id="scrolPan" hbarPolicy="NEVER" layoutX="895.0" layoutY="475.0" onSwipeDown="#scrolPanOnSwipeDown" onSwipeUp="#scrolPanOnSwipeUp" prefHeight="200.0" prefWidth="363.0">
       <content>
         <GridPane fx:id="gridTwitt" prefWidth="355.9998779296875">
           <columnConstraints>
@@ -62,5 +62,9 @@
         </GridPane>
       </content>
     </ScrollPane>
+    <Button fx:id="up" layoutX="763.0" layoutY="481.0" mnemonicParsing="false" onMouseClicked="#swipeup" text="Button" />
+    <Button fx:id="down" layoutX="763.0" layoutY="641.0" mnemonicParsing="false" onMouseClicked="#swipedown" text="Button" />
+    <Button fx:id="listup" layoutX="779.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#modeup" text="Button" />
+    <Button fx:id="listdown" layoutX="779.0" layoutY="230.0" mnemonicParsing="false" onMouseClicked="#movedown" text="Button" />
   </children>
 </AnchorPane>
