@@ -3,9 +3,9 @@ package tuio;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import TUIO.TuioCursor;
@@ -89,7 +89,12 @@ public class Tap extends Gesture {
 				p.getX(), p.getY(),
 				MouseButton.PRIMARY, 1,
 				false, false, false, false, true, false, true, true, false, true, null);
-		currenttarget.fireEvent(mouseclick);
+		// Needed since events have to run in JavaFX application thread
+		Platform.runLater(new Runnable() {
+			public void run() {
+				currenttarget.fireEvent(mouseclick);
+			}
+		});
 	}
 
 	/**

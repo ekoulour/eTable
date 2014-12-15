@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javafx.scene.Node;
 import TUIO.TuioCursor;
+import javafx.application.Platform;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.input.SwipeEvent;
@@ -133,6 +134,11 @@ public abstract class SwipeAbstract extends Gesture {
 				p_local.getX(), p_local.getY(),
 				p.getX(), p.getY(),
 				false, false, false, false, true, 1, null);
-		currenttarget.fireEvent(swipe);
+		// Needed since events have to run in JavaFX application thread
+		Platform.runLater(new Runnable() {
+			public void run() {
+				currenttarget.fireEvent(swipe);
+			}
+		});
 	}
 }
