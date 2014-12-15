@@ -117,7 +117,7 @@ public class MyController implements Initializable {
 	    		String urlTweet = tweet.id;
 	    		
 	    		//On click or swipe it will open in windows
-	    		tt.setOnSwipeRight(new EventHandler<SwipeEvent>() {
+	    		tt.setOnSwipeUp(new EventHandler<SwipeEvent>() {
 	    	        @Override public void handle(SwipeEvent event) {
 
 		    			try {
@@ -132,19 +132,19 @@ public class MyController implements Initializable {
 	    		}); 
 	    		
 	    		
-	    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	    	        @Override public void handle(MouseEvent event) {
-	    	        	
-		    			try {
-							java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		    			
-	    	            event.consume();
-	    	        }
-	    	}); 
+//	    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//	    	        @Override public void handle(MouseEvent event) {
+//	    	        	
+//		    			try {
+//							java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
+//						} catch (IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//		    			
+//	    	            event.consume();
+//	    	        }
+//	    	}); 
 	    		
 	    		gridTwitt.addRow(x, tt);
 	    		x+=1;
@@ -316,11 +316,11 @@ public class MyController implements Initializable {
 			String EmailFrom = null;
 			EmailFrom = ListView.getSelectionModel().getSelectedItem();
 			System.out.println(EmailFrom);
-			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
-//    			wait 5 seconds to do next step!
-    			TimeUnit.SECONDS.sleep(5);
-    			btnRefreshOnClicked();
-			}
+//			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
+////    			wait 5 seconds to do next step!
+//    			TimeUnit.SECONDS.sleep(5);
+//    			btnRefreshOnClicked();
+//			}
 			
 		 e.consume();
 	}
