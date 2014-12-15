@@ -2,6 +2,9 @@ package GmailAPI;
 
 import java.util.List;
 
+/**
+ * Holds one email.
+ */
 public class Philosopher {
     public Integer No;
 	public String id;

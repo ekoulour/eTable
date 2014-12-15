@@ -23,19 +23,19 @@ public class TwitterTimeline {
 			ResponseList<Status> result = tweetter.getHomeTimeline();
 			for (Status status : result) {
 				ArrayList<TwitterList> TweetList = new ArrayList<>();
-				
+
 				String link = ( "https://twitter.com/" + status.getUser().getScreenName() + "/status/"+ status.getId());
-				
-				TweetList.add(new TwitterList(No, link, status.getText(), 
+
+				TweetList.add(new TwitterList(No, link, status.getText(),
 						status.getUser().getName(), status.getUser().getScreenName(), status.getCreatedAt()));
 				No ++;
-				
+
 				TweetsList.add(TweetList);
 			}
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
-		
+
 		return TweetsList;
 	}
 }

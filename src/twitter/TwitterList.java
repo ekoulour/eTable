@@ -24,7 +24,7 @@ public class TwitterList {
     }
 
     public String toString() {
-	return "No = " + this.No + ", id = " + this.id + ", text = " + this.text + ", userName = " + 
+	return "No = " + this.No + ", id = " + this.id + ", text = " + this.text + ", userName = " +
 			this.userName + ", screenName = " + this.screenName + ", date = " + this.date;
     }
 }

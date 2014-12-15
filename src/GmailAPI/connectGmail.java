@@ -1,21 +1,5 @@
 package GmailAPI;
 
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleOAuthConstants;
-import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.model.ListMessagesResponse;
-import com.google.api.services.gmail.model.Message;
-import com.google.api.services.gmail.model.MessagePartHeader;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.FileReader;
@@ -35,6 +19,25 @@ import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleOAuthConstants;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+import com.google.api.services.gmail.Gmail;
+import com.google.api.services.gmail.model.ListMessagesResponse;
+import com.google.api.services.gmail.model.Message;
+import com.google.api.services.gmail.model.MessagePartHeader;
+
+/**
+ * Handles the connection to GMail, authorization and the fetching of emails.
+ */
 public class connectGmail {
 
 	private static final String APPLICATION_NAME = "NGUIproject";
@@ -49,7 +52,6 @@ public class connectGmail {
 	 * Client secret path .json file location
 	 */
 	private static final String CLIENT_SECRET_PATH = "JSON/client_secret_326005122275-te2r3ju1hu0bqminu3jjgodooj7eo56b.apps.googleusercontent.com.json";
-	//"C:\\Users\\Krista\\Desktop\\For NGUI project\\Workspace\\testGAPI\\JSON\\client_secret_326005122275-te2r3ju1hu0bqminu3jjgodooj7eo56b.apps.googleusercontent.com.json";
 
 	/** Global instance of the HTTP transport. */
 	private static HttpTransport httpTransport;
@@ -62,17 +64,21 @@ public class connectGmail {
 	public static Gmail service;
 	public static GoogleAuthorizationCodeFlow flow;
 
-	/** Authorization. */
-	public void authorize() throws Exception 
-	{	  
+	/**
+	 * Initializes authorization process and opens the browser so the user can
+	 * log in and review the permissions.
+	 * @throws Exception
+	 */
+	public void authorize() throws Exception
+	{
 		// initialize the transport
-		httpTransport = GoogleNetHttpTransport.newTrustedTransport();  
+		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
 		// load client secrets
 		clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,  new FileReader(CLIENT_SECRET_PATH));
 
 		if (clientSecrets.getDetails().getClientId().startsWith("Enter")
-				|| clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) 
+				|| clientSecrets.getDetails().getClientSecret().startsWith("Enter "))
 		{
 			System.out.println("Enter Client ID and Secret");
 			System.exit(0);
@@ -100,23 +106,21 @@ public class connectGmail {
 		GoogleTokenResponse response = flow.newTokenRequest(code)
 				.setRedirectUri(GoogleOAuthConstants.OOB_REDIRECT_URI).execute();
 		GoogleCredential credential = new GoogleCredential()
-		.setFromTokenResponse(response); 
+		.setFromTokenResponse(response);
 
 		// authorize
 		return credential;
 	}
 
 
-	public void PreMain(String code) 
-	{ 
-		//  public static void main (String [] args) throws IOException {
-
+	public void PreMain(String code)
+	{
 		try {
 			// initialize the transport
 			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
 			// authorization
-			Credential credential = ReadCodeAuthorize(code);     
+			Credential credential = ReadCodeAuthorize(code);
 
 			// Create a new authorized Gmail API client
 			service = new Gmail.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
@@ -136,11 +140,15 @@ public class connectGmail {
 		//System.exit(0);
 	}
 
-//To get ArrayList of ArrayList with all messages
-	public ArrayList<ArrayList<Philosopher>> showMessages() throws IOException, MessagingException 
-	{ 
-		//public static void showMessages() throws IOException { //
-		//Get all messages  
+	/**
+	 * Fetches the messages of the authorized user.
+	 * @return ArrayList of ArraList with all the messages.
+	 * @throws IOException
+	 * @throws MessagingException
+	 */
+	public ArrayList<ArrayList<Philosopher>> showMessages() throws IOException, MessagingException
+	{
+		//Get all messages
 		ListMessagesResponse messagesResponse = service.users().messages().list(USER).execute();
 		List<Message> messages = messagesResponse.getMessages();
 
@@ -151,7 +159,7 @@ public class connectGmail {
 		Integer No = 0;
 
 		//Fore each message search for To, subject, From, snippet - > take messages from INBOX
-		for (Message message : messages) 
+		for (Message message : messages)
 		{
 
 			//List of one email (id, snippet, From, To, Subject, Received)
@@ -160,7 +168,7 @@ public class connectGmail {
 			//Get one messages all details
 			Message messageCont = service.users().messages().get(USER, message.getId()).execute();
 
-			String Snippet = messageCont.getSnippet();  
+			String Snippet = messageCont.getSnippet();
 			String id = message.getId();
 			String Subject = null;
 			String From = null;
@@ -168,18 +176,18 @@ public class connectGmail {
 			String Received = null;
 
 			//Get one messages all headers
-			List<MessagePartHeader> messageHeaders = messageCont.getPayload().getHeaders();		    
+			List<MessagePartHeader> messageHeaders = messageCont.getPayload().getHeaders();
 
 			//List of READ UNREAD INBOX...
-			List<String> messageLabel = messageCont.getLabelIds();    
+			List<String> messageLabel = messageCont.getLabelIds();
 
 			for(String lab : messageLabel)
 			{
 				if(lab.contains("INBOX"))
-				{	 	    	
+				{
 
 					for (MessagePartHeader header: messageHeaders)
-					{				    	
+					{
 						if (header.getName().equals("Subject"))
 						{
 							Subject = header.getValue();
@@ -189,7 +197,7 @@ public class connectGmail {
 							Pattern MY_PATTERN = Pattern.compile("\\<(.*?)\\>");
 
 							Matcher m = MY_PATTERN.matcher(header.getValue());
-							while (m.find()) 
+							while (m.find())
 							{
 								From = m.group(1);
 							}
@@ -201,8 +209,8 @@ public class connectGmail {
 						else if (header.getName().equals("Date"))
 						{
 							Received = header.getValue();
-						}  	
-					}		    
+						}
+					}
 
 					//For getting email content
 					Message message1 = service.users().messages().get(USER, id).setFormat("raw").execute();
@@ -210,15 +218,15 @@ public class connectGmail {
 					Properties props = new Properties();
 					Session session = Session.getDefaultInstance(props, null);
 					MimeMessage email = new MimeMessage(session, new ByteArrayInputStream(emailBytes));
-					
-					String EMcontent = getContent(email); ///
+
+					String EMcontent = getContent(email);
 
 					//Add all to philosopher list
 					messageList.add(new Philosopher(No, id, Snippet, Subject, From, To, Received, EMcontent, messageLabel));
 					No ++;
 
 					messagesList.add(messageList);
-				}	
+				}
 			}
 		}
 
@@ -226,7 +234,11 @@ public class connectGmail {
 		return messagesList;
 	}
 
-	//For getting Email content
+	/**
+	 * Gets the content (body) of an email
+	 * @param email
+	 * @return The contents of that email
+	 */
 	public String getContent(MimeMessage email)
 	{
 		String EMcontent = null;
@@ -248,9 +260,14 @@ public class connectGmail {
 
 		return EMcontent;
 	}
-	
-	
-	//For getting Email content
+
+
+	/**
+	 * Helper function for getting the content of an email.
+	 * @param p
+	 * @return
+	 * @throws Exception
+	 */
 	public String dumpPart(Part p) throws Exception
 	{
 		final StringWriter sw = new StringWriter();
@@ -268,7 +285,7 @@ public class connectGmail {
 		{
 			sw.write(c);
 		}
-		
+
 		String EMcontent = sw.toString();
 		return EMcontent;
 	}
