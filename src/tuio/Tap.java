@@ -89,6 +89,7 @@ public class Tap extends Gesture {
 				p.getX(), p.getY(),
 				MouseButton.PRIMARY, 1,
 				false, false, false, false, true, false, true, true, false, true, null);
+		System.out.println("Tap: " + p + " " + currenttarget);
 		// Needed since events have to run in JavaFX application thread
 		Platform.runLater(new Runnable() {
 			public void run() {

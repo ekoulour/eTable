@@ -14,10 +14,12 @@ import com.sun.jna.Native;
 
 public class Window {
 	
-	 RECT rectChild;
-	 RECT rectClient = new RECT();
-	 int hWndChild;
-	 int hWndParent; 
+	List<WindowInfo> windowsLeft = new ArrayList<WindowInfo>();
+    List<WindowInfo> windowsRight = new ArrayList<WindowInfo>();
+    RECT rectChild;
+	RECT rectClient = new RECT();
+	int hWndChild;
+	int hWndParent; 
     
 	/*
 	 * Call win32 function to get the width of the monitor
@@ -47,6 +49,7 @@ public class Window {
 		
 		int foreground = User32.instance.GetForegroundWindow();
 	    
+	     
 	    RECT r = new RECT();
         User32.instance.GetWindowRect(foreground, r);
         return new WindowInfo(foreground, r);		
@@ -66,9 +69,10 @@ public class Window {
         	 User32.instance.GetClientRect(lastWindow.hwnd,rectClient);
          }
 	
-	    User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/2, rectClient.bottom, false);
-	    rectChild = new RECT(rectClient.left,rectClient.top,rectClient.right/2,rectClient.bottom);
+	    User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom, false);
+	    rectChild = new RECT(rectClient.left,rectClient.top,rectClient.right/4,rectClient.bottom);
 	    windowsList.add(new WindowInfo(hWndChild, rectChild));
+	   
 	}
 	
 	
@@ -82,17 +86,19 @@ public class Window {
 	    
 	public void moveWindowtoTable(String parentTitle, String side){
 	
-		List<WindowInfo> windowsLeft = new ArrayList<WindowInfo>();
-	    List<WindowInfo> windowsRight = new ArrayList<WindowInfo>();
+		
 	    int leftCoordinate;
 		
 		WindowInfo usedWindow = getForegroundWindow();
 		hWndChild = usedWindow.hwnd;
-		hWndParent = User32.instance.FindWindow(parentTitle);
+		hWndParent = User32.instance.FindWindow(null,parentTitle);
+		
+		System.out.println(hWndChild);
 		
 		User32.instance.SetParent(hWndChild, hWndParent);
 		
-	    if(side=="left"){
+		
+	    if(side=="LEFT"){
 	    	leftCoordinate = rectClient.left;
 	    	moveWindow(windowsLeft,leftCoordinate);
 	    }else{
@@ -107,10 +113,13 @@ public class Window {
 	 */
 	public void moveWindowtoDesktop(){
 		
-		WindowInfo usedWindow = getForegroundWindow();
+		//WindowInfo usedWindow = getForegroundWindow();
+		WindowInfo window = windowsLeft.get(0);
+		int desktop = User32.instance.GetDesktopWindow();
 		int monitorWindth = getMonitorWidth();
 		
-		User32.instance.MoveWindow(usedWindow.hwnd, monitorWindth/2, 0, usedWindow.rect.right, usedWindow.rect.bottom, false);
+		User32.instance.SetParent(window.hwnd, desktop);
+		//User32.instance.MoveWindow(usedWindow.hwnd, 0, 0, usedWindow.rect.right/2, usedWindow.rect.bottom, false);
 		
 	}
 	
@@ -118,12 +127,14 @@ public class Window {
 	/*
 	 * Destroy a window on table
 	 */
-	public void deleteWindow(){
+	/*public void deleteWindow(){
 		
 		WindowInfo usedWindow = getForegroundWindow();
-		User32.instance.DestroyWindow(usedWindow.hwnd);
+		System.out.println(usedWindow.hwnd);
+		//User32.instance.DestroyWindow(usedWindow.hwnd);
+		User32.instance.CloseWindow(usedWindow.hwnd);
 		
 		
-	}
+	}*/
 	
   }

@@ -36,9 +36,11 @@ public interface User32 extends StdCallLibrary{
     int WindowFromPoint(POINT point);
     long SetWindowLong(int hWnd,int style,long val);
     int GetForegroundWindow();
-    int FindWindow(String title);
+    int FindWindow(String className,String title);
     int SetParent(int hWndChild,int hWndParent);
     boolean GetClientRect(int hWnd,RECT r);
     boolean DestroyWindow(int hWnd);
+    boolean CloseWindow(int hWnd);
+    int GetDesktopWindow();
    
 }
