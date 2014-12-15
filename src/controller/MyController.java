@@ -432,24 +432,28 @@ public class MyController implements Initializable {
 			Window window = new Window();
 			EventType<SwipeEvent> swipeType = e.getEventType();
 			
-			Stage stage = new Stage();
-			String title = stage.getTitle();
+			String title = "NGUI";
 			
 			String side;
 						
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
 				
-				if (e.getX() >= 0 && e.getX() < 0.5){
+				side= "LEFT";
+				System.out.println("SWIPE DOWN");
+				
+				/*if (e.getX() >= 0 && e.getX() < 0.5){
 					side = "LEFT";
 				}else
-					side="RIGHT";
+					side="RIGHT";*/
 				
 				window.moveWindowtoTable(title, side);
 				
 			}else if(swipeType == SwipeEvent.SWIPE_UP){
 				window.moveWindowtoDesktop();
 			}else{
-				window.deleteWindow();
+				
+				System.out.println(swipeType);
+				//window.deleteWindow();
 			}
 				
 			
