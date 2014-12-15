@@ -29,7 +29,7 @@
             <Image url="@../../img/refresh.png" />
           </image>
         </ImageView>
-        <ImageView fx:id="EmailContImg" fitHeight="134.22222948449803" fitWidth="368.0" layoutX="5.0" layoutY="235.0" onSwipeRight="#EmileContentOnSwipeRight" onSwipeUp="#EmileContentOnSwipeUP" pickOnBounds="true" preserveRatio="true" />
+        <ImageView id="EmailContImg" fx:id="EmailContPic" fitHeight="150.0" fitWidth="367.9999084472656" layoutX="-1.0" layoutY="235.0" onMouseClicked="#EmileContentPicOnClick" onSwipeRight="#EmileContentPicOnSwipeRight" onSwipeUp="#EmileContentPicOnSwipeUP" pickOnBounds="true" preserveRatio="true" />
         <Label fx:id="CountMail" layoutX="15.0" layoutY="45.0" text="Inbox:" />
       </children>
     </Pane>

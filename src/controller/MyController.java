@@ -8,8 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.mail.MessagingException;
 
-import com.google.common.collect.Table;
-
 import twitter.TwitterTimeline;
 import twitter.TwitterList;
 import GmailAPI.Philosopher;
@@ -118,6 +116,7 @@ public class MyController implements Initializable {
 	    		//Tweet link
 	    		String urlTweet = tweet.id;
 	    		
+	    		//On click or swipe it will open in windows
 	    		tt.setOnSwipeRight(new EventHandler<SwipeEvent>() {
 	    	        @Override public void handle(SwipeEvent event) {
 
@@ -159,17 +158,13 @@ public class MyController implements Initializable {
 	 */
 	@FXML private Pane panNotifications;
 	@FXML private Pane panShort;
-	
 	@FXML private ProgressIndicator progresInd;
-	
 	@FXML private Label CountMail;
 	@FXML private ListView<String> ListView;
-	
 	@FXML private TextArea EmileContent;
-	
 	@FXML private ImageView picRefresh;
 	@FXML private Button btnRefresh;
-	
+	@FXML private ImageView EmailContPic;
 	
 	//To start authorization
 	@FXML private Button btnStartAuthToGmail;
@@ -237,50 +232,50 @@ public class MyController implements Initializable {
 	}
 	
 	
-	@FXML public void ListViewOnMouseClickedd(MouseEvent mouseEvent) throws IOException, InterruptedException, MessagingException {
-		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-		String EMcontent = null;
-		String EmailFrom = null;
-	       if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-	           //open email on browser 
-	    	   if(mouseEvent.getClickCount() == 3){
-	    			String EmailNo = null;
-
-	    			for(ArrayList<Philosopher> MessageList : MessagesList){
-	    		    	for(Philosopher message : MessageList){
-	    		    		if(message.No.equals(xMail)){
-	    		    			EmailNo = (message.id) ;
-	    		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
-	    		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
-	    		    		}
-	    		    	}
-	    			}
-	    			
-	    			EmailFrom = ListView.getSelectionModel().getSelectedItem();
-	    			System.out.println(EmailFrom);
-	    			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
-//		    			wait 3 seconds to do next step!
-		    			TimeUnit.SECONDS.sleep(5);
-		    			btnRefreshOnClicked();
-	    			}
-	            }
-	            //Show content -> new functions 
-	            else if(mouseEvent.getClickCount() == 2){
-	            	
-	            	//set content box visible
-	            	EmileContent.setVisible(true);
-	            	
-	            	for(ArrayList<Philosopher> MessageList : MessagesList){
-	            		for(Philosopher Cont : MessageList){
-	            			if(Cont.No.equals(xMail)){
-	            				EMcontent = (Cont.EMcontent);
-	            			}
-	            		}
-	            	}
-	            }
-	        }	
-		EmileContent.setText(EMcontent);
-	}
+//	@FXML public void ListViewOnMouseClickedd(MouseEvent mouseEvent) throws IOException, InterruptedException, MessagingException {
+//		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+//		String EMcontent = null;
+//		String EmailFrom = null;
+//	       if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+//	           //open email on browser 
+//	    	   if(mouseEvent.getClickCount() == 3){
+//	    			String EmailNo = null;
+//
+//	    			for(ArrayList<Philosopher> MessageList : MessagesList){
+//	    		    	for(Philosopher message : MessageList){
+//	    		    		if(message.No.equals(xMail)){
+//	    		    			EmailNo = (message.id) ;
+//	    		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
+//	    		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
+//	    		    		}
+//	    		    	}
+//	    			}
+//	    			
+//	    			EmailFrom = ListView.getSelectionModel().getSelectedItem();
+//	    			System.out.println(EmailFrom);
+//	    			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
+////		    			wait 3 seconds to do next step!
+//		    			TimeUnit.SECONDS.sleep(5);
+//		    			btnRefreshOnClicked();
+//	    			}
+//	            }
+//	            //Show content -> new functions 
+//	            else if(mouseEvent.getClickCount() == 2){
+//	            	
+//	            	//set content box visible
+//	            	EmileContent.setVisible(true);
+//	            	
+//	            	for(ArrayList<Philosopher> MessageList : MessagesList){
+//	            		for(Philosopher Cont : MessageList){
+//	            			if(Cont.No.equals(xMail)){
+//	            				EMcontent = (Cont.EMcontent);
+//	            			}
+//	            		}
+//	            	}
+//	            }
+//	        }	
+//		EmileContent.setText(EMcontent);
+//	}
 	
 	
 	@FXML
@@ -299,17 +294,38 @@ public class MyController implements Initializable {
     	EmileContent.setVisible(true);
     	//Set email text
     	EmileContent.setText(EMcontent);
-	}
-	
-	@FXML
-	public void ListViewMouseReleased(MouseEvent mouseEvent){
-//    	//set content box visible
-//    	EmileContent.setVisible(false);
-//    	//Set email text
-//    	EmileContent.setText(null);
+		EmailContPic.setVisible(true);
+    	
 	}
 	
 	
+	@FXML public void ListViewOnSwipeUp(SwipeEvent e) throws IOException, InterruptedException, MessagingException {
+		//Open current email on gmail.com browser
+		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+			String EmailNo = null;
+			for(ArrayList<Philosopher> MessageList : MessagesList){
+		    	for(Philosopher message : MessageList){
+		    		if(message.No.equals(xMail)){
+		    			EmailNo = (message.id) ;
+		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
+		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
+		    		}
+		    	}
+			}
+			//If opened email is not read then refresh the
+			String EmailFrom = null;
+			EmailFrom = ListView.getSelectionModel().getSelectedItem();
+			System.out.println(EmailFrom);
+			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
+//    			wait 5 seconds to do next step!
+    			TimeUnit.SECONDS.sleep(5);
+    			btnRefreshOnClicked();
+			}
+			
+		 e.consume();
+	}
+	
+	//Refresh Emails
 	@FXML public void btnRefreshOnClicked() throws MessagingException {
 		System.out.println("RR");
 		//progress starts
@@ -330,41 +346,28 @@ public class MyController implements Initializable {
 	}
 	
 	
-	@FXML public void ListViewOnSwipeUp(SwipeEvent e) throws IOException {
-		//Open current email on gmail.com browser
-		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-//		if(KeyEvent.KEY_PRESSED != null){
-			String EmailNo = null;
-			for(ArrayList<Philosopher> MessageList : MessagesList){
-		    	for(Philosopher message : MessageList){
-		    		if(message.No.equals(xMail)){
-		    			EmailNo = (message.id) ;
-		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
-		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
-		    		}
-		    	}
-			}
-//		}
-		 e.consume();
-	}
 	
 	//EmailContent
 	@FXML 
-	public ImageView EmailContImg;
-	
-	@FXML 
-	public void EmileContentOnSwipeUP(SwipeEvent e) {
+	public void EmileContentPicOnSwipeUP(SwipeEvent e) {
 		//Open current email on gmail.com browser
 		System.out.println("SWIPE_UP tipe: " + e.getEventType());
 		e.consume();
 	}
 	
 	@FXML
-	public void EmileContentOnSwipeRight(SwipeEvent e) {
+	public void EmileContentPicOnSwipeRight(SwipeEvent e) {
 		//Clear content
 		EmileContent.setText(null);
 		EmileContent.setVisible(false);
-		
+		EmailContPic.setVisible(false);
+		e.consume();
+	}
+	//Test
+	@FXML void EmileContentPicOnClick(MouseEvent e){
+		EmileContent.setText(null);
+		EmileContent.setVisible(false);
+		EmailContPic.setVisible(false);
 		e.consume();
 	}
 	
