@@ -84,16 +84,20 @@ public class MyController implements Initializable {
 
         }    
 	
-	/*
-	 * For Twitter
-	 */
+/*
+ * For Twitter
+ */
+	public static int SizeTweettsList;
 	
 	@FXML private GridPane gridTwitt;
 	
 	public void addTwittStreem() {
 		ArrayList<ArrayList<TwitterList>> TweettsList = new ArrayList<ArrayList<TwitterList>>();
 		ArrayList<String> TweetStreemList = new ArrayList<String>();
-		TweettsList = new TwitterTimeline().TwittMain();		
+		TweettsList = new TwitterTimeline().TwittMain();
+		
+		//How meny tweets
+		SizeTweettsList = TweettsList.size();
 		
 		Integer x = 1;
 		
@@ -114,12 +118,12 @@ public class MyController implements Initializable {
 	    		tt.setId(Integer.toString(x));
 	    		
 	    		//Tweet link
-	    		String urlTweet = tweet.id;
+	    		String urlTweet = tweet.id;	    		
 	    		
-	    		//On click or swipe it will open in windows
-	    		tt.setOnSwipeUp(new EventHandler<SwipeEvent>() {
-	    	        @Override public void handle(SwipeEvent event) {
-
+	    		//Tap on Tweet to open it on web
+	    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	    	        @Override public void handle(MouseEvent event) {
+	    	        	
 		    			try {
 							java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
 						} catch (IOException e) {
@@ -129,22 +133,7 @@ public class MyController implements Initializable {
 		    			
 	    	            event.consume();
 	    	        }
-	    		}); 
-	    		
-	    		
-//	    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//	    	        @Override public void handle(MouseEvent event) {
-//	    	        	
-//		    			try {
-//							java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
-//						} catch (IOException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//		    			
-//	    	            event.consume();
-//	    	        }
-//	    	}); 
+	    	}); 
 	    		
 	    		gridTwitt.addRow(x, tt);
 	    		x+=1;
@@ -152,10 +141,50 @@ public class MyController implements Initializable {
 	    	}
 		}
 	
+	@FXML private ScrollPane scrolPan;
 	
-	/*
-	 * Section for Gmail
-	 */
+	//test
+	@FXML private Button up;
+	@FXML private Button down;
+	
+	private static double valueScrollPan = 0.0;
+	//test
+	@FXML 
+	public void swipeup(MouseEvent e){
+		valueScrollPan -= 0.1;
+		scrolPan.setVvalue(valueScrollPan);
+
+		 e.consume();
+	}
+	//test
+	@FXML 
+	public void swipedown(MouseEvent e){
+		valueScrollPan += 0.1;
+		scrolPan.setVvalue(valueScrollPan);
+		e.consume();
+	}
+	
+	
+	@FXML
+	public void scrolPanOnSwipeUp(SwipeEvent e){
+		valueScrollPan -= 0.1;
+		scrolPan.setVvalue(valueScrollPan);
+
+		 e.consume();
+	}
+	
+	
+	@FXML 
+	public void scrolPanOnSwipeDown(SwipeEvent e){
+		valueScrollPan += 0.1;
+		scrolPan.setVvalue(valueScrollPan);
+		e.consume();
+	}
+	
+	
+/*
+ * Section for Gmail
+ */
 	@FXML private Pane panNotifications;
 	@FXML private Pane panShort;
 	@FXML private ProgressIndicator progresInd;
@@ -169,7 +198,7 @@ public class MyController implements Initializable {
 	//To start authorization
 	@FXML private Button btnStartAuthToGmail;
 	
-	@FXML public void btnStartAuthOnMouseClick(MouseEvent event) throws Exception {		
+	@FXML public void btnStartAuthOnMouseClick(MouseEvent e) throws Exception {		
 		//connect to gmail.com start
 		new connectGmail().authorize();
 		//Hide start Auth button
@@ -178,6 +207,8 @@ public class MyController implements Initializable {
 		//Set to visible Auth field and Auth button
 		btnAuth.setVisible(true);
 		authField.setVisible(true);
+		
+		e.consume();
 	}
 	
 	
@@ -186,9 +217,11 @@ public class MyController implements Initializable {
 	
 	@FXML private Button btnAuth;
 	
-	@FXML private void btnAuthOnMouseClick() throws MessagingException{
+	public int mailSize;
+	
+	@FXML private void btnAuthOnMouseClick(MouseEvent e) throws MessagingException{
 		progresInd.setVisible(true);
-			
+		
 			//Hide Auth field and button
 			authField.setVisible(false);
 			btnAuth.setVisible(false);
@@ -201,9 +234,9 @@ public class MyController implements Initializable {
 			
 			try {
 				MessagesList = new connectGmail().showMessages();
-			} catch (IOException e) {
+			} catch (IOException eo) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				eo.printStackTrace();
 			}
 			
 			if(!MessagesList.isEmpty()){
@@ -229,6 +262,8 @@ public class MyController implements Initializable {
 		//Set refresh visible
 		btnRefresh.setVisible(true);
 		picRefresh.setVisible(true);
+
+		e.consume();
 	}
 	
 	
@@ -278,6 +313,7 @@ public class MyController implements Initializable {
 //	}
 	
 	
+	
 	@FXML
 	public void ListViewOnMouseClicked(MouseEvent mouseEvent){
 		mouseEvent.getTarget();
@@ -296,46 +332,78 @@ public class MyController implements Initializable {
     	EmileContent.setText(EMcontent);
 		EmailContPic.setVisible(true);
     	
+		mouseEvent.consume();
+	}
+	
+	private static int scrolValListView = 0;
+	
+	//for test
+	@FXML Button listup;
+	@FXML Button listdown;
+	@FXML
+	public void modeup(MouseEvent e){
+		if(scrolValListView>=1){
+			scrolValListView -=1;
+			ListView.scrollTo(scrolValListView);
+		}
+		e.consume();
+	}
+	@FXML
+	public void movedown(MouseEvent e){
+		scrolValListView+=1;
+		ListView.scrollTo(scrolValListView);
+		e.consume();
 	}
 	
 	
+	@FXML
+	public void ListViewOnSwipeDown(SwipeEvent e){
+		scrolValListView+=1;
+		ListView.scrollTo(scrolValListView);
+		e.consume();
+	}
+	
 	@FXML public void ListViewOnSwipeUp(SwipeEvent e) throws IOException, InterruptedException, MessagingException {
-		//Open current email on gmail.com browser
-		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-			String EmailNo = null;
-			for(ArrayList<Philosopher> MessageList : MessagesList){
-		    	for(Philosopher message : MessageList){
-		    		if(message.No.equals(xMail)){
-		    			EmailNo = (message.id) ;
-		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
-		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
-		    		}
-		    	}
-			}
-			//If opened email is not read then refresh the
-			String EmailFrom = null;
-			EmailFrom = ListView.getSelectionModel().getSelectedItem();
-			System.out.println(EmailFrom);
-//			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
-////    			wait 5 seconds to do next step!
-//    			TimeUnit.SECONDS.sleep(5);
-//    			btnRefreshOnClicked();
+		if(scrolValListView >= 1){
+			scrolValListView -=1;
+			ListView.scrollTo(scrolValListView);
+		}
+		e.consume();
+		
+//		//Open current email on gmail.com browser
+//		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+//			String EmailNo = null;
+//			for(ArrayList<Philosopher> MessageList : MessagesList){
+//		    	for(Philosopher message : MessageList){
+//		    		if(message.No.equals(xMail)){
+//		    			EmailNo = (message.id) ;
+//		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
+//		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
+//		    		}
+//		    	}
 //			}
-			
-		 e.consume();
+//			//If opened email is not read then refresh the
+//			String EmailFrom = null;
+//			EmailFrom = ListView.getSelectionModel().getSelectedItem();
+//			System.out.println(EmailFrom);
+////			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
+//////    			wait 5 seconds to do next step!
+////    			TimeUnit.SECONDS.sleep(5);
+////    			btnRefreshOnClicked();
+////			}
 	}
 	
 	//Refresh Emails
-	@FXML public void btnRefreshOnClicked() throws MessagingException {
+	@FXML public void btnRefreshOnClicked(MouseEvent e) throws MessagingException {
 		System.out.println("RR");
 		//progress starts
 		progresInd.setVisible(true);
 		
 		try {
 			MessagesList = new connectGmail().showMessages();
-		} catch (IOException e) {
+		} catch (IOException eo) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			eo.printStackTrace();
 		}
 
 		//Fill email listView with from and subject	
@@ -343,16 +411,28 @@ public class MyController implements Initializable {
 		
 		//stop progress
 		progresInd.setVisible(false);
+		
+		e.consume();
 	}
 	
 	
 	
 	//EmailContent
 	@FXML 
-	public void EmileContentPicOnSwipeUP(SwipeEvent e) {
+	public void EmileContentPicOnSwipeUP() throws IOException {
 		//Open current email on gmail.com browser
-		System.out.println("SWIPE_UP tipe: " + e.getEventType());
-		e.consume();
+		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+		String EmailNo = null;
+		for(ArrayList<Philosopher> MessageList : MessagesList){
+	    	for(Philosopher message : MessageList){
+	    		if(message.No.equals(xMail)){
+	    			EmailNo = (message.id) ;
+	    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
+	    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
+	    		}
+	    	}
+		}
+//		e.consume();
 	}
 	
 	@FXML
@@ -400,26 +480,30 @@ public class MyController implements Initializable {
 	//Lock
 		@FXML private ImageView btnpicLock;
 		@FXML private Button btnLock;
-		@FXML public void lockDesctop(MouseEvent event) throws Exception{
+		@FXML public void lockDesctop(MouseEvent e) throws Exception{
 			System.out.print("Lock");	
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 			Runtime.getRuntime().exec(lockDesctop);
+			
+			e.consume();
 		}
 		
 		
 		//ShDown
 		@FXML private ImageView btnpicDown;
 		@FXML private Button btnDown;
-		@FXML public void openDown(MouseEvent event) throws Exception{
+		@FXML public void openDown(MouseEvent e) throws Exception{
 			System.out.print("CMD");	
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 			Runtime.getRuntime().exec(lockDesctop);
+			
+			e.consume();
 		}
 		
 	
-	/*
-	 * End of Gmail section
-	 */	 
+/*
+ * End of Gmail section
+*/	 
     
 	/*
 	 * Windows handling in gesture events

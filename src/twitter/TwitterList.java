@@ -2,6 +2,9 @@ package twitter;
 
 import java.util.Date;
 
+/**
+ * Holds one tweet.
+ */
 public class TwitterList {
     public Integer No;
 	public String id;
