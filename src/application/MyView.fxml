@@ -8,31 +8,32 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<AnchorPane disable="false" focusTraversable="false" onMouseClicked="#mouseHandler" onMouseDragged="#mouseHandler" onMouseEntered="#mouseHandler" onMouseExited="#mouseHandler" onMouseMoved="#mouseHandler" onMousePressed="#mouseHandler" onMouseReleased="#mouseHandler" onScroll="#mouseHandler" onScrollFinished="#mouseHandler" onScrollStarted="#mouseHandler" prefHeight="565.0" prefWidth="885.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
+<AnchorPane disable="false" focusTraversable="false" onMouseClicked="#mouseHandler" onMouseDragged="#mouseHandler" onMouseEntered="#mouseHandler" onMouseExited="#mouseHandler" onMouseMoved="#mouseHandler" onMousePressed="#mouseHandler" onMouseReleased="#mouseHandler" onScroll="#mouseHandler" onScrollFinished="#mouseHandler" onScrollStarted="#mouseHandler" prefHeight="720.0" prefWidth="1280.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
   <children>
-    <Pane fx:id="panNotifications" layoutX="443.0" layoutY="14.0" prefHeight="461.0" prefWidth="427.5">
+    <Pane fx:id="panNotifications" layoutX="840.0" layoutY="22.0" prefHeight="391.0" prefWidth="428.0">
       <children>
-        <Text layoutX="14.0" layoutY="46.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
+        <Text layoutX="15.0" layoutY="36.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
           <font>
-            <Font name="Arial" size="42.0" />
+            <Font name="Arial" size="28.0" fx:id="x1" />
           </font>
         </Text>
-        <ListView id="listView1" fx:id="ListView" layoutX="0.0" layoutY="74.0" onKeyPressed="#ListViewOnSwipeUp" onMouseClicked="#ListViewOnMouseClicked" onMousePressed="#ListViewMousePressed" onMouseReleased="#ListViewMouseReleased" prefHeight="236.0" prefWidth="428.0" />
-        <Button id="btnAuth" fx:id="btnStartAuthToGmail" layoutX="283.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#btnStartAuthOnMouseClick" text="Authorize to Gmail.com" visible="true" />
-        <Button fx:id="btnRefresh" layoutX="360.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#btnRefreshOnClicked" prefHeight="30.0" prefWidth="50.0" text="" />
-        <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="0.0" layoutY="313.0" mouseTransparent="false" onKeyPressed="#EmileContentOnSwipeRight" onMouseClicked="#EmileContentMouseClicked" onMouseExited="#bbb" onMousePressed="#aaa" onSwipeUp="#EmileContentOnSwipeUP" opacity="1.0" prefHeight="147.9999915527369" prefWidth="428.0" visible="true" wrapText="true" />
-        <Label fx:id="textCount" layoutX="14.0" layoutY="52.0" text="Inbox:" />
-        <TextField fx:id="authField" layoutX="97.0" layoutY="14.0" prefWidth="331.0" promptText="Enter your authorization code here" />
-        <Button fx:id="btnAuth" layoutX="283.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#btnAuthOnMouseClick" prefWidth="145.00009999999747" text="Authorize" />
-        <ProgressIndicator fx:id="progresInd" layoutX="199.0" layoutY="156.0" prefHeight="48.2958984375" prefWidth="50.0" progress="-1.0" />
-        <ImageView id="btnRefresh" fx:id="picRefresh" fitHeight="21.960845947265625" fitWidth="21.960845947265625" layoutX="375.0" layoutY="43.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+        <ListView id="listView1" fx:id="ListView" layoutX="14.0" layoutY="61.0" onKeyPressed="#ListViewOnSwipeUp" onMouseClicked="#ListViewOnMouseClicked" onMousePressed="#ListViewMousePressed" onMouseReleased="#ListViewMouseReleased" prefHeight="174.0" prefWidth="413.9999000000025" />
+        <Button id="btnAuth" fx:id="btnStartAuthToGmail" layoutX="283.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#btnStartAuthOnMouseClick" text="Authorize to Gmail.com" visible="true" />
+        <Button fx:id="btnRefresh" layoutX="360.0" layoutY="25.0" mnemonicParsing="false" onMouseClicked="#btnRefreshOnClicked" prefHeight="30.0" prefWidth="50.0" text="" />
+        <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="15.0" layoutY="235.0" mouseTransparent="false" opacity="1.0" prefHeight="151.00008310547128" prefWidth="414.00007792968245" visible="true" wrapText="true" />
+        <TextField fx:id="authField" layoutX="97.0" layoutY="0.0" prefWidth="331.0" promptText="Enter your authorization code here" />
+        <Button fx:id="btnAuth" layoutX="283.0" layoutY="26.0" mnemonicParsing="false" onMouseClicked="#btnAuthOnMouseClick" prefWidth="145.00009999999747" text="Authorize" />
+        <ProgressIndicator fx:id="progresInd" layoutX="189.0" layoutY="111.0" prefHeight="48.2958984375" prefWidth="50.0" progress="-1.0" />
+        <ImageView id="btnRefresh" fx:id="picRefresh" fitHeight="21.960845947265625" fitWidth="21.960845947265625" layoutX="375.0" layoutY="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="@../../img/refresh.png" />
           </image>
         </ImageView>
+        <ImageView fx:id="EmailContImg" fitHeight="151.0" fitWidth="414.0" layoutX="15.0" layoutY="235.0" onSwipeRight="#EmileContentOnSwipeRight" onSwipeUp="#EmileContentOnSwipeUP" pickOnBounds="true" preserveRatio="true" />
+        <Label fx:id="CountMail" layoutX="15.0" layoutY="45.0" text="Inbox:" />
       </children>
     </Pane>
-    <Pane fx:id="panShort" layoutX="14.0" layoutY="475.0" prefHeight="90.0" prefWidth="252.0">
+    <Pane fx:id="panShort" layoutX="2.0" layoutY="630.0" prefHeight="90.0" prefWidth="252.0">
       <children>
         <Button fx:id="btnDown" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#openDown" prefHeight="60.0" prefWidth="100.0" text="" />
         <Button fx:id="btnLock" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#lockDesctop" prefHeight="60.0" prefWidth="100.0" text="" />
@@ -48,5 +49,18 @@
         </ImageView>
       </children>
     </Pane>
+    <Text font="$x1" layoutX="852.0" layoutY="453.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Twitter" underline="false" />
+    <ScrollPane fx:id="TwittPan" hbarPolicy="AS_NEEDED" layoutX="855.0" layoutY="460.0" prefHeight="246.0" prefWidth="411.0" vbarPolicy="ALWAYS">
+      <content>
+        <GridPane fx:id="TWGrid" prefHeight="80.0" prefWidth="381.0">
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+      </content>
+    </ScrollPane>
   </children>
 </AnchorPane>

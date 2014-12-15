@@ -6,12 +6,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 import javax.mail.MessagingException;
 
-import application.Philosopher;
-import application.connectGmail;
+import twitter.TwitterTimeline;
+import twitter.TwitterList;
+import GmailAPI.Philosopher;
+import GmailAPI.connectGmail;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -20,20 +23,26 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
-import javafx.scene.input.TouchEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 
 @SuppressWarnings("restriction")
@@ -50,6 +59,12 @@ public class MyController implements Initializable {
 		btnAuth.setVisible(false);
 		btnRefresh.setVisible(false);
 		picRefresh.setVisible(false);
+	
+	//Fill ListViewTwitter with Tweets
+		//ListViewTwitter.setItems(addTwittStreem());
+		addTwittStreem();
+
+		
 	}
 	/**
 	 *	On mouse moving around it catches the mouse gesture and print out gesture name and coordinates 
@@ -57,12 +72,58 @@ public class MyController implements Initializable {
 	
 	@FXML
         public void mouseHandler(MouseEvent mouseEvent) {
-            System.out.println(mouseEvent.getEventType() + "\n"
-                    + "X : Y - " + mouseEvent.getX() + " : " + mouseEvent.getY() + "\n"
-                    + "SceneX : SceneY - " + mouseEvent.getSceneX() + " : " + mouseEvent.getSceneY() + "\n"
-                    + "ScreenX : ScreenY - " + mouseEvent.getScreenX() + " : " + mouseEvent.getScreenY());
+//            System.out.println(mouseEvent.getEventType() + "\n"
+//                    + "X : Y - " + mouseEvent.getX() + " : " + mouseEvent.getY() + "\n"
+//                    + "SceneX : SceneY - " + mouseEvent.getSceneX() + " : " + mouseEvent.getSceneY() + "\n"
+//                    + "ScreenX : ScreenY - " + mouseEvent.getScreenX() + " : " + mouseEvent.getScreenY());
 
         }    
+	
+	/*
+	 * For Twitter
+	 */
+		
+	@FXML private ListView<String> ListViewTwitter;
+	@FXML private GridPane TWGrid;
+	@FXML private ScrollPane TwittPan;
+	
+	public void addTwittStreem() {
+		ArrayList<ArrayList<TwitterList>> TweettsList = new ArrayList<ArrayList<TwitterList>>();
+		ArrayList<String> TweetStreemList = new ArrayList<String>();
+		TweettsList = new TwitterTimeline().TwittMain();
+		
+		
+		Integer x = 0;
+		Integer TwittArraySize = TweettsList.size();
+		
+		for(ArrayList<TwitterList> TweettList : TweettsList){
+	    	for(TwitterList tweet : TweettList){
+	    		
+				String aa = tweet.date + "<b>" + tweet.userName +"</b> @" + tweet.screenName + "\n" + tweet.text;
+	    
+	    		
+				TweetStreemList.add(aa);
+	    		System.out.println(aa);
+	    		TextArea tt = new TextArea("avbhi");
+	    		tt.setPrefHeight(80);
+	    		tt.setPrefWidth(411);
+	    		tt.setWrapText(true);
+//	    		TwitterGrid.getRowConstraints().add(tt);
+	    		TWGrid.addRow(x, tt);
+	    		
+	    		x+=1;
+	    		
+	    		}
+	    	}
+		}
+	
+	@FXML
+	public void TwitterSwipeUP(){
+		
+	}
+	
+	
+	
 	
 	/*
 	 * Section for Gmail
@@ -70,9 +131,9 @@ public class MyController implements Initializable {
 	@FXML private Pane panNotifications;
 	@FXML private Pane panShort;
 	
-	@FXML private Label textCount;
 	@FXML private ProgressIndicator progresInd;
 	
+	@FXML private Label CountMail;
 	@FXML private ListView<String> ListView;
 	
 	@FXML private TextArea EmileContent;
@@ -126,9 +187,9 @@ public class MyController implements Initializable {
 				ListView.setItems(FillFromSubject());
 				
 				//Print Inbox messages count
-				Integer CountMail = MessagesList.size();
-				String ss = "Inbox: " + Integer.toString(CountMail);
-				textCount.setText(ss);
+				Integer CountMails = MessagesList.size();
+				String ss = "Inbox: " + Integer.toString(CountMails);
+				CountMail.setText(ss);
 
 			}
 			else {
@@ -192,30 +253,6 @@ public class MyController implements Initializable {
 		EmileContent.setText(EMcontent);
 	}
 	
-	@FXML public List<Double> aaa(MouseEvent mouseEvent){
-	
-		double y = mouseEvent.getY();
-		double x = mouseEvent.getX();
-		List<Double> yx = null;
-		yx.add(y);
-		yx.add(x);
-		
-		return yx;
-	}
-	
-	@FXML public void bbb(MouseEvent mouseEvent){
-		List<Double> yx = aaa(mouseEvent);
-		double preY = yx.get(0);
-		double preX = yx.get(1);
-		
-		double y = mouseEvent.getY();
-		double x = mouseEvent.getX();
-		
-		if(x>preX){
-			System.out.println("Moved right");
-		}
-		else System.out.println("Moved somewhere");
-	}
 	
 	@FXML
 	public void EmileContentMouseClicked(MouseEvent mouseEvent){
@@ -227,28 +264,28 @@ public class MyController implements Initializable {
 	
 	@FXML
 	public void ListViewMousePressed(MouseEvent mouseEvent){
-		mouseEvent.getTarget();
-		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-		String EMcontent = null;
-    	for(ArrayList<Philosopher> MessageList : MessagesList){
-    		for(Philosopher Cont : MessageList){
-    			if(Cont.No.equals(xMail)){
-    				EMcontent = (Cont.EMcontent);
-    			}
-    		}
-    	}
-    	//set content box visible
-    	EmileContent.setVisible(true);
-    	//Set email text
-    	EmileContent.setText(EMcontent);
+//		mouseEvent.getTarget();
+//		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
+//		String EMcontent = null;
+//    	for(ArrayList<Philosopher> MessageList : MessagesList){
+//    		for(Philosopher Cont : MessageList){
+//    			if(Cont.No.equals(xMail)){
+//    				EMcontent = (Cont.EMcontent);
+//    			}
+//    		}
+//    	}
+//    	//set content box visible
+//    	EmileContent.setVisible(true);
+//    	//Set email text
+//    	EmileContent.setText(EMcontent);
 	}
 	
 	@FXML
 	public void ListViewMouseReleased(MouseEvent mouseEvent){
-    	//set content box visible
-    	EmileContent.setVisible(false);
-    	//Set email text
-    	EmileContent.setText(null);
+//    	//set content box visible
+//    	EmileContent.setVisible(false);
+//    	//Set email text
+//    	EmileContent.setText(null);
 	}
 	
 	
@@ -256,7 +293,6 @@ public class MyController implements Initializable {
 		System.out.println("RR");
 		//progress starts
 		progresInd.setVisible(true);
-		progresInd.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
 		
 		try {
 			MessagesList = new connectGmail().showMessages();
@@ -291,19 +327,23 @@ public class MyController implements Initializable {
 		 e.consume();
 	}
 	
+	//EmailContent
+	@FXML 
+	public ImageView EmailContImg;
 	
 	@FXML 
-	public void EmileContentOnSwipeUP() {
+	public void EmileContentOnSwipeUP(SwipeEvent e) {
 		//Open current email on gmail.com browser
+		System.out.println("SWIPE_UP tipe: " + e.getEventType());
+		e.consume();
 	}
 	
 	@FXML
-	public void EmileContentOnSwipeRight(KeyEvent e) {
+	public void EmileContentOnSwipeRight(SwipeEvent e) {
 		//Clear content
-		if(e.isShiftDown()){
-			EmileContent.setText(null);
-			EmileContent.setVisible(false);
-		}
+		EmileContent.setText(null);
+		EmileContent.setVisible(false);
+		
 		e.consume();
 	}
 	
@@ -355,5 +395,9 @@ public class MyController implements Initializable {
 	
 	/*
 	 * End of Gmail section
-	 */
+	 */	 
+
+
 }
+
+

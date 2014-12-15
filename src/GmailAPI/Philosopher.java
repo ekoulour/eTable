@@ -1,4 +1,4 @@
-package application;
+package GmailAPI;
 
 import java.util.List;
 

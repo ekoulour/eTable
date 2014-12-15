@@ -3,6 +3,7 @@ package twitter;
 import java.util.ArrayList;
 import java.util.List;
 
+import GmailAPI.Philosopher;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -13,19 +14,33 @@ public class TwitterTimeline {
 	/**
 	 * Example that outputs the statuses. Useful when testing.
 	 * @param args
+	 * @return 
 	 */
-	public static void main(String[] args) {
-		Twitter twitter = TwitterFactory.getSingleton();
+//	public static void main(String[] args) {
+	public ArrayList<ArrayList<TwitterList>> TwittMain() {
+		Twitter tweetter = TwitterFactory.getSingleton();
+		ArrayList<ArrayList<TwitterList>> TweetsList = new ArrayList<ArrayList<TwitterList>>();
+		Integer No = 0;
 		try {
 			// Timeline of the user whose keys are in twitter4j.properties
-			ResponseList<Status> result = twitter.getHomeTimeline();
+			ResponseList<Status> result = tweetter.getHomeTimeline();
 			for (Status status : result) {
-				System.out.println("[" + status.getCreatedAt() + "] @" + status.getUser().getScreenName() + ":" + status.getText());
-				System.out.println("https://twitter.com/" + status.getUser().getScreenName() + "/status/" + status.getId());
+				ArrayList<TwitterList> TweetList = new ArrayList<>();
+				
+//				System.out.println("[" + status.getCreatedAt() + "] @" + status.getUser().getScreenName() + ":" + status.getText());
+//				System.out.println("https://twitter.com/" + status.getUser().getScreenName() + "/status/" + status.getId());
+			
+				TweetList.add(new TwitterList(No, status.getUser().getScreenName(), status.getText(), 
+						status.getUser().getName(), status.getUser().getScreenName(), status.getCreatedAt()));
+				No ++;
+				
+				TweetsList.add(TweetList);
 			}
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
+		
+		return TweetsList;
 	}
 	
 	/**

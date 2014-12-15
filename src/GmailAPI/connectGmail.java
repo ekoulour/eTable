@@ -1,4 +1,4 @@
-package application;
+package GmailAPI;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.client.auth.oauth2.Credential;
@@ -63,7 +63,8 @@ public class connectGmail {
 	public static GoogleAuthorizationCodeFlow flow;
 
 	/** Authorization. */
-	public void authorize() throws Exception {	  
+	public void authorize() throws Exception 
+	{	  
 		// initialize the transport
 		httpTransport = GoogleNetHttpTransport.newTrustedTransport();  
 
@@ -71,7 +72,8 @@ public class connectGmail {
 		clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,  new FileReader(CLIENT_SECRET_PATH));
 
 		if (clientSecrets.getDetails().getClientId().startsWith("Enter")
-				|| clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
+				|| clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) 
+		{
 			System.out.println("Enter Client ID and Secret");
 			System.exit(0);
 		}
@@ -91,7 +93,8 @@ public class connectGmail {
 		//	    System.out.println("Please add the authorization code and press enter!\nCode: ");
 	}
 
-	public GoogleCredential ReadCodeAuthorize(String code) throws IOException{
+	public GoogleCredential ReadCodeAuthorize(String code) throws IOException
+	{
 
 		// Generate Credential using retrieved code.
 		GoogleTokenResponse response = flow.newTokenRequest(code)
@@ -104,7 +107,8 @@ public class connectGmail {
 	}
 
 
-	public void PreMain(String code) { 
+	public void PreMain(String code) 
+	{ 
 		//  public static void main (String [] args) throws IOException {
 
 		try {
@@ -133,7 +137,8 @@ public class connectGmail {
 	}
 
 //To get ArrayList of ArrayList with all messages
-	public ArrayList<ArrayList<Philosopher>> showMessages() throws IOException, MessagingException { 
+	public ArrayList<ArrayList<Philosopher>> showMessages() throws IOException, MessagingException 
+	{ 
 		//public static void showMessages() throws IOException { //
 		//Get all messages  
 		ListMessagesResponse messagesResponse = service.users().messages().list(USER).execute();
@@ -146,7 +151,8 @@ public class connectGmail {
 		Integer No = 0;
 
 		//Fore each message search for To, subject, From, snippet - > take messages from INBOX
-		for (Message message : messages) {
+		for (Message message : messages) 
+		{
 
 			//List of one email (id, snippet, From, To, Subject, Received)
 			ArrayList<Philosopher> messageList = new ArrayList<>();
@@ -167,25 +173,33 @@ public class connectGmail {
 			//List of READ UNREAD INBOX...
 			List<String> messageLabel = messageCont.getLabelIds();    
 
-			for(String lab : messageLabel){
-				if(lab.contains("INBOX")){	 	    	
+			for(String lab : messageLabel)
+			{
+				if(lab.contains("INBOX"))
+				{	 	    	
 
-					for (MessagePartHeader header: messageHeaders){				    	
-						if (header.getName().equals("Subject")){
+					for (MessagePartHeader header: messageHeaders)
+					{				    	
+						if (header.getName().equals("Subject"))
+						{
 							Subject = header.getValue();
 						}
-						else if (header.getName().equals("From")){
+						else if (header.getName().equals("From"))
+						{
 							Pattern MY_PATTERN = Pattern.compile("\\<(.*?)\\>");
 
 							Matcher m = MY_PATTERN.matcher(header.getValue());
-							while (m.find()) {
+							while (m.find()) 
+							{
 								From = m.group(1);
 							}
 						}
-						else if (header.getName().equals("To")){
+						else if (header.getName().equals("To"))
+						{
 							To = header.getValue();
 						}
-						else if (header.getName().equals("Date")){
+						else if (header.getName().equals("Date"))
+						{
 							Received = header.getValue();
 						}  	
 					}		    
@@ -196,8 +210,10 @@ public class connectGmail {
 					Properties props = new Properties();
 					Session session = Session.getDefaultInstance(props, null);
 					MimeMessage email = new MimeMessage(session, new ByteArrayInputStream(emailBytes));
-					String EMcontent = getContent(email);
+					
+					String EMcontent = getContent(email); ///
 
+					//Add all to philosopher list
 					messageList.add(new Philosopher(No, id, Snippet, Subject, From, To, Received, EMcontent, messageLabel));
 					No ++;
 
@@ -232,6 +248,8 @@ public class connectGmail {
 
 		return EMcontent;
 	}
+	
+	
 	//For getting Email content
 	public String dumpPart(Part p) throws Exception
 	{
@@ -245,12 +263,12 @@ public class connectGmail {
 			is = new BufferedInputStream(is);
 		}
 		int c;
-		// 	 System.out.println("Message : ");
+
 		while ((c = is.read()) != -1)
 		{
-			// 		 System.out.write(c);
 			sw.write(c);
 		}
+		
 		String EMcontent = sw.toString();
 		return EMcontent;
 	}
