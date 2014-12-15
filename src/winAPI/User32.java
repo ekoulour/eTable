@@ -1,4 +1,6 @@
 package winAPI;
+
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,5 +38,7 @@ public interface User32 extends StdCallLibrary{
     int GetForegroundWindow();
     int FindWindow(String title);
     int SetParent(int hWndChild,int hWndParent);
+    boolean GetClientRect(int hWnd,RECT r);
+    boolean DestroyWindow(int hWnd);
    
 }
