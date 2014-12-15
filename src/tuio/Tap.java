@@ -30,6 +30,7 @@ public class Tap extends Gesture {
 
 	@Override
 	public void addTuioCursor(TuioCursor arg) {
+		if (isDeadZone(arg)) return;
 		if (end_time.containsKey(arg.getCursorID())) {
 			end_time.remove(arg.getCursorID());
 		}

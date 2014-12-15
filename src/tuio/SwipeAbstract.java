@@ -54,6 +54,7 @@ public abstract class SwipeAbstract extends Gesture {
 	 */
 	@Override
 	public void addTuioCursor(TuioCursor arg) {
+		if (isDeadZone(arg)) return;
 		if (start_x.containsKey(arg.getCursorID())) {
 			end_time.remove(arg.getCursorID());
 		} else {

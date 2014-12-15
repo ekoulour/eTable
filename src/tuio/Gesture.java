@@ -1,5 +1,6 @@
 package tuio;
 
+import TUIO.TuioCursor;
 import TUIO.TuioListener;
 import TUIO.TuioObject;
 import TUIO.TuioTime;
@@ -15,7 +16,22 @@ public abstract class Gesture implements TuioListener {
 		super();
 		root = p;
 	}
-	
+
+	/**
+	 * Checks whether the tuio cursor is in the "dead zone".
+	 * Basically, this is a zone where we want to ignore any events, so that
+	 * the keyboard has a place to stand. Likely only want to check for this
+	 * when adding a cursor as it the origin that we want to ignore.
+	 * @param arg Tuio Cursor
+	 * @return    True if the tuio cursor is in a zone we want to ignore.
+	 */
+	protected boolean isDeadZone(TuioCursor arg) {
+		// TODO: Allow a small zone at the top
+		if (arg.getY() > 0.25 && arg.getY() < 0.75) {
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * Recursively looks through the children of a node to find the one at
 	 * certain coordinates. Not the most efficient, but JavaFX does not
