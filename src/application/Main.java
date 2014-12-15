@@ -35,8 +35,5 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 		
-//		This doesn't work
-//		Window window = new Window();
-//		window.moveWindow(title);
 	}
 }

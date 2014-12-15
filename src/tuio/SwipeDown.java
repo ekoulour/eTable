@@ -31,4 +31,5 @@ public class SwipeDown extends SwipeAbstract {
 	EventType<SwipeEvent> getSwipeType() {
 		return SwipeEvent.SWIPE_DOWN;
 	}
+	
 }

@@ -1,48 +1,39 @@
 package controller;
 
-import java.awt.Font;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
-import javax.mail.MessagingException;
-
-import twitter.TwitterTimeline;
-import twitter.TwitterList;
-import GmailAPI.Philosopher;
-import GmailAPI.connectGmail;
-import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import javax.mail.MessagingException;
+
+import twitter.TwitterList;
+import twitter.TwitterTimeline;
+import winAPI.Window;
+import GmailAPI.Philosopher;
+import GmailAPI.connectGmail;
 
 
 @SuppressWarnings("restriction")
@@ -396,7 +387,43 @@ public class MyController implements Initializable {
 	/*
 	 * End of Gmail section
 	 */	 
-
+    
+	/*
+	 * Windows handling in gesture events
+	 * For each gesture event the corresponding function 
+	 * is called
+	 * @paramSwipeEvent  type of swipe event
+	 */
+		@FXML public void windowHanding(SwipeEvent e){
+			
+			Window window = new Window();
+			EventType<SwipeEvent> swipeType = e.getEventType();
+			
+			Stage stage = new Stage();
+			String title = stage.getTitle();
+			
+			String side;
+						
+			if(swipeType == SwipeEvent.SWIPE_DOWN){
+				
+				if (e.getX() >= 0 && e.getX() < 0.5){
+					side = "LEFT";
+				}else
+					side="RIGHT";
+				
+				window.moveWindowtoTable(title, side);
+				
+			}else if(swipeType == SwipeEvent.SWIPE_UP){
+				window.moveWindowtoDesktop();
+			}else{
+				window.deleteWindow();
+			}
+				
+			
+			
+			
+		}
+		
 
 }
 

@@ -105,7 +105,7 @@ public class Window {
 	 * Move window in its previous position on the monitor
 	 * 
 	 */
-	public void moveWindowtoDesktop(String title){
+	public void moveWindowtoDesktop(){
 		
 		WindowInfo usedWindow = getForegroundWindow();
 		int monitorWindth = getMonitorWidth();
@@ -118,7 +118,7 @@ public class Window {
 	/*
 	 * Destroy a window on table
 	 */
-	public void deleteWindow(int hWnd){
+	public void deleteWindow(){
 		
 		WindowInfo usedWindow = getForegroundWindow();
 		User32.instance.DestroyWindow(usedWindow.hwnd);
