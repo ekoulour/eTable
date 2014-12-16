@@ -3,11 +3,6 @@ package winAPI;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.jna.platform.win32.WinDef.LPARAM;
-import com.sun.jna.platform.win32.WinDef.LRESULT;
-import com.sun.jna.platform.win32.WinDef.WPARAM;
-import com.sun.jna.platform.win32.WinUser;
-
 /*
  * This class call contains methods for window handing.
  *  Methods of this class are triggered by the
@@ -97,7 +92,7 @@ public class Window {
 			User32.instance.SetParent(hWndChild, hWndParent);
 			leftCoordinate = rectClient.left;
 
-			User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom-100, false);
+			User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom-100, true);
 		    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
 		    windowsLeft.add(new WindowInfo(hWndChild, rectChild));
 		    System.out.println(windowsLeft.get(0).rect);
@@ -105,14 +100,13 @@ public class Window {
 		}else{
 			System.out.println("MOVE TO RIGHT");
 			WindowInfo usedWindow = windowsLeft.get(0);
-			System.out.println(windowsLeft.size());
 			windowsLeft.clear();
 
 
 			hWndChild = usedWindow.hwnd;
 			leftCoordinate = rectClient.right - 320;
 
-			User32.instance.MoveWindow(hWndChild,leftCoordinate, usedWindow.rect.top, usedWindow.rect.right, usedWindow.rect.bottom, false);
+			User32.instance.MoveWindow(hWndChild,leftCoordinate, usedWindow.rect.top, usedWindow.rect.right, usedWindow.rect.bottom, true);
 		    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
 		    windowsRight.add(new WindowInfo(hWndChild, rectChild));
 		}
@@ -145,7 +139,7 @@ public class Window {
 		int monitorHeight = getMonitorHeight();
 
 		User32.instance.SetParent(window.hwnd, desktop);
-		User32.instance.MoveWindow(window.hwnd, 0, 0, monitorWindth/2, monitorHeight, false);
+		User32.instance.MoveWindow(window.hwnd, 0, 0, monitorWindth/2, monitorHeight, true);
 
 
 	}
@@ -153,7 +147,7 @@ public class Window {
 
 	/*
 	 * Destroy a window on table
-	 */
+
 	public void deleteWindow(){
 		if (windowsLeft.size() == 0) {
 			System.out.println("No windows");
@@ -183,11 +177,11 @@ public class Window {
 		 };
 
 	}
-
+*/
 	/*
 	 * Scroll down event are handling sending the corresponding
 	 * msg to the window
-	 */
+
     public void scrollWindowDown(){
 
     	WindowInfo window = windowsLeft.get(0);
@@ -199,10 +193,10 @@ public class Window {
 
     }
 
-    /*
+
 	 * Scroll up event are handling sending the corresponding
 	 * msg to the window
-	 */
+
     public void scrollWindowUp(){
 
     	WindowInfo window = windowsLeft.get(0);
@@ -212,7 +206,7 @@ public class Window {
 
 
 
-    }
+    }*/
 
 
 
