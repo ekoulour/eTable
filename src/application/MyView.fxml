@@ -10,7 +10,7 @@
 
 <AnchorPane disable="false" focusTraversable="false" onSwipeDown="#windowHanding" onSwipeLeft="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="800.0" prefWidth="1280.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
   <children>
-    <Pane fx:id="panNotifications" layoutX="891.0" layoutY="22.0" prefHeight="491.0" prefWidth="368.0">
+    <Pane fx:id="GMPan" layoutX="891.0" layoutY="22.0" prefHeight="491.0" prefWidth="368.0">
       <children>
         <Text layoutX="4.0" layoutY="36.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
           <font>
@@ -25,7 +25,7 @@
         <ProgressIndicator fx:id="progresInd" layoutX="164.0" layoutY="100.0" prefHeight="48.2958984375" prefWidth="50.0" progress="-1.0" />
         <ImageView id="btnRefresh" fx:id="picRefresh" fitHeight="21.960845947265625" fitWidth="21.960845947265625" layoutX="315.0" layoutY="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../img/refresh.png" />
+            <Image url="file:img//refresh.png" />
           </image>
         </ImageView>
         <ImageView id="EmailContImg" fx:id="EmailContPic" fitHeight="182.65235900878906" fitWidth="370.0" layoutX="0.0" layoutY="309.0" onMouseClicked="#EmileContentPicOnClick" onSwipeRight="#EmileContentPicOnSwipeRight" onSwipeUp="#EmileContentPicOnSwipeUP" pickOnBounds="true" preserveRatio="true" />
@@ -44,7 +44,7 @@
         </ScrollPane>
       </children>
     </Pane>
-    <Pane fx:id="panShort" layoutX="2.0" layoutY="714.0" prefHeight="82.0" prefWidth="252.0">
+    <Pane fx:id="panShort" layoutX="2.0" layoutY="704.0" prefHeight="82.0" prefWidth="252.0">
       <children>
         <Button fx:id="btnDown" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#openDown" prefHeight="60.0" prefWidth="100.0" text="" />
         <Button fx:id="btnLock" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#lockDesctop" prefHeight="60.0" prefWidth="100.0" text="" />
@@ -60,22 +60,38 @@
         </ImageView>
       </children>
     </Pane>
-    <Text font="$x1" layoutX="891.0" layoutY="561.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Twitter" underline="false" />
-    <ScrollPane fx:id="scrolPan" hbarPolicy="NEVER" layoutX="903.0" layoutY="568.0" onSwipeDown="#scrolPanOnSwipeDown" onSwipeUp="#scrolPanOnSwipeUp" prefHeight="228.150390625" prefWidth="363.0">
-      <content>
-        <GridPane fx:id="gridTwitt" prefWidth="355.9998779296875">
-          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          </columnConstraints>
-          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          </rowConstraints>
-        </GridPane>
-      </content>
-    </ScrollPane>
-    <Button fx:id="up" layoutX="796.0" layoutY="602.0" mnemonicParsing="false" onMouseClicked="#swipeup" text="Button" />
-    <Button fx:id="down" layoutX="796.0" layoutY="765.0" mnemonicParsing="false" onMouseClicked="#swipedown" text="Button" />
-    <Button fx:id="listup" layoutX="807.0" layoutY="84.0" mnemonicParsing="false" onMouseClicked="#modeup" text="Button" />
-    <Button fx:id="listdown" layoutX="824.0" layoutY="294.0" mnemonicParsing="false" onMouseClicked="#movedown" text="Button" />
+    <Button fx:id="RightUP" layoutX="676.0" layoutY="331.0" mnemonicParsing="false" onMouseClicked="#RightUPClick" prefHeight="82.0" prefWidth="174.0" text="Move right side UP" />
+    <Button fx:id="RightToRight" layoutX="676.0" layoutY="432.0" mnemonicParsing="false" onMouseClicked="#RightToRightClick" prefHeight="82.0" text="Move right side back to right" />
+    <Pane fx:id="TWPan" layoutX="897.0" layoutY="523.0" prefHeight="277.0" prefWidth="382.9998779296875">
+      <children>
+        <Text font="$x1" layoutX="23.0" layoutY="32.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Twitter" underline="false" />
+        <ScrollPane fx:id="scrolPan" hbarPolicy="NEVER" layoutX="1.0" layoutY="34.0" onSwipeDown="#scrolPanOnSwipeDown" onSwipeUp="#scrolPanOnSwipeUp" prefHeight="228.150390625" prefWidth="363.0">
+          <content>
+            <GridPane fx:id="gridTwitt" prefWidth="355.9998779296875">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </content>
+        </ScrollPane>
+      </children>
+    </Pane>
+    <Pane fx:id="UPPan" layoutX="554.0" layoutY="27.0" prefHeight="100.0" prefWidth="244.0">
+      <children>
+        <ImageView fitHeight="99.0" fitWidth="132.0" layoutX="22.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="file:img/Gmail-icon.png" />
+          </image>
+        </ImageView>
+        <ImageView fitHeight="99.0" fitWidth="132.0" layoutX="136.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="file:img/twitter-icon.png" />
+          </image>
+        </ImageView>
+      </children>
+    </Pane>
   </children>
 </AnchorPane>

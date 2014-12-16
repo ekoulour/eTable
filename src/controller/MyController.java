@@ -45,6 +45,9 @@ public class MyController implements Initializable {
 		btnRefresh.setVisible(false);
 		picRefresh.setVisible(false);
 
+		//Set UP panel as unvisible
+		UPPan.setVisible(false);
+
 	//Fill ListViewTwitter with Tweets
 		addTwittStreem();
 
@@ -109,28 +112,7 @@ public class MyController implements Initializable {
 		}
 
 
-	//test
-	@FXML private Button up;
-	@FXML private Button down;
-
 	private static double valueScrollPan = 0.0;
-	//test
-	@FXML
-	public void swipeup(MouseEvent e){
-		if(valueScrollPan>0.0){
-			valueScrollPan -= 0.1;
-			scrolPan.setVvalue(valueScrollPan);
-		}
-		 e.consume();
-	}
-
-	//test
-	@FXML
-	public void swipedown(MouseEvent e){
-		valueScrollPan += 0.1;
-		scrolPan.setVvalue(valueScrollPan);
-		e.consume();
-	}
 
 	@FXML
 	public void scrolPanOnSwipeUp(SwipeEvent e){
@@ -152,7 +134,9 @@ public class MyController implements Initializable {
 /*
  * Section for Gmail
  */
-	@FXML private Pane panNotifications;
+	@FXML private Pane GMPan;
+	@FXML private Pane TWPan;
+	@FXML private Pane UPPan;
 	@FXML private Pane panShort;
 	@FXML private GridPane mailGrid;
 	@FXML private ScrollPane EmailListGrid;
@@ -259,30 +243,7 @@ public class MyController implements Initializable {
 	}
 
 
-	//for test
-	@FXML Button listup;
-	@FXML Button listdown;
-
 	private static double valueScrolEmailsGrid = 0.0;
-
-	//test
-	@FXML
-	public void modeup(MouseEvent e){
-		if(valueScrolEmailsGrid>0.0){
-			valueScrolEmailsGrid -= 0.1;
-			EmailListGrid.setVvalue(valueScrolEmailsGrid);
-		}
-		e.consume();
-	}
-	//test
-	@FXML
-	public void movedown(MouseEvent e){
-		valueScrolEmailsGrid += 0.1;
-		EmailListGrid.setVvalue(valueScrolEmailsGrid);
-
-		e.consume();
-	}
-
 
 	@FXML
 	public void ListEmailOnSwipeDown(SwipeEvent e){
@@ -446,6 +407,37 @@ public class MyController implements Initializable {
  * End of Extra buttons
 */
 
+/*
+ * Functions to move Right side(Twitter and Gmail) UP or to Right side again
+ */
+		@FXML private Button RightUP;
+		@FXML private Button RightToRight;
+
+public void RightUPFunct(){
+	//Set Right Gmail and Twitter unvisible
+	GMPan.setVisible(false);
+	TWPan.setVisible(false);
+	//Set Up panel visible
+	UPPan.setVisible(true);
+}
+
+public void RightToRightFunct(){
+	//Set Right panel Gmail and Twitter visible
+	GMPan.setVisible(true);
+	TWPan.setVisible(true);
+	//Hide Up panel
+	UPPan.setVisible(false);
+}
+
+
+//test Button functions on click
+
+@FXML public void RightUPClick(){
+	RightUPFunct();
+}
+@FXML public void RightToRightClick(){
+	RightToRightFunct();
+}
 
 	/*
 	 * Windows handling in gesture events
