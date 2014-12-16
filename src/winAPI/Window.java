@@ -65,16 +65,15 @@ public class Window {
 	 * Move window of either the left side or right side checking
 	 * first if the corresponding list is empty or not
     */
-	public void moveWindow(List<WindowInfo> windowsList,int leftCoordinate){
+	/*public void moveWindow(List<WindowInfo> windowsList,int leftCoordinate,RECT rectClient){
 
 
-    	User32.instance.GetClientRect(hWndParent,rectClient);
 	    User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom-100, false);
 	    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
 	    windowsList.add(new WindowInfo(hWndChild, rectChild));
 
 	}
-
+*/
 
 	/*
 	 * Move window in specific position of client area on the table.
@@ -88,20 +87,34 @@ public class Window {
 
 	    int leftCoordinate;
 
-		WindowInfo usedWindow = getForegroundWindow();
-		hWndChild = usedWindow.hwnd;
-		hWndParent = User32.instance.FindWindow(null,parentTitle);
-		User32.instance.SetParent(hWndChild, hWndParent);
-		User32.instance.GetClientRect(hWndParent,rectClient);
-
-		System.out.println(hWndChild);
-
 		if(side == "LEFT"){
+			WindowInfo usedWindow = getForegroundWindow();
+			hWndChild = usedWindow.hwnd;
+
+			hWndParent = User32.instance.FindWindow(null,parentTitle);
+			User32.instance.GetClientRect(hWndParent,rectClient);
+
+			User32.instance.SetParent(hWndChild, hWndParent);
 			leftCoordinate = rectClient.left;
-			moveWindow(windowsLeft,leftCoordinate);
+
+			User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom-100, false);
+		    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
+		    windowsLeft.add(new WindowInfo(hWndChild, rectChild));
+		    System.out.println(windowsLeft.get(0).rect);
+
 		}else{
-			leftCoordinate = rectClient.right / 2;
-			moveWindow(windowsRight,leftCoordinate);
+			System.out.println("MOVE TO RIGHT");
+			WindowInfo usedWindow = windowsLeft.get(0);
+			System.out.println(windowsLeft.size());
+			windowsLeft.clear();
+
+
+			hWndChild = usedWindow.hwnd;
+			leftCoordinate = rectClient.right - 320;
+
+			User32.instance.MoveWindow(hWndChild,leftCoordinate, usedWindow.rect.top, usedWindow.rect.right, usedWindow.rect.bottom, false);
+		    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
+		    windowsRight.add(new WindowInfo(hWndChild, rectChild));
 		}
 
 	}

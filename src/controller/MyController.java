@@ -416,7 +416,9 @@ public class MyController implements Initializable {
 public void RightUPFunct(){
 	//Set Right Gmail and Twitter unvisible
 	GMPan.setVisible(false);
+	GMPan.setMouseTransparent(true);
 	TWPan.setVisible(false);
+	TWPan.setMouseTransparent(true);
 	//Set Up panel visible
 	UPPan.setVisible(true);
 }
@@ -424,7 +426,9 @@ public void RightUPFunct(){
 public void RightToRightFunct(){
 	//Set Right panel Gmail and Twitter visible
 	GMPan.setVisible(true);
+	GMPan.setMouseTransparent(false);
 	TWPan.setVisible(true);
+	TWPan.setMouseTransparent(false);
 	//Hide Up panel
 	UPPan.setVisible(false);
 }
@@ -454,12 +458,6 @@ public void RightToRightFunct(){
 			EventType<SwipeEvent> swipeType = e.getEventType();
 			String title = "NGUI";
 
-			 System.out.println(e.getX());
-
-			 if(e.getX() >= 0 && e.getX() < 600){
-				side = "LEFT";
-			}else
-				side = "RIGHT";
 
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
 				System.out.println("SWIPE DOWN");
@@ -468,16 +466,23 @@ public void RightToRightFunct(){
 
 			}else if(swipeType == SwipeEvent.SWIPE_UP){
 
+				if(e.getX() >= 0 && e.getX() < 600){
+					side = "LEFT";
+				}else
+					side = "RIGHT";
+
 				if(side == "RIGHT"){
 					RightToRightFunct();
 				}
+
 				window.moveWindowtoDesktop(side);
 
 			}else if(swipeType == SwipeEvent.SWIPE_RIGHT){
+
 				System.out.println(swipeType);
 				side = "RIGHT";
 				RightUPFunct();
-				window.moveWindowtoDesktop(side);
+				window.moveWindowtoTable(title,side);
 
 			}
 
