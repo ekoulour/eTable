@@ -476,10 +476,12 @@ public void RightToRightFunct(){
 			EventType<SwipeEvent> swipeType = e.getEventType();
 
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
-
-
+				System.out.println("scroll down ");
+				window.scrollWindowDown();
 			}else
-				window.moveWindowtoDesktop();
+				System.out.println("scroll up ");
+				window.scrollWindowUp();
+
 
 		}
 
