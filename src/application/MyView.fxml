@@ -39,12 +39,12 @@
         <Button fx:id="btnLock" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#lockDesctop" prefHeight="60.0" prefWidth="100.0" text="" />
         <ImageView id="btnpicDown" fitHeight="50.0" fitWidth="50.0" layoutX="39.0" layoutY="21.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../img/power.png" />
+            <Image url="file:img/power.png" />
           </image>
         </ImageView>
         <ImageView id="btnpicLock" fitHeight="50.0" fitWidth="50.0" layoutX="151.0" layoutY="21.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../img/lockBlack.png" />
+            <Image url="file:img/lockBlack.png" />
           </image>
         </ImageView>
       </children>
