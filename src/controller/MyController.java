@@ -5,15 +5,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -48,31 +45,21 @@ public class MyController implements Initializable {
 		btnRefresh.setVisible(false);
 		picRefresh.setVisible(false);
 
+		//Set UP panel as unvisible
+		UPPan.setVisible(false);
+
 	//Fill ListViewTwitter with Tweets
-		//ListViewTwitter.setItems(addTwittStreem());
 		addTwittStreem();
 
-
 	}
-	/**
-	 *	On mouse moving around it catches the mouse gesture and print out gesture name and coordinates
-	**/
-
-	@FXML
-        public void mouseHandler(MouseEvent mouseEvent) {
-//            System.out.println(mouseEvent.getEventType() + "\n"
-//                    + "X : Y - " + mouseEvent.getX() + " : " + mouseEvent.getY() + "\n"
-//                    + "SceneX : SceneY - " + mouseEvent.getSceneX() + " : " + mouseEvent.getSceneY() + "\n"
-//                    + "ScreenX : ScreenY - " + mouseEvent.getScreenX() + " : " + mouseEvent.getScreenY());
-
-        }
 
 /*
  * For Twitter
  */
 	public static int SizeTweettsList;
-
+	@FXML private ScrollPane scrolPan;
 	@FXML private GridPane gridTwitt;
+
 
 	public void addTwittStreem() {
 		ArrayList<ArrayList<TwitterList>> TweettsList = new ArrayList<ArrayList<TwitterList>>();
@@ -124,38 +111,17 @@ public class MyController implements Initializable {
 	    	}
 		}
 
-	@FXML private ScrollPane scrolPan;
-
-	//test
-	@FXML private Button up;
-	@FXML private Button down;
 
 	private static double valueScrollPan = 0.0;
-	//test
-	@FXML
-	public void swipeup(MouseEvent e){
-		valueScrollPan -= 0.1;
-		scrolPan.setVvalue(valueScrollPan);
-
-		 e.consume();
-	}
-	//test
-	@FXML
-	public void swipedown(MouseEvent e){
-		valueScrollPan += 0.1;
-		scrolPan.setVvalue(valueScrollPan);
-		e.consume();
-	}
-
 
 	@FXML
 	public void scrolPanOnSwipeUp(SwipeEvent e){
-		valueScrollPan -= 0.1;
-		scrolPan.setVvalue(valueScrollPan);
-
+		if(valueScrollPan>0.0){
+			valueScrollPan -= 0.1;
+			scrolPan.setVvalue(valueScrollPan);
+		}
 		 e.consume();
 	}
-
 
 	@FXML
 	public void scrolPanOnSwipeDown(SwipeEvent e){
@@ -168,19 +134,28 @@ public class MyController implements Initializable {
 /*
  * Section for Gmail
  */
-	@FXML private Pane panNotifications;
+	@FXML private Pane GMPan;
+	@FXML private Pane TWPan;
+	@FXML private Pane UPPan;
 	@FXML private Pane panShort;
+	@FXML private GridPane mailGrid;
+	@FXML private ScrollPane EmailListGrid;
+
 	@FXML private ProgressIndicator progresInd;
 	@FXML private Label CountMail;
-	@FXML private ListView<String> ListView;
-	@FXML private TextArea EmileContent;
+
 	@FXML private ImageView picRefresh;
-	@FXML private Button btnRefresh;
 	@FXML private ImageView EmailContPic;
 
-	//To start authorization
+	@FXML private Button btnRefresh;
 	@FXML private Button btnStartAuthToGmail;
+	@FXML private Button btnAuth; //To autorize when code is in
 
+	@FXML private TextField authField;//To give an authorization code and start authorization
+//	@FXML private ListView<String> ListView;
+	@FXML private TextArea EmileContent;
+
+	//To start authorization
 	@FXML public void btnStartAuthOnMouseClick(MouseEvent e) throws Exception {
 		//connect to gmail.com start
 		new connectGmail().authorize();
@@ -191,194 +166,103 @@ public class MyController implements Initializable {
 		btnAuth.setVisible(true);
 		authField.setVisible(true);
 
+		progresInd.setVisible(true);
+
 		e.consume();
 	}
 
 
-	//To give an authorization code and start authorization
-	@FXML private TextField authField;
-
-	@FXML private Button btnAuth;
-
-	public int mailSize;
+	public int mailSize = 0;
 
 	@FXML private void btnAuthOnMouseClick(MouseEvent e) throws MessagingException{
-		progresInd.setVisible(true);
 
 			//Hide Auth field and button
 			authField.setVisible(false);
 			btnAuth.setVisible(false);
 
 			//get inserted code
-			String code = authField.getText();
+			String code = null;
+			code = authField.getText();
 
-			//send code to authorization function
-			new connectGmail().PreMain(code);
+			System.out.println("code: "+code);
 
-			try {
-				MessagesList = new connectGmail().showMessages();
-			} catch (IOException eo) {
-				// TODO Auto-generated catch block
-				eo.printStackTrace();
-			}
-
-			if(!MessagesList.isEmpty()){
-				//Fill email listView with from and subject
-				ListView.setItems(FillFromSubject());
-
-				//Print Inbox messages count
-				Integer CountMails = MessagesList.size();
-				String ss = "Inbox: " + Integer.toString(CountMails);
-				CountMail.setText(ss);
-
-			}
-			else {
-				ListView.setId("No messages!");
-
-				//Show start Auth button
+			if(code.equals(null) || code.equals("") || code.isEmpty() || code.length() < 30)
+			{
 				btnStartAuthToGmail.setVisible(false);
+				authField.setVisible(false);
+				progresInd.setVisible(false);
+				btnStartAuthToGmail.setVisible(true);
+			}
+			else
+			{
+			//send code to authorization function
+				new connectGmail().PreMain(code);
+
+				try {
+					MessagesList = new connectGmail().showMessages();
+				} catch (IOException eo) {
+					// TODO Auto-generated catch block
+					eo.printStackTrace();
+				}
+
+				if(!MessagesList.isEmpty())
+				{
+					//Fill email Email List Grid with from and subject
+					//ListView.setItems(FillFromSubject()); //old one
+					fillEmails();
+
+					//Print Inbox messages count
+					Integer CountMails = MessagesList.size();
+					String ss = "Inbox: " + Integer.toString(CountMails);
+
+					Label MailCount = new Label();
+					MailCount.setText(ss);
+					mailGrid.addRow(0, MailCount);
+
+				}
+				else
+				{
+					Label NoMessages = new Label();
+					NoMessages.setText("No messages!");
+					mailGrid.addRow(0, NoMessages);
+
+					//Show start Auth button
+					btnStartAuthToGmail.setVisible(false);
+					btnRefresh.setVisible(false);
+				}
+
+				//Stop progress
+				progresInd.setVisible(false);
+
+				//Set refresh visible
+				btnRefresh.setVisible(true);
+				picRefresh.setVisible(true);
 			}
 
-		//Stop progress
-		progresInd.setVisible(false);
-
-		//Set refresh visible
-		btnRefresh.setVisible(true);
-		picRefresh.setVisible(true);
-
 		e.consume();
 	}
 
 
-//	@FXML public void ListViewOnMouseClickedd(MouseEvent mouseEvent) throws IOException, InterruptedException, MessagingException {
-//		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-//		String EMcontent = null;
-//		String EmailFrom = null;
-//	       if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-//	           //open email on browser
-//	    	   if(mouseEvent.getClickCount() == 3){
-//	    			String EmailNo = null;
-//
-//	    			for(ArrayList<Philosopher> MessageList : MessagesList){
-//	    		    	for(Philosopher message : MessageList){
-//	    		    		if(message.No.equals(xMail)){
-//	    		    			EmailNo = (message.id) ;
-//	    		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
-//	    		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
-//	    		    		}
-//	    		    	}
-//	    			}
-//
-//	    			EmailFrom = ListView.getSelectionModel().getSelectedItem();
-//	    			System.out.println(EmailFrom);
-//	    			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
-////		    			wait 3 seconds to do next step!
-//		    			TimeUnit.SECONDS.sleep(5);
-//		    			btnRefreshOnClicked();
-//	    			}
-//	            }
-//	            //Show content -> new functions
-//	            else if(mouseEvent.getClickCount() == 2){
-//
-//	            	//set content box visible
-//	            	EmileContent.setVisible(true);
-//
-//	            	for(ArrayList<Philosopher> MessageList : MessagesList){
-//	            		for(Philosopher Cont : MessageList){
-//	            			if(Cont.No.equals(xMail)){
-//	            				EMcontent = (Cont.EMcontent);
-//	            			}
-//	            		}
-//	            	}
-//	            }
-//	        }
-//		EmileContent.setText(EMcontent);
-//	}
-
-
+	private static double valueScrolEmailsGrid = 0.0;
 
 	@FXML
-	public void ListViewOnMouseClicked(MouseEvent mouseEvent){
-		mouseEvent.getTarget();
-		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-		String EMcontent = null;
-    	for(ArrayList<Philosopher> MessageList : MessagesList){
-    		for(Philosopher Cont : MessageList){
-    			if(Cont.No.equals(xMail)){
-    				EMcontent = (Cont.EMcontent);
-    			}
-    		}
-    	}
-    	//set content box visible
-    	EmileContent.setVisible(true);
-    	//Set email text
-    	EmileContent.setText(EMcontent);
-		EmailContPic.setVisible(true);
+	public void ListEmailOnSwipeDown(SwipeEvent e){
+		valueScrolEmailsGrid += 0.1;
+		EmailListGrid.setVvalue(valueScrolEmailsGrid);
 
-		mouseEvent.consume();
+		e.consume();
 	}
 
-	private static int scrolValListView = 0;
-
-	//for test
-	@FXML Button listup;
-	@FXML Button listdown;
-	@FXML
-	public void modeup(MouseEvent e){
-		if(scrolValListView>=1){
-			scrolValListView -=1;
-			ListView.scrollTo(scrolValListView);
+	@FXML public void ListEmailOnSwipeUp(SwipeEvent e) throws IOException, InterruptedException, MessagingException {
+		if(valueScrolEmailsGrid>0.0){
+			valueScrolEmailsGrid -= 0.1;
+			EmailListGrid.setVvalue(valueScrolEmailsGrid);
 		}
 		e.consume();
-	}
-	@FXML
-	public void movedown(MouseEvent e){
-		scrolValListView+=1;
-		ListView.scrollTo(scrolValListView);
-		e.consume();
-	}
-
-
-	@FXML
-	public void ListViewOnSwipeDown(SwipeEvent e){
-		scrolValListView+=1;
-		ListView.scrollTo(scrolValListView);
-		e.consume();
-	}
-
-	@FXML public void ListViewOnSwipeUp(SwipeEvent e) throws IOException, InterruptedException, MessagingException {
-		if(scrolValListView >= 1){
-			scrolValListView -=1;
-			ListView.scrollTo(scrolValListView);
-		}
-		e.consume();
-
-//		//Open current email on gmail.com browser
-//		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-//			String EmailNo = null;
-//			for(ArrayList<Philosopher> MessageList : MessagesList){
-//		    	for(Philosopher message : MessageList){
-//		    		if(message.No.equals(xMail)){
-//		    			EmailNo = (message.id) ;
-//		    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
-//		    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
-//		    		}
-//		    	}
-//			}
-//			//If opened email is not read then refresh the
-//			String EmailFrom = null;
-//			EmailFrom = ListView.getSelectionModel().getSelectedItem();
-//			System.out.println(EmailFrom);
-////			if(EmailFrom.contains("!")){ //If email is unread then after opening it it becomes read -> list is refreshed!
-//////    			wait 5 seconds to do next step!
-////    			TimeUnit.SECONDS.sleep(5);
-////    			btnRefreshOnClicked();
-////			}
 	}
 
 	//Refresh Emails
 	@FXML public void btnRefreshOnClicked(MouseEvent e) throws MessagingException {
-		System.out.println("RR");
 		//progress starts
 		progresInd.setVisible(true);
 
@@ -389,8 +273,8 @@ public class MyController implements Initializable {
 			eo.printStackTrace();
 		}
 
-		//Fill email listView with from and subject
-		ListView.setItems(FillFromSubject());
+		//Fill email List grid with from and subject
+		fillEmails();
 
 		//stop progress
 		progresInd.setVisible(false);
@@ -399,66 +283,101 @@ public class MyController implements Initializable {
 	}
 
 
+	public String EmailLink = null; //to store emails link to what is onclicked
 
 	//EmailContent
 	@FXML
-	public void EmileContentPicOnSwipeUP() throws IOException {
+	public void EmileContentPicOnSwipeUP() throws IOException { //how to get where is clicked
 		//Open current email on gmail.com browser
-		Integer xMail = ListView.getSelectionModel().getSelectedIndex();
-		String EmailNo = null;
-		for(ArrayList<Philosopher> MessageList : MessagesList){
-	    	for(Philosopher message : MessageList){
-	    		if(message.No.equals(xMail)){
-	    			EmailNo = (message.id) ;
-	    			String urlGmail = "https://mail.google.com/mail/u/0/#inbox/"+EmailNo;
-	    			java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlGmail));
-	    		}
-	    	}
-		}
-//		e.consume();
+
+		if (EmailLink != null)
+		java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
 	}
 
-	@FXML
-	public void EmileContentPicOnSwipeRight(SwipeEvent e) {
+	@FXML public void EmileContentPicOnSwipeRight(SwipeEvent e) {
 		//Clear content
 		EmileContent.setText(null);
 		EmileContent.setVisible(false);
 		EmailContPic.setVisible(false);
+
+		EmailLink = null; //when close email content then set link to null
+
 		e.consume();
 	}
+
 	//Test
 	@FXML void EmileContentPicOnClick(MouseEvent e){
 		EmileContent.setText(null);
 		EmileContent.setVisible(false);
 		EmailContPic.setVisible(false);
+
+		EmailLink = null; //when close email content then set link to null
+
 		e.consume();
 	}
 
 
-	//Get INBOX list of email (from subject)
-	public ObservableList<String> FillFromSubject(){
-		// arrayList to print into ListView
-		ArrayList<String> FromSubject = new ArrayList<String>();
+
+	//Print Email on list
+	public void fillEmails(){
+
+		Integer x = 1;
+		String FromSubj = null;
+
 		for(ArrayList<Philosopher> MessageList : MessagesList){
 
 			for(Philosopher ff : MessageList){
-	    		String frSu = null;
-	    		String unread = null;
-	    		for(String flag : ff.Flags){
-	    			if(flag.contains("UNREAD")){
-	    				unread = "! ";
-	    			}
-	    			else unread = "";
-	    		}
-	    		frSu = (unread + ff.From + "   " + ff.Subject) ;
-	    		FromSubject.add(frSu);
-	    	}
+
+		    		String unread = null;
+		    		for(String flag : ff.Flags){
+		    			if(flag.contains("UNREAD")){
+		    				unread = "* ";
+		    			}
+		    			else unread = "";
+		    		}
+		    		FromSubj = (unread + ff.From + " \n" + ff.Subject) ;
+
+		    		String EmContent = ff.EMcontent;
+
+		    		//create an text area and add it on grid new row
+		    		TextArea tt = new TextArea(FromSubj);
+		    		tt.setPrefHeight(50);
+		    		tt.setWrapText(true);
+		    		tt.setEditable(false);
+		    		tt.setMouseTransparent(false);
+		    		tt.setId(Integer.toString(x));
+
+		    		//Tap and open Email content
+		    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    	        @Override public void handle(MouseEvent e) {
+
+		    	        	//set content box visible
+		    	        	EmileContent.setVisible(true);
+		    	        	EmailContPic.setVisible(true);
+		    	        	//Set email text
+		    	        	EmileContent.setText(EmContent);
+
+		    	        	//Store globally the emails link
+		    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
+		    	        	e.consume();
+		    	        }
+		    		});
+
+		    		mailGrid.addRow(x, tt);
+		    		x+=1;
+			}
 		}
-
-		ObservableList<String> fromAndSubject = FXCollections.observableArrayList(FromSubject);
-		return fromAndSubject;
-
 	}
+
+
+/*
+* End of Gmail section
+*
+*/
+
+/*
+ * Extra buttons
+ */
 
 	//Lock
 		@FXML private ImageView btnpicLock;
@@ -466,7 +385,7 @@ public class MyController implements Initializable {
 		@FXML public void lockDesctop(MouseEvent e) throws Exception{
 			System.out.print("Lock");
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
-			Runtime.getRuntime().exec(lockDesctop);
+//			Runtime.getRuntime().exec(lockDesctop);
 
 			e.consume();
 		}
@@ -478,16 +397,47 @@ public class MyController implements Initializable {
 		@FXML public void openDown(MouseEvent e) throws Exception{
 			System.out.print("CMD");
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
-			Runtime.getRuntime().exec(lockDesctop);
+//			Runtime.getRuntime().exec(lockDesctop);
 
 			e.consume();
 		}
 
 
 /*
- * End of Gmail section
+ * End of Extra buttons
 */
 
+/*
+ * Functions to move Right side(Twitter and Gmail) UP or to Right side again
+ */
+		@FXML private Button RightUP;
+		@FXML private Button RightToRight;
+
+public void RightUPFunct(){
+	//Set Right Gmail and Twitter unvisible
+	GMPan.setVisible(false);
+	TWPan.setVisible(false);
+	//Set Up panel visible
+	UPPan.setVisible(true);
+}
+
+public void RightToRightFunct(){
+	//Set Right panel Gmail and Twitter visible
+	GMPan.setVisible(true);
+	TWPan.setVisible(true);
+	//Hide Up panel
+	UPPan.setVisible(false);
+}
+
+
+//test Button functions on click
+
+@FXML public void RightUPClick(){
+	RightUPFunct();
+}
+@FXML public void RightToRightClick(){
+	RightToRightFunct();
+}
 
 	/*
 	 * Windows handling in gesture events

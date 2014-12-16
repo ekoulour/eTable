@@ -113,6 +113,10 @@ public class Window {
 	public void moveWindowtoDesktop(){
 
 
+		if (windowsList.size() == 0) {
+			System.out.println("No windows");
+			return;
+		}
 		WindowInfo window = windowsList.get(0);
 		int desktop = User32.instance.GetDesktopWindow();
 		int monitorWindth = getMonitorWidth();
@@ -129,7 +133,10 @@ public class Window {
 	 * Destroy a window on table
 	 */
 	public void deleteWindow(){
-
+		if (windowsList.size() == 0) {
+			System.out.println("No windows");
+			return;
+		}
 		WindowInfo window = windowsList.get(0);
 		//System.out.println(window.hwnd);
 		User32.instance.DestroyWindow(window.hwnd);
