@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sun.jna.Native;
+import com.sun.jna.platform.win32.WinDef.HRGN;
 import com.sun.jna.platform.win32.WinDef.LPARAM;
 import com.sun.jna.platform.win32.WinDef.LRESULT;
 import com.sun.jna.platform.win32.WinDef.WPARAM;
@@ -38,5 +39,6 @@ public interface User32 extends StdCallLibrary{
     boolean DestroyWindow(int hWnd);
     int GetDesktopWindow();
     LRESULT DefWindowProc(int hWnd, int uMsg, WPARAM wParam, LPARAM lParam);
+    int ScrollWindowEx(int hWnd,int dx,int dy,RECT scrolledArea,RECT clipRect,HRGN region,Object boundaries,int flag);
 
 }

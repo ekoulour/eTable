@@ -155,4 +155,36 @@ public class Window {
 
 	}
 
+	/*
+	 * Scroll down event are handling sending the corresponding
+	 * msg to the window
+	 */
+    public void scrollWindowDown(){
+
+    	WindowInfo window = windowsList.get(0);
+
+    	User32.instance.ScrollWindowEx(window.hwnd, 0, 5, null, null, null, null,0);
+
+
+
+
+    }
+
+    /*
+	 * Scroll up event are handling sending the corresponding
+	 * msg to the window
+	 */
+    public void scrollWindowUp(){
+
+    	WindowInfo window = windowsList.get(0);
+
+    	User32.instance.ScrollWindowEx(window.hwnd, 0, -5, null, null, null, null,0);
+
+
+
+
+    }
+
+
+
   }

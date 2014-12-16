@@ -496,6 +496,7 @@ public class MyController implements Initializable {
 	 * @paramSwipeEvent  type of swipe event
 	 */
 		Window window = new Window();
+		@FXML private Pane swipeWindow;
 
 		@FXML public void windowHanding(SwipeEvent e){
 
@@ -516,10 +517,26 @@ public class MyController implements Initializable {
 				window.deleteWindow();
 			}
 
+		}
+
+		@FXML private Pane swipeScrollWindow;
+
+		@FXML public void scrollHanding(SwipeEvent e){
+
+			EventType<SwipeEvent> swipeType = e.getEventType();
+
+			if(swipeType == SwipeEvent.SWIPE_DOWN){
 
 
+			}else
+				window.moveWindowtoDesktop();
 
 		}
+
+
+
+
+
 
 
 }
