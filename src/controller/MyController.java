@@ -461,11 +461,7 @@ public void RightToRightFunct(){
 
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
 				System.out.println("SWIPE DOWN");
-
-				if(side == "RIGHT"){
-					RightUPFunct();
-				}
-
+				side = "LEFT";
 				window.moveWindowtoTable(title,side);
 
 			}else if(swipeType == SwipeEvent.SWIPE_UP){
@@ -473,12 +469,14 @@ public void RightToRightFunct(){
 				if(side == "RIGHT"){
 					RightToRightFunct();
 				}
-
 				window.moveWindowtoDesktop(side);
-			}else{
 
+			}else if(swipeType == SwipeEvent.SWIPE_RIGHT){
 				System.out.println(swipeType);
-				window.deleteWindow();
+				side = "RIGHT";
+				RightUPFunct();
+				window.moveWindowtoDesktop(side);
+
 			}
 
 		}
@@ -487,14 +485,14 @@ public void RightToRightFunct(){
 
 		@FXML public void scrollHanding(SwipeEvent e){
 
-			EventType<SwipeEvent> swipeType = e.getEventType();
+			/*EventType<SwipeEvent> swipeType = e.getEventType();
 
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
 				System.out.println("scroll down ");
 				window.scrollWindowDown();
 			}else
 				System.out.println("scroll up ");
-				window.scrollWindowUp();
+				window.scrollWindowUp();*/
 
 		}
 
