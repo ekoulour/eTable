@@ -329,6 +329,7 @@ public class MyController implements Initializable {
 	public void EmileContentPicOnSwipeUP() throws IOException { //how to get where is clicked
 		//Open current email on gmail.com browser
 
+		if (EmailLink != null)
 		java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
 	}
 
@@ -423,7 +424,7 @@ public class MyController implements Initializable {
 		@FXML public void lockDesctop(MouseEvent e) throws Exception{
 			System.out.print("Lock");
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
-			Runtime.getRuntime().exec(lockDesctop);
+//			Runtime.getRuntime().exec(lockDesctop);
 
 			e.consume();
 		}
@@ -435,7 +436,7 @@ public class MyController implements Initializable {
 		@FXML public void openDown(MouseEvent e) throws Exception{
 			System.out.print("CMD");
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
-			Runtime.getRuntime().exec(lockDesctop);
+//			Runtime.getRuntime().exec(lockDesctop);
 
 			e.consume();
 		}

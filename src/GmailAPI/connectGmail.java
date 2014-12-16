@@ -288,7 +288,8 @@ public class connectGmail {
 
 		String EMcontent = sw.toString();
 		EMcontent = EMcontent.replaceAll("\\r\\n|\\r|\\n", " ");
-		EMcontent = EMcontent.substring(0, 550);
+		if (EMcontent.length() > 550)
+			EMcontent = EMcontent.substring(0, 550);
 		return EMcontent;
 	}
 }
