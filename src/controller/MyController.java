@@ -417,8 +417,11 @@ public void RightUPFunct(){
 	//Set Right Gmail and Twitter unvisible
 	GMPan.setVisible(false);
 	GMPan.setMouseTransparent(true);
+	GMPan.setDisable(true);
 	TWPan.setVisible(false);
 	TWPan.setMouseTransparent(true);
+	TWPan.setDisable(true);
+
 	//Set Up panel visible
 	UPPan.setVisible(true);
 }
@@ -427,8 +430,10 @@ public void RightToRightFunct(){
 	//Set Right panel Gmail and Twitter visible
 	GMPan.setVisible(true);
 	GMPan.setMouseTransparent(false);
+	GMPan.setDisable(false);
 	TWPan.setVisible(true);
 	TWPan.setMouseTransparent(false);
+	TWPan.setDisable(false);
 	//Hide Up panel
 	UPPan.setVisible(false);
 }
