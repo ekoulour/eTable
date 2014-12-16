@@ -454,7 +454,9 @@ public void RightToRightFunct(){
 			EventType<SwipeEvent> swipeType = e.getEventType();
 			String title = "NGUI";
 
-			if(e.getX() >= 0 && e.getX() < 600){
+			 System.out.println(e.getX());
+
+			 if(e.getX() >= 0 && e.getX() < 600){
 				side = "LEFT";
 			}else
 				side = "RIGHT";

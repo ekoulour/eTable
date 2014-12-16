@@ -10,7 +10,7 @@
 
 <AnchorPane disable="false" focusTraversable="false" onSwipeDown="#windowHanding" onSwipeLeft="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="800.0" prefWidth="1280.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
   <children>
-    <Pane fx:id="GMPan" layoutX="891.0" layoutY="22.0" prefHeight="491.0" prefWidth="368.0">
+    <Pane fx:id="GMPan" layoutX="891.0" layoutY="22.0" onSwipeDown="#windowHanding" onSwipeUp="#windowHanding" prefHeight="491.0" prefWidth="368.0">
       <children>
         <Text layoutX="4.0" layoutY="36.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
           <font>
