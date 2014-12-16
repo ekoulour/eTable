@@ -62,53 +62,58 @@ public class MyController implements Initializable {
 
 
 	public void addTwittStreem() {
-		ArrayList<ArrayList<TwitterList>> TweettsList = new ArrayList<ArrayList<TwitterList>>();
-		ArrayList<String> TweetStreemList = new ArrayList<String>();
-		TweettsList = new TwitterTimeline().TwittMain();
 
-		//How many tweets
-		SizeTweettsList = TweettsList.size();
+			ArrayList<ArrayList<TwitterList>> TweettsList = new ArrayList<ArrayList<TwitterList>>();
+			ArrayList<String> TweetStreemList = new ArrayList<String>();
+			TweettsList = new TwitterTimeline().TwittMain();
 
-		Integer x = 1;
+			//How many tweets
+			SizeTweettsList = TweettsList.size();
 
-		for(ArrayList<TwitterList> TweettList : TweettsList){
-	    	for(TwitterList tweet : TweettList){
+			Integer x = 1;
 
-				@SuppressWarnings("deprecation")
-				String aa = tweet.date.getDay() + "/" +  tweet.date.getMonth() + "/" + tweet.date.getYear() + " " +
-						tweet.date.getHours() + ":" + tweet.date.getMinutes() +
-						"  @" + tweet.screenName + "\n" + tweet.text;
+			for(ArrayList<TwitterList> TweettList : TweettsList){
+		    	for(TwitterList tweet : TweettList){
 
-				TweetStreemList.add(aa);
-	    		TextArea tt = new TextArea(aa);
-	    		tt.setPrefHeight(80);
-	    		tt.setWrapText(true);
-	    		tt.setEditable(false);
-	    		tt.setMouseTransparent(false);
-	    		tt.setId(Integer.toString(x));
+					@SuppressWarnings("deprecation")
+					String aa = tweet.date.getDay() + "/" +  tweet.date.getMonth() + "/" + tweet.date.getYear() + " " +
+							tweet.date.getHours() + ":" + tweet.date.getMinutes() +
+							"  @" + tweet.screenName + "\n" + tweet.text;
 
-	    		//Tweet link
-	    		String urlTweet = tweet.id;
+					TweetStreemList.add(aa);
+		    		TextArea tt = new TextArea(aa);
+		    		tt.setPrefHeight(80);
+		    		tt.setWrapText(true);
+		    		tt.setEditable(false);
+		    		tt.setMouseTransparent(false);
+		    		tt.setId(Integer.toString(x));
 
-	    		//Tap on Tweet to open it on web
-	    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	    	        @Override public void handle(MouseEvent event) {
+		    		//Tweet link
+		    		String urlTweet = tweet.id;
 
-		    			try {
-							java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+		    		//Tap on Tweet to open it on web
+		    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    	        @Override public void handle(MouseEvent event) {
 
-	    	            event.consume();
-	    	        }
-	    	});
+		    	        	//To not work when Windows appears on right side
+		    	    		if(TWPan.isVisible() || !TWPan.isMouseTransparent())
+		    	    		{
+				    			try {
+									java.awt.Desktop.getDesktop().browse(java.net.URI.create(urlTweet));
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+		    	    		}
 
-	    		gridTwitt.addRow(x, tt);
-	    		x+=1;
-	    		}
-	    	}
+		    	            event.consume();
+		    	        }
+		    	});
+
+		    		gridTwitt.addRow(x, tt);
+		    		x+=1;
+		    		}
+		    	}
 		}
 
 
@@ -116,17 +121,24 @@ public class MyController implements Initializable {
 
 	@FXML
 	public void scrolPanOnSwipeUp(SwipeEvent e){
-		if(valueScrollPan>0.0){
-			valueScrollPan -= 0.1;
-			scrolPan.setVvalue(valueScrollPan);
+		if(TWPan.isVisible() || !TWPan.isMouseTransparent())
+		{
+			if(valueScrollPan>0.0){
+				valueScrollPan -= 0.1;
+				scrolPan.setVvalue(valueScrollPan);
+			}
 		}
+
 		 e.consume();
 	}
 
 	@FXML
 	public void scrolPanOnSwipeDown(SwipeEvent e){
-		valueScrollPan += 0.1;
-		scrolPan.setVvalue(valueScrollPan);
+		if(TWPan.isVisible() || !TWPan.isMouseTransparent())
+		{
+			valueScrollPan += 0.1;
+			scrolPan.setVvalue(valueScrollPan);
+		}
 		e.consume();
 	}
 
@@ -152,22 +164,23 @@ public class MyController implements Initializable {
 	@FXML private Button btnAuth; //To autorize when code is in
 
 	@FXML private TextField authField;//To give an authorization code and start authorization
-//	@FXML private ListView<String> ListView;
 	@FXML private TextArea EmileContent;
 
 	//To start authorization
 	@FXML public void btnStartAuthOnMouseClick(MouseEvent e) throws Exception {
-		//connect to gmail.com start
-		new connectGmail().authorize();
-		//Hide start Auth button
-		btnStartAuthToGmail.setVisible(false);
 
-		//Set to visible Auth field and Auth button
-		btnAuth.setVisible(true);
-		authField.setVisible(true);
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent()){
+			//connect to gmail.com start
+			new connectGmail().authorize();
+			//Hide start Auth button
+			btnStartAuthToGmail.setVisible(false);
 
-		progresInd.setVisible(true);
+			//Set to visible Auth field and Auth button
+			btnAuth.setVisible(true);
+			authField.setVisible(true);
 
+			progresInd.setVisible(true);
+		}
 		e.consume();
 	}
 
@@ -175,70 +188,71 @@ public class MyController implements Initializable {
 	public int mailSize = 0;
 
 	@FXML private void btnAuthOnMouseClick(MouseEvent e) throws MessagingException{
-
-			//Hide Auth field and button
-			authField.setVisible(false);
-			btnAuth.setVisible(false);
-
-			//get inserted code
-			String code = null;
-			code = authField.getText();
-
-			System.out.println("code: "+code);
-
-			if(code.equals(null) || code.equals("") || code.isEmpty() || code.length() < 30)
-			{
-				btnStartAuthToGmail.setVisible(false);
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		{
+				//Hide Auth field and button
 				authField.setVisible(false);
-				progresInd.setVisible(false);
-				btnStartAuthToGmail.setVisible(true);
-			}
-			else
-			{
-			//send code to authorization function
-				new connectGmail().PreMain(code);
+				btnAuth.setVisible(false);
 
-				try {
-					MessagesList = new connectGmail().showMessages();
-				} catch (IOException eo) {
-					// TODO Auto-generated catch block
-					eo.printStackTrace();
-				}
+				//get inserted code
+				String code = null;
+				code = authField.getText();
 
-				if(!MessagesList.isEmpty())
+				System.out.println("code: "+code);
+
+				if(code.equals(null) || code.equals("") || code.isEmpty() || code.length() < 30)
 				{
-					//Fill email Email List Grid with from and subject
-					//ListView.setItems(FillFromSubject()); //old one
-					fillEmails();
-
-					//Print Inbox messages count
-					Integer CountMails = MessagesList.size();
-					String ss = "Inbox: " + Integer.toString(CountMails);
-
-					Label MailCount = new Label();
-					MailCount.setText(ss);
-					mailGrid.addRow(0, MailCount);
-
+					btnStartAuthToGmail.setVisible(false);
+					authField.setVisible(false);
+					progresInd.setVisible(false);
+					btnStartAuthToGmail.setVisible(true);
 				}
 				else
 				{
-					Label NoMessages = new Label();
-					NoMessages.setText("No messages!");
-					mailGrid.addRow(0, NoMessages);
+				//send code to authorization function
+					new connectGmail().PreMain(code);
 
-					//Show start Auth button
-					btnStartAuthToGmail.setVisible(false);
-					btnRefresh.setVisible(false);
+					try {
+						MessagesList = new connectGmail().showMessages();
+					} catch (IOException eo) {
+						// TODO Auto-generated catch block
+						eo.printStackTrace();
+					}
+
+					if(!MessagesList.isEmpty())
+					{
+						//Fill email Email List Grid with from and subject
+						//ListView.setItems(FillFromSubject()); //old one
+						fillEmails();
+
+						//Print Inbox messages count
+						Integer CountMails = MessagesList.size();
+						String ss = "Inbox: " + Integer.toString(CountMails);
+
+						Label MailCount = new Label();
+						MailCount.setText(ss);
+						mailGrid.addRow(0, MailCount);
+
+					}
+					else
+					{
+						Label NoMessages = new Label();
+						NoMessages.setText("No messages!");
+						mailGrid.addRow(0, NoMessages);
+
+						//Show start Auth button
+						btnStartAuthToGmail.setVisible(false);
+						btnRefresh.setVisible(false);
+					}
+
+					//Stop progress
+					progresInd.setVisible(false);
+
+					//Set refresh visible
+					btnRefresh.setVisible(true);
+					picRefresh.setVisible(true);
 				}
-
-				//Stop progress
-				progresInd.setVisible(false);
-
-				//Set refresh visible
-				btnRefresh.setVisible(true);
-				picRefresh.setVisible(true);
-			}
-
+		}
 		e.consume();
 	}
 
@@ -247,38 +261,45 @@ public class MyController implements Initializable {
 
 	@FXML
 	public void ListEmailOnSwipeDown(SwipeEvent e){
-		valueScrolEmailsGrid += 0.1;
-		EmailListGrid.setVvalue(valueScrolEmailsGrid);
-
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		{
+			valueScrolEmailsGrid += 0.1;
+			EmailListGrid.setVvalue(valueScrolEmailsGrid);
+		}
 		e.consume();
 	}
 
 	@FXML public void ListEmailOnSwipeUp(SwipeEvent e) throws IOException, InterruptedException, MessagingException {
-		if(valueScrolEmailsGrid>0.0){
-			valueScrolEmailsGrid -= 0.1;
-			EmailListGrid.setVvalue(valueScrolEmailsGrid);
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		{
+			if(valueScrolEmailsGrid>0.0){
+				valueScrolEmailsGrid -= 0.1;
+				EmailListGrid.setVvalue(valueScrolEmailsGrid);
+			}
 		}
 		e.consume();
 	}
 
 	//Refresh Emails
 	@FXML public void btnRefreshOnClicked(MouseEvent e) throws MessagingException {
-		//progress starts
-		progresInd.setVisible(true);
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		{
+			//progress starts
+			progresInd.setVisible(true);
 
-		try {
-			MessagesList = new connectGmail().showMessages();
-		} catch (IOException eo) {
-			// TODO Auto-generated catch block
-			eo.printStackTrace();
+			try {
+				MessagesList = new connectGmail().showMessages();
+			} catch (IOException eo) {
+				// TODO Auto-generated catch block
+				eo.printStackTrace();
+			}
+
+			//Fill email List grid with from and subject
+			fillEmails();
+
+			//stop progress
+			progresInd.setVisible(false);
 		}
-
-		//Fill email List grid with from and subject
-		fillEmails();
-
-		//stop progress
-		progresInd.setVisible(false);
-
 		e.consume();
 	}
 
@@ -289,30 +310,36 @@ public class MyController implements Initializable {
 	@FXML
 	public void EmileContentPicOnSwipeUP() throws IOException { //how to get where is clicked
 		//Open current email on gmail.com browser
-
-		if (EmailLink != null)
-		java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		{
+			if (EmailLink != null)
+				java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
+		}
 	}
 
 	@FXML public void EmileContentPicOnSwipeRight(SwipeEvent e) {
-		//Clear content
-		EmileContent.setText(null);
-		EmileContent.setVisible(false);
-		EmailContPic.setVisible(false);
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		{
+			//Clear content
+			EmileContent.setText(null);
+			EmileContent.setVisible(false);
+			EmailContPic.setVisible(false);
 
-		EmailLink = null; //when close email content then set link to null
-
+			EmailLink = null; //when close email content then set link to null
+		}
 		e.consume();
 	}
 
 	//Test
 	@FXML void EmileContentPicOnClick(MouseEvent e){
-		EmileContent.setText(null);
-		EmileContent.setVisible(false);
-		EmailContPic.setVisible(false);
+		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		{
+			EmileContent.setText(null);
+			EmileContent.setVisible(false);
+			EmailContPic.setVisible(false);
 
-		EmailLink = null; //when close email content then set link to null
-
+			EmailLink = null; //when close email content then set link to null
+		}
 		e.consume();
 	}
 
@@ -350,15 +377,17 @@ public class MyController implements Initializable {
 		    		//Tap and open Email content
 		    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    	        @Override public void handle(MouseEvent e) {
+		    	    		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		    	    		{
+			    	        	//set content box visible
+			    	        	EmileContent.setVisible(true);
+			    	        	EmailContPic.setVisible(true);
+			    	        	//Set email text
+			    	        	EmileContent.setText(EmContent);
 
-		    	        	//set content box visible
-		    	        	EmileContent.setVisible(true);
-		    	        	EmailContPic.setVisible(true);
-		    	        	//Set email text
-		    	        	EmileContent.setText(EmContent);
-
-		    	        	//Store globally the emails link
-		    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
+			    	        	//Store globally the emails link
+			    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
+		    	    		}
 		    	        	e.consume();
 		    	        }
 		    		});
@@ -418,6 +447,7 @@ public void RightUPFunct(){
 	GMPan.setVisible(false);
 	GMPan.setMouseTransparent(true);
 	GMPan.setDisable(true);
+
 	TWPan.setVisible(false);
 	TWPan.setMouseTransparent(true);
 	TWPan.setDisable(true);
@@ -431,6 +461,7 @@ public void RightToRightFunct(){
 	GMPan.setVisible(true);
 	GMPan.setMouseTransparent(false);
 	GMPan.setDisable(false);
+
 	TWPan.setVisible(true);
 	TWPan.setMouseTransparent(false);
 	TWPan.setDisable(false);
