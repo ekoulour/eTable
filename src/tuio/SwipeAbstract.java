@@ -3,12 +3,12 @@ package tuio;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.scene.Node;
-import TUIO.TuioCursor;
 import javafx.application.Platform;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.input.SwipeEvent;
+import TUIO.TuioCursor;
 
 /**
  * Abstract class to hold the common parts of catching a Swipe event in
@@ -39,7 +39,7 @@ public abstract class SwipeAbstract extends Gesture {
 	 *            (up, down, right, left).
 	 */
 	abstract boolean goingGood(TuioCursor arg);
-	
+
 	/**
 	 * Used during remove event to see if the end point is far enough from
 	 * the source. Essentially what this should do in implementation is find
@@ -50,12 +50,12 @@ public abstract class SwipeAbstract extends Gesture {
 	 *            spot (most likely: the starting spot).
 	 */
 	abstract boolean farEnough(TuioCursor arg);
-	
+
 	/**
 	 * @return The type of swipe event that the subclass should trigger
 	 */
 	abstract EventType<SwipeEvent> getSwipeType();
-	
+
 	/**
 	 * Adds new cursor and checks whether we were already following it.
 	 * As mentioned elsewhere, needed due to the flaky nature of add and
@@ -87,13 +87,13 @@ public abstract class SwipeAbstract extends Gesture {
 				if (start_x.containsKey(arg.getCursorID())) {
 					long local_end = System.currentTimeMillis();
 					end_time.put(arg.getCursorID(), local_end);
-					
+
 					try {
 						Thread.sleep(TIMEOUT);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
+
 					if (end_time.containsKey(arg.getCursorID())
 							&& end_time.get(arg.getCursorID()) == local_end) {
 						// Cursor is really gone now
@@ -113,7 +113,7 @@ public abstract class SwipeAbstract extends Gesture {
 		LocalThread l = new LocalThread();
 		l.start();
 	}
-	
+
 	/**
 	 * Validate that we aren't deviating from our intended direction
 	 */
@@ -129,7 +129,7 @@ public abstract class SwipeAbstract extends Gesture {
 			previous_y.put(arg.getCursorID(), arg.getY());
 		}
 	}
-	
+
 	/**
 	 * Called when the swipe event is detected.
 	 * Finds the node below the starting location and sends the appropriate
@@ -160,6 +160,8 @@ public abstract class SwipeAbstract extends Gesture {
 				p_local.getX(), p_local.getY(),
 				p.getX(), p.getY(),
 				false, false, false, false, true, 1, null);
+
+		System.out.println("Swipe: " + getSwipeType() + " " + currenttarget);
 
 		// Fire event. Needs to be done this convoluted way since JavaFX
 		// does not accept event firing from sources besides its own thread.
