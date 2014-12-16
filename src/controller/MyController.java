@@ -488,20 +488,21 @@ public class MyController implements Initializable {
  * End of Gmail section
 */
 
+
 	/*
 	 * Windows handling in gesture events
 	 * For each gesture event the corresponding function
 	 * is called
 	 * @paramSwipeEvent  type of swipe event
 	 */
+		Window window = new Window();
+
 		@FXML public void windowHanding(SwipeEvent e){
 
-			Window window = new Window();
+
 			EventType<SwipeEvent> swipeType = e.getEventType();
 
 			String title = "NGUI";
-
-			//String side;
 
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
 				System.out.println("SWIPE DOWN");
@@ -512,7 +513,7 @@ public class MyController implements Initializable {
 			}else{
 
 				System.out.println(swipeType);
-				//window.deleteWindow();
+				window.deleteWindow();
 			}
 
 

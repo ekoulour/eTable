@@ -19,8 +19,8 @@ public class Window {
 
 	//List<WindowInfo> windowsRight = new ArrayList<WindowInfo>();
 	List<WindowInfo> windowsList = new ArrayList<WindowInfo>();
-    RECT rectChild;
 	RECT rectClient = new RECT();
+    RECT rectChild;
 	int hWndChild;
 	int hWndParent;
 
@@ -101,17 +101,9 @@ public class Window {
 
 		User32.instance.SetParent(hWndChild, hWndParent);
 		User32.instance.GetClientRect(hWndParent,rectClient);
-		User32.instance.MoveWindow(hWndChild,rectClient.left, rectClient.top, rectClient.right / 4, rectClient.bottom - 20, false);
-	    rectChild = new RECT(rectClient.left,rectClient.top,rectClient.right / 4,rectClient.bottom - 20);
+		User32.instance.MoveWindow(hWndChild,rectClient.left, rectClient.top, rectClient.right / 4, rectClient.bottom - 100, false);
+	    rectChild = new RECT(rectClient.left,rectClient.top,rectClient.right / 4,rectClient.bottom - 100);
 	    windowsList.add(new WindowInfo(hWndChild, rectChild));
-
-	   /* if(side=="LEFT"){
-	    	leftCoordinate = rectClient.left;
-	    	moveWindow(windowsList,leftCoordinate);
-	    }else{
-	    	leftCoordinate = rectClient.right / 2;
-	    	moveWindow(windowsRight,leftCoordinate);
-	    }*/
 	}
 
 	/*
@@ -120,15 +112,16 @@ public class Window {
 	 */
 	public void moveWindowtoDesktop(){
 
-		//WindowInfo usedWindow = getForegroundWindow();
+
 		WindowInfo window = windowsList.get(0);
 		int desktop = User32.instance.GetDesktopWindow();
 		int monitorWindth = getMonitorWidth();
 		int monitorHeight = getMonitorHeight();
 
 		User32.instance.SetParent(window.hwnd, desktop);
-		//User32.instance.MoveWindow(window.hwnd, 0, 0, usedWindow.rect.right/2, usedWindow.rect.bottom, false);
 		User32.instance.MoveWindow(window.hwnd, 0, 0, monitorWindth/2, monitorHeight, false);
+
+		windowsList.clear();
 	}
 
 
@@ -138,23 +131,23 @@ public class Window {
 	public void deleteWindow(){
 
 		WindowInfo window = windowsList.get(0);
-		System.out.println(window.hwnd);
-		//User32.instance.DestroyWindow(usedWindow.hwnd);
+		//System.out.println(window.hwnd);
+		User32.instance.DestroyWindow(window.hwnd);
 
 		 new WindowProc(){
 			public LRESULT callback(int hWnd, int uMsg, WPARAM wParam, LPARAM lParam){
 
-				if (hWnd == window.hwnd){
-					switch(uMsg)
-				    {
-				        case WinUser.WM_CLOSE:
-				        	User32.instance.DestroyWindow(hWnd);
-				        break;
-				        default:
-				            return User32.instance.DefWindowProc(hWnd, uMsg, wParam, lParam);
-				    }
+				System.out.println();
+				System.out.println(uMsg+" "+hWnd);
 
-				}
+
+				switch(uMsg)
+			    {
+			        case WinUser.WM_CLOSE:
+			        	User32.instance.DestroyWindow(hWnd);
+			        break;
+			    }
+
 				 return User32.instance.DefWindowProc(hWnd, uMsg, wParam, lParam);
 			}
 
