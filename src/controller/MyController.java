@@ -450,17 +450,31 @@ public void RightToRightFunct(){
 
 		@FXML public void windowHanding(SwipeEvent e){
 
-
+			String side;
 			EventType<SwipeEvent> swipeType = e.getEventType();
-
 			String title = "NGUI";
+
+			if(e.getX() >= 0 && e.getX() < 600){
+				side = "LEFT";
+			}else
+				side = "RIGHT";
 
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
 				System.out.println("SWIPE DOWN");
-				window.moveWindowtoTable(title);
+
+				if(side == "RIGHT"){
+					RightUPFunct();
+				}
+
+				window.moveWindowtoTable(title,side);
 
 			}else if(swipeType == SwipeEvent.SWIPE_UP){
-				window.moveWindowtoDesktop();
+
+				if(side == "RIGHT"){
+					RightToRightFunct();
+				}
+
+				window.moveWindowtoDesktop(side);
 			}else{
 
 				System.out.println(swipeType);
@@ -478,8 +492,7 @@ public void RightToRightFunct(){
 			if(swipeType == SwipeEvent.SWIPE_DOWN){
 
 
-			}else
-				window.moveWindowtoDesktop();
+			};
 
 		}
 

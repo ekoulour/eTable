@@ -17,8 +17,8 @@ import com.sun.jna.platform.win32.WinUser;
 
 public class Window {
 
-	//List<WindowInfo> windowsRight = new ArrayList<WindowInfo>();
-	List<WindowInfo> windowsList = new ArrayList<WindowInfo>();
+	List<WindowInfo> windowsRight = new ArrayList<WindowInfo>();
+	List<WindowInfo> windowsLeft = new ArrayList<WindowInfo>();
 	RECT rectClient = new RECT();
     RECT rectChild;
 	int hWndChild;
@@ -64,21 +64,16 @@ public class Window {
 	/*
 	 * Move window of either the left side or right side checking
 	 * first if the corresponding list is empty or not
-
+    */
 	public void moveWindow(List<WindowInfo> windowsList,int leftCoordinate){
 
-		if(windowsList.isEmpty()){
-    		User32.instance.GetClientRect(hWndParent,rectClient);
-         }else{
-        	 WindowInfo lastWindow = windowsList.get(windowsList.size()-1);
-        	 User32.instance.GetClientRect(lastWindow.hwnd,rectClient);
-         }
 
-	    User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom, false);
-	    rectChild = new RECT(rectClient.left,rectClient.top,rectClient.right/4,rectClient.bottom);
+    	User32.instance.GetClientRect(hWndParent,rectClient);
+	    User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom-100, false);
+	    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
 	    windowsList.add(new WindowInfo(hWndChild, rectChild));
 
-	}*/
+	}
 
 
 	/*
@@ -88,36 +83,50 @@ public class Window {
 	 * @param parentTitle  title of the application's window (parent)
 	 */
 
-	public void moveWindowtoTable(String parentTitle){
+	public void moveWindowtoTable(String parentTitle,String side){
 
 
-	    //int leftCoordinate;
+	    int leftCoordinate;
 
 		WindowInfo usedWindow = getForegroundWindow();
 		hWndChild = usedWindow.hwnd;
 		hWndParent = User32.instance.FindWindow(null,parentTitle);
+		User32.instance.SetParent(hWndChild, hWndParent);
+		User32.instance.GetClientRect(hWndParent,rectClient);
 
 		System.out.println(hWndChild);
 
-		User32.instance.SetParent(hWndChild, hWndParent);
-		User32.instance.GetClientRect(hWndParent,rectClient);
-		User32.instance.MoveWindow(hWndChild,rectClient.left, rectClient.top, rectClient.right / 4, rectClient.bottom - 100, false);
-	    rectChild = new RECT(rectClient.left,rectClient.top,rectClient.right / 4,rectClient.bottom - 100);
-	    windowsList.add(new WindowInfo(hWndChild, rectChild));
+		if(side == "LEFT"){
+			leftCoordinate = rectClient.left;
+			moveWindow(windowsLeft,leftCoordinate);
+		}else{
+			leftCoordinate = rectClient.right / 2;
+			moveWindow(windowsRight,leftCoordinate);
+		}
+
 	}
 
 	/*
 	 * Move window in its previous position on the monitor
 	 *
 	 */
-	public void moveWindowtoDesktop(){
+	public void moveWindowtoDesktop(String side){
 
+		WindowInfo window;
 
-		if (windowsList.size() == 0) {
+		if (windowsLeft.size() == 0) {
 			System.out.println("No windows");
 			return;
 		}
-		WindowInfo window = windowsList.get(0);
+
+		if(side == "LEFT"){
+			window = windowsLeft.get(0);
+			windowsLeft.clear();
+		}else{
+			window = windowsRight.get(0);
+			windowsRight.clear();
+		}
+
 		int desktop = User32.instance.GetDesktopWindow();
 		int monitorWindth = getMonitorWidth();
 		int monitorHeight = getMonitorHeight();
@@ -125,7 +134,7 @@ public class Window {
 		User32.instance.SetParent(window.hwnd, desktop);
 		User32.instance.MoveWindow(window.hwnd, 0, 0, monitorWindth/2, monitorHeight, false);
 
-		windowsList.clear();
+
 	}
 
 
@@ -133,11 +142,11 @@ public class Window {
 	 * Destroy a window on table
 	 */
 	public void deleteWindow(){
-		if (windowsList.size() == 0) {
+		if (windowsLeft.size() == 0) {
 			System.out.println("No windows");
 			return;
 		}
-		WindowInfo window = windowsList.get(0);
+		WindowInfo window = windowsLeft.get(0);
 		//System.out.println(window.hwnd);
 		User32.instance.DestroyWindow(window.hwnd);
 
@@ -168,7 +177,7 @@ public class Window {
 	 */
     public void scrollWindowDown(){
 
-    	WindowInfo window = windowsList.get(0);
+    	WindowInfo window = windowsLeft.get(0);
 
     	User32.instance.ScrollWindowEx(window.hwnd, 0, 5, null, null, null, null,0);
 
@@ -183,7 +192,7 @@ public class Window {
 	 */
     public void scrollWindowUp(){
 
-    	WindowInfo window = windowsList.get(0);
+    	WindowInfo window = windowsLeft.get(0);
 
     	User32.instance.ScrollWindowEx(window.hwnd, 0, -5, null, null, null, null,0);
 
