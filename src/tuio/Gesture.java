@@ -1,17 +1,17 @@
 package tuio;
 
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import TUIO.TuioCursor;
 import TUIO.TuioListener;
 import TUIO.TuioObject;
 import TUIO.TuioTime;
-import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 
 @SuppressWarnings("restriction")
 public abstract class Gesture implements TuioListener {
 	protected Node root;
-	
+
 	public Gesture(Node p) {
 		super();
 		root = p;
@@ -26,8 +26,8 @@ public abstract class Gesture implements TuioListener {
 	 * @return    True if the tuio cursor is in a zone we want to ignore.
 	 */
 	protected boolean isDeadZone(TuioCursor arg) {
-		// TODO: Allow a small zone at the top
-		if (arg.getY() > 0.25 && arg.getY() < 0.75) {
+		if (arg.getY() > 0.35 && arg.getY() < 0.65
+				&& arg.getX() < 0.6) {
 			return true;
 		}
 		return false;
@@ -63,7 +63,7 @@ public abstract class Gesture implements TuioListener {
 
 		return null;
 	}
-	
+
 	/**
 	 * Turns coordinates from the tuio library into matching spot in the
 	 * JavaFX scene.
@@ -75,10 +75,10 @@ public abstract class Gesture implements TuioListener {
 		double total_height = root.getBoundsInParent().getHeight();
 		double total_width = root.getBoundsInParent().getWidth();
 		double fx_y = total_height * ((double) 1 - (double) x);
-		double fx_x = total_width * (double) y;
+		double fx_x = total_width * y;
 		return new Point2D(fx_x, fx_y);
 	}
-	
+
 	/* Unused */
 	@Override
 	public void updateTuioObject(TuioObject arg) {
