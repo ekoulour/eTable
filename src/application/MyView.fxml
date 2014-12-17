@@ -10,7 +10,7 @@
 
 <AnchorPane disable="false" focusTraversable="false" prefHeight="800.0" prefWidth="1280.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
   <children>
-    <Pane fx:id="GMPan" layoutX="891.0" layoutY="22.0" onSwipeUp="#windowHanding" prefHeight="491.0" prefWidth="368.0">
+    <Pane fx:id="GMPan" layoutX="891.0" layoutY="22.0" prefHeight="491.0" prefWidth="368.0">
       <children>
         <Text layoutX="4.0" layoutY="36.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
           <font>
@@ -19,7 +19,7 @@
         </Text>
         <Button id="btnAuth" fx:id="btnStartAuthToGmail" layoutX="223.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#btnStartAuthOnMouseClick" text="Authorize to Gmail.com" visible="true" />
         <Button fx:id="btnRefresh" layoutX="300.0" layoutY="25.0" mnemonicParsing="false" onMouseClicked="#btnRefreshOnClicked" prefHeight="30.0" prefWidth="50.0" text="" />
-        <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="4.0" layoutY="308.0" mouseTransparent="true" onMouseClicked="#EmileContentPicOnClick" onSwipeRight="#EmileContentPicOnSwipeRight" onSwipeUp="#EmileContentPicOnSwipeUP" opacity="1.0" prefHeight="182.65236582031503" prefWidth="368.00007792968245" visible="true" wrapText="true" />
+        <TextArea id="emailContent" fx:id="EmileContent" editable="false" focusTraversable="false" layoutX="4.0" layoutY="308.0" mouseTransparent="true" onMouseClicked="#EmileContentPicOnClick" onSwipeLeft="#EmileContentPicOnSwipeLeft" onSwipeRight="#EmileContentPicOnSwipeRight" opacity="1.0" prefHeight="182.65236582031503" prefWidth="368.00007792968245" visible="true" wrapText="true" />
         <TextField fx:id="authField" layoutX="97.0" layoutY="0.0" prefWidth="270.0" promptText="Enter your authorization code here" />
         <Button fx:id="btnAuth" layoutX="223.0" layoutY="26.0" mnemonicParsing="false" onMouseClicked="#btnAuthOnMouseClick" prefWidth="145.00009999999747" text="Authorize" />
         <ProgressIndicator fx:id="progresInd" layoutX="164.0" layoutY="100.0" prefHeight="48.2958984375" prefWidth="50.0" progress="-1.0" />
@@ -28,7 +28,7 @@
             <Image url="file:img//refresh.png" />
           </image>
         </ImageView>
-        <ImageView id="EmailContImg" fx:id="EmailContPic" fitHeight="182.65235900878906" fitWidth="370.0" layoutX="0.0" layoutY="309.0" onMouseClicked="#EmileContentPicOnClick" onSwipeRight="#EmileContentPicOnSwipeRight" onSwipeUp="#EmileContentPicOnSwipeUP" pickOnBounds="true" preserveRatio="true" />
+        <ImageView id="EmailContImg" fx:id="EmailContPic" fitHeight="182.65235900878906" fitWidth="370.0" layoutX="0.0" layoutY="309.0" onMouseClicked="#EmileContentPicOnClick" onSwipeLeft="#EmileContentPicOnSwipeLeft" onSwipeRight="#EmileContentPicOnSwipeRight" pickOnBounds="true" preserveRatio="true" />
         <Label fx:id="CountMail" layoutX="15.0" layoutY="45.0" text="Inbox:" />
         <ScrollPane fx:id="EmailListGrid" hbarPolicy="NEVER" layoutX="6.0" layoutY="61.0" onSwipeDown="#ListEmailOnSwipeDown" onSwipeUp="#ListEmailOnSwipeUp" prefHeight="241.0" prefWidth="363.0">
           <content>
@@ -60,8 +60,6 @@
         </ImageView>
       </children>
     </Pane>
-    <Pane fx:id="swipeWindow" layoutX="3.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
-    <Pane fx:id="swipeScrollWindow" layoutX="3.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
     <Pane fx:id="TWPan" layoutX="897.0" layoutY="514.0" prefHeight="272.34765625" prefWidth="383.0">
       <children>
         <Text font="$x1" layoutX="-3.0" layoutY="22.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Twitter" underline="false" />
@@ -93,5 +91,9 @@
         </ImageView>
       </children>
     </Pane>
+    <Pane fx:id="swipeWindow" layoutX="3.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
+    <Pane fx:id="swipeScrollWindow" layoutX="3.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
+    <Pane id="swipe_scroll_window_right" fx:id="swipe_scroll_window_right" layoutX="901.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
+    <Pane id="swipe_window_right" fx:id="swipe_window_right" layoutX="901.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
   </children>
 </AnchorPane>

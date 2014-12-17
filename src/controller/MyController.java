@@ -91,9 +91,10 @@ public class MyController implements Initializable {
 		    		//Tweet link
 		    		String urlTweet = tweet.id;
 
-		    		//Tap on Tweet to open it on web
-		    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    	        @Override public void handle(MouseEvent event) {
+
+		    		//Swipe left to open Tweet on web
+		    		tt.setOnSwipeLeft(new EventHandler<SwipeEvent>() {
+		    	        @Override public void handle(SwipeEvent event) {
 
 		    	        	//To not work when Windows appears on right side
 		    	    		if(TWPan.isVisible() || !TWPan.isMouseTransparent())
@@ -109,6 +110,9 @@ public class MyController implements Initializable {
 		    	            event.consume();
 		    	        }
 		    	});
+
+
+
 
 		    		gridTwitt.addRow(x, tt);
 		    		x+=1;
@@ -306,9 +310,9 @@ public class MyController implements Initializable {
 
 	public String EmailLink = null; //to store emails link to what is onclicked
 
-	//EmailContent
+	//EmailContent swipe left to open on browser
 	@FXML
-	public void EmileContentPicOnSwipeUP() throws IOException { //how to get where is clicked
+	public void EmileContentPicOnSwipeLeft() throws IOException { //how to get where is clicked
 		//Open current email on gmail.com browser
 		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
 		{
@@ -391,6 +395,29 @@ public class MyController implements Initializable {
 		    	        	e.consume();
 		    	        }
 		    		});
+
+		    		//Tap and open Email content on browser
+		    		tt.setOnSwipeLeft(new EventHandler<SwipeEvent>() {
+		    	        @Override public void handle(SwipeEvent e) {
+		    	    		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+		    	    		{
+			    	        	//Store globally the emails link
+			    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
+
+			    				if (EmailLink != null)
+									try {
+										java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
+									} catch (IOException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+		    	    		}
+		    	        	e.consume();
+		    	        }
+		    		});
+
+
+
 
 		    		mailGrid.addRow(x, tt);
 		    		x+=1;
@@ -495,6 +522,7 @@ public void RightToRightFunct(){
 	 */
 		Window window = new Window();
 		@FXML private Pane swipeWindow;
+		@FXML private Pane swipe_window_right;
 
 		@FXML public void windowHanding(SwipeEvent e){
 
@@ -537,6 +565,7 @@ public void RightToRightFunct(){
 		}
 
 		@FXML private Pane swipeScrollWindow;
+		@FXML private Pane swipe_scroll_window_right;
 
 		@FXML public void scrollHanding(SwipeEvent e){
 

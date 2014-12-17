@@ -50,7 +50,7 @@ public abstract class Gesture implements TuioListener {
 		// is the complete size of its elements. The scrollbox more works like
 		// a view. Since that big list is also visible, technically, it "eats"
 		// up all the other events.
-		if (!node.contains(localXY)) return null;
+		if (!node.contains(localXY) || node.isMouseTransparent() || !node.isVisible()) return null;
 
 		// Check if this node has children and if the point falls in one of
 		// them. (that is, a child is a more precise result)
