@@ -4,6 +4,7 @@ package GmailAPI;
 
 
 
+
 public class delletedThings {
 
 
@@ -167,4 +168,21 @@ public class delletedThings {
 //
 //        }
 
+
+//	@FXML public void lockDesctop(MouseEvent e) throws Exception{
+//		System.out.print("Lock");
+//		String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
+////		Runtime.getRuntime().exec(lockDesctop);
+//
+//		e.consume();
+//	}
+
+
+//	@FXML public void openDown(MouseEvent e) throws Exception{
+//		System.out.print("CMD");
+//		String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
+////		Runtime.getRuntime().exec(lockDesctop);
+//
+//		e.consume();
+//	}
 }

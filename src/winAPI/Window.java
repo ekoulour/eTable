@@ -109,6 +109,7 @@ public class Window {
 			User32.instance.MoveWindow(hWndChild,leftCoordinate, usedWindow.rect.top, usedWindow.rect.right, usedWindow.rect.bottom, true);
 		    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
 		    windowsRight.add(new WindowInfo(hWndChild, rectChild));
+		    System.out.println(windowsRight.get(0));
 		}
 
 	}
@@ -119,18 +120,15 @@ public class Window {
 	 */
 	public void moveWindowtoDesktop(String side){
 
-		WindowInfo window;
+		WindowInfo window = null;
 
-		if (windowsLeft.size() == 0) {
-			System.out.println("No windows");
-			return;
-		}
 
 		if(side == "LEFT"){
 			window = windowsLeft.get(0);
 			windowsLeft.clear();
-		}else{
+		}else if(side == "RIGHT"){
 			window = windowsRight.get(0);
+			System.out.println(window);
 			windowsRight.clear();
 		}
 

@@ -44,10 +44,10 @@
         </ScrollPane>
       </children>
     </Pane>
-    <Pane fx:id="panShort" layoutX="2.0" layoutY="704.0" prefHeight="82.0" prefWidth="252.0">
+    <Pane fx:id="panShort" layoutX="2.0" layoutY="692.0" prefHeight="82.0" prefWidth="252.0">
       <children>
-        <Button fx:id="btnDown" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#openDown" prefHeight="60.0" prefWidth="100.0" text="" />
-        <Button fx:id="btnLock" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#lockDesctop" prefHeight="60.0" prefWidth="100.0" text="" />
+        <Button fx:id="btnDown" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onSwipeUp="#openDownSwipeUP" prefHeight="60.0" prefWidth="100.0" text="" />
+        <Button fx:id="btnLock" layoutX="126.0" layoutY="16.0" mnemonicParsing="false" onSwipeUp="#lockDesctopSwipeUP" prefHeight="60.0" prefWidth="100.0" text="" />
         <ImageView id="btnpicDown" fitHeight="50.0" fitWidth="50.0" layoutX="39.0" layoutY="21.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="file:img/power.png" />
@@ -62,12 +62,10 @@
     </Pane>
     <Pane fx:id="swipeWindow" layoutX="3.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
     <Pane fx:id="swipeScrollWindow" layoutX="3.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
-    <Button fx:id="RightUP" layoutX="676.0" layoutY="331.0" mnemonicParsing="false" onMouseClicked="#RightUPClick" prefHeight="82.0" prefWidth="174.0" text="Move right side UP" />
-    <Button fx:id="RightToRight" layoutX="676.0" layoutY="432.0" mnemonicParsing="false" onMouseClicked="#RightToRightClick" prefHeight="82.0" text="Move right side back to right" />
-    <Pane fx:id="TWPan" layoutX="897.0" layoutY="523.0" prefHeight="277.0" prefWidth="382.9998779296875">
+    <Pane fx:id="TWPan" layoutX="897.0" layoutY="514.0" prefHeight="272.34765625" prefWidth="383.0">
       <children>
-        <Text font="$x1" layoutX="23.0" layoutY="32.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Twitter" underline="false" />
-        <ScrollPane fx:id="scrolPan" hbarPolicy="NEVER" layoutX="1.0" layoutY="34.0" onSwipeDown="#scrolPanOnSwipeDown" onSwipeUp="#scrolPanOnSwipeUp" prefHeight="228.150390625" prefWidth="363.0">
+        <Text font="$x1" layoutX="-3.0" layoutY="22.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Twitter" underline="false" />
+        <ScrollPane fx:id="scrolPan" hbarPolicy="NEVER" layoutX="1.0" layoutY="29.0" onSwipeDown="#scrolPanOnSwipeDown" onSwipeUp="#scrolPanOnSwipeUp" prefHeight="222.0" prefWidth="363.0">
           <content>
             <GridPane fx:id="gridTwitt" prefWidth="355.9998779296875">
               <columnConstraints>

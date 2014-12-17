@@ -411,7 +411,8 @@ public class MyController implements Initializable {
 	//Lock
 		@FXML private ImageView btnpicLock;
 		@FXML private Button btnLock;
-		@FXML public void lockDesctop(MouseEvent e) throws Exception{
+
+		@FXML public void lockDesctopSwipeUP(SwipeEvent e) throws Exception{
 			System.out.print("Lock");
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 //			Runtime.getRuntime().exec(lockDesctop);
@@ -423,7 +424,8 @@ public class MyController implements Initializable {
 		//ShDown
 		@FXML private ImageView btnpicDown;
 		@FXML private Button btnDown;
-		@FXML public void openDown(MouseEvent e) throws Exception{
+
+		@FXML public void openDownSwipeUP(SwipeEvent e) throws Exception{
 			System.out.print("CMD");
 			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 //			Runtime.getRuntime().exec(lockDesctop);
@@ -439,8 +441,6 @@ public class MyController implements Initializable {
 /*
  * Functions to move Right side(Twitter and Gmail) UP or to Right side again
  */
-		@FXML private Button RightUP;
-		@FXML private Button RightToRight;
 
 public void RightUPFunct(){
 	//Set Right Gmail and Twitter unvisible
@@ -451,6 +451,14 @@ public void RightUPFunct(){
 	TWPan.setVisible(false);
 	TWPan.setMouseTransparent(true);
 	TWPan.setDisable(true);
+
+	panShort.setMouseTransparent(true);
+	mailGrid.setMouseTransparent(true);
+	EmailListGrid.setMouseTransparent(true);
+
+	panShort.setDisable(true);
+	mailGrid.setDisable(true);
+	EmailListGrid.setDisable(true);
 
 	//Set Up panel visible
 	UPPan.setVisible(true);
@@ -465,19 +473,19 @@ public void RightToRightFunct(){
 	TWPan.setVisible(true);
 	TWPan.setMouseTransparent(false);
 	TWPan.setDisable(false);
+
+	panShort.setMouseTransparent(false);
+	mailGrid.setMouseTransparent(false);
+	EmailListGrid.setMouseTransparent(false);
+
+	panShort.setDisable(false);
+	mailGrid.setDisable(false);
+	EmailListGrid.setDisable(false);
+
 	//Hide Up panel
 	UPPan.setVisible(false);
 }
 
-
-//test Button functions on click
-
-@FXML public void RightUPClick(){
-	RightUPFunct();
-}
-@FXML public void RightToRightClick(){
-	RightToRightFunct();
-}
 
 	/*
 	 * Windows handling in gesture events
@@ -502,10 +510,14 @@ public void RightToRightFunct(){
 
 			}else if(swipeType == SwipeEvent.SWIPE_UP){
 
+				side= null;
+				System.out.println(e.getX());
+
 				if(e.getX() >= 0 && e.getX() < 600){
 					side = "LEFT";
 				}else
 					side = "RIGHT";
+
 
 				if(side == "RIGHT"){
 					RightToRightFunct();
