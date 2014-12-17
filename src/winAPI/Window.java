@@ -95,12 +95,21 @@ public class Window {
 			User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom-100, true);
 		    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
 		    windowsLeft.add(new WindowInfo(hWndChild, rectChild));
-		    System.out.println(windowsLeft.get(0).rect);
+
 
 		}else{
 			System.out.println("MOVE TO RIGHT");
-			WindowInfo usedWindow = windowsLeft.get(0);
-			windowsLeft.clear();
+
+			WindowInfo usedWindow = null;
+
+			if( windowsLeft.size() != 0 ){
+
+				usedWindow = windowsLeft.get(0);
+				windowsLeft.clear();
+			}else{
+				System.out.println("No window");
+			};
+
 
 
 			hWndChild = usedWindow.hwnd;
@@ -124,12 +133,25 @@ public class Window {
 
 
 		if(side == "LEFT"){
-			window = windowsLeft.get(0);
-			windowsLeft.clear();
+
+			if( windowsLeft.size() != 0 ){
+
+				window = windowsLeft.get(0);
+				windowsLeft.clear();
+			}else{
+				System.out.println("No window");
+			};
+
 		}else if(side == "RIGHT"){
-			window = windowsRight.get(0);
-			System.out.println(window);
-			windowsRight.clear();
+
+			if( windowsRight.size() != 0 ){
+
+				window = windowsRight.get(0);
+				windowsRight.clear();
+			}else{
+				System.out.println("No window");
+			};
+
 		}
 
 		int desktop = User32.instance.GetDesktopWindow();

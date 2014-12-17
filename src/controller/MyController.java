@@ -317,6 +317,10 @@ public class MyController implements Initializable {
 		{
 			if (EmailLink != null)
 				java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
+			EmileContent.setVisible(false);
+			EmileContent.setText(null);
+			EmailContPic.setVisible(false);
+			EmailLink = null;
 		}
 	}
 
@@ -403,13 +407,18 @@ public class MyController implements Initializable {
 			    	        	//Store globally the emails link
 			    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
 
-			    				if (EmailLink != null)
+			    				if (EmailLink != null) {
 									try {
 										java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
 									} catch (IOException e1) {
 										// TODO Auto-generated catch block
 										e1.printStackTrace();
 									}
+			    				}
+			    				EmileContent.setVisible(false);
+			    				EmileContent.setText(null);
+			    				EmailContPic.setVisible(false);
+			    				EmailLink = null;
 		    	    		}
 		    	        	e.consume();
 		    	        }
