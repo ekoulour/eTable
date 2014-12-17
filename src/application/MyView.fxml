@@ -12,8 +12,8 @@
   <children>
     <Pane fx:id="swipeWindow" layoutX="3.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
     <Pane fx:id="swipeScrollWindow" layoutX="3.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
-    <Pane id="swipe_scroll_window_right" fx:id="swipe_scroll_window_right" layoutX="901.0" layoutY="218.0" onMouseClicked="#MouseClick" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
-    <Pane id="swipe_window_right" fx:id="swipe_window_right" layoutX="901.0" layoutY="4.0" onMouseClicked="#MouseClick" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
+    <Pane fx:id="swipe_scroll_window_right" layoutX="901.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
+    <Pane fx:id="swipe_window_right" layoutX="901.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
     <Pane fx:id="GMPan" layoutX="891.0" layoutY="22.0" prefHeight="491.0" prefWidth="368.0">
       <children>
         <Text layoutX="4.0" layoutY="36.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
@@ -81,14 +81,14 @@
         </ScrollPane>
       </children>
     </Pane>
-    <Pane fx:id="UPPan" layoutX="554.0" layoutY="27.0" prefHeight="100.0" prefWidth="244.0">
+    <Pane fx:id="UPPan" layoutX="554.0" layoutY="27.0" onSwipeRight="#UPPanSwipeRight" prefHeight="100.0" prefWidth="244.0">
       <children>
-        <ImageView fitHeight="99.0" fitWidth="132.0" layoutX="22.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="99.0" fitWidth="132.0" layoutX="22.0" layoutY="1.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="file:img/Gmail-icon.png" />
           </image>
         </ImageView>
-        <ImageView fitHeight="99.0" fitWidth="132.0" layoutX="136.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="99.0" fitWidth="132.0" layoutX="136.0" layoutY="1.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="file:img/twitter-icon.png" />
           </image>

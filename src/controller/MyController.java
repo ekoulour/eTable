@@ -513,6 +513,37 @@ public void RightToRightFunct(){
 }
 
 
+@FXML public void UPPanSwipeRight(SwipeEvent e){
+	if(UPPan.isVisible()){
+
+		//Set Right panel Gmail and Twitter visible
+		GMPan.setVisible(true);
+		GMPan.setMouseTransparent(false);
+		GMPan.setDisable(false);
+
+		TWPan.setVisible(true);
+		TWPan.setMouseTransparent(false);
+		TWPan.setDisable(false);
+
+		panShort.setMouseTransparent(false);
+		mailGrid.setMouseTransparent(false);
+		EmailListGrid.setMouseTransparent(false);
+
+		panShort.setDisable(false);
+		mailGrid.setDisable(false);
+		EmailListGrid.setDisable(false);
+
+		//Hide Up panel
+		UPPan.setVisible(false);
+
+		//Move window up to dectop
+		String side = "RIGHT";
+		window.moveWindowtoDesktop(side);
+
+	}
+	e.consume();
+}
+
 	/*
 	 * Windows handling in gesture events
 	 * For each gesture event the corresponding function
