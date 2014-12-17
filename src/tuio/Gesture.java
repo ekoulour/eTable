@@ -44,6 +44,16 @@ public abstract class Gesture implements TuioListener {
 	protected Node pickNodeBySceneXY(final Node node, double x, double y) {
 		Point2D localXY = node.sceneToLocal(x, y);
 
+		// If the parent does not contain it, then discount its children too.
+		// Changed to this since we otherwise run into troubles with scrolling
+		// views. The view itself is only a small box, but the list within it
+		// is the complete size of its elements. The scrollbox more works like
+		// a view. Since that big list is also visible, technically, it "eats"
+		// up all the other events.
+		if (!node.contains(localXY)) return null;
+
+		// Check if this node has children and if the point falls in one of
+		// them. (that is, a child is a more precise result)
 		Node result = null;
 		if (node instanceof Parent) {
 			for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
