@@ -172,7 +172,6 @@ public class MyController implements Initializable {
 
 	//To start authorization
 	@FXML public void btnStartAuthOnMouseClick(MouseEvent e) throws Exception {
-
 		if(GMPan.isVisible() || !GMPan.isMouseTransparent()){
 			//connect to gmail.com start
 			new connectGmail().authorize();

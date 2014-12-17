@@ -10,6 +10,10 @@
 
 <AnchorPane disable="false" focusTraversable="false" prefHeight="800.0" prefWidth="1280.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MyController">
   <children>
+    <Pane fx:id="swipeWindow" layoutX="3.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
+    <Pane fx:id="swipeScrollWindow" layoutX="3.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
+    <Pane id="swipe_scroll_window_right" fx:id="swipe_scroll_window_right" layoutX="901.0" layoutY="218.0" onMouseClicked="#MouseClick" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
+    <Pane id="swipe_window_right" fx:id="swipe_window_right" layoutX="901.0" layoutY="4.0" onMouseClicked="#MouseClick" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
     <Pane fx:id="GMPan" layoutX="891.0" layoutY="22.0" prefHeight="491.0" prefWidth="368.0">
       <children>
         <Text layoutX="4.0" layoutY="36.0" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" underline="false">
@@ -91,9 +95,5 @@
         </ImageView>
       </children>
     </Pane>
-    <Pane fx:id="swipeWindow" layoutX="3.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
-    <Pane fx:id="swipeScrollWindow" layoutX="3.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
-    <Pane id="swipe_scroll_window_right" fx:id="swipe_scroll_window_right" layoutX="901.0" layoutY="218.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="408.0" prefWidth="375.0" />
-    <Pane id="swipe_window_right" fx:id="swipe_window_right" layoutX="901.0" layoutY="4.0" onSwipeDown="#windowHanding" onSwipeRight="#windowHanding" onSwipeUp="#windowHanding" prefHeight="201.0" prefWidth="375.0" />
   </children>
 </AnchorPane>

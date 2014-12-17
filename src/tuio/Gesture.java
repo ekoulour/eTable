@@ -1,5 +1,7 @@
 package tuio;
 
+import java.util.List;
+
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -56,9 +58,11 @@ public abstract class Gesture implements TuioListener {
 		// them. (that is, a child is a more precise result)
 		Node result = null;
 		if (node instanceof Parent) {
-			for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+			// Have to loop in reversed order for JavaFX z-index
+			List<Node> children = ((Parent) node).getChildrenUnmodifiable();
+			for (int i = children.size() - 1; i >= 0; i--) {
 				if (result == null) {
-					result = pickNodeBySceneXY(child, x, y);
+					result = pickNodeBySceneXY(children.get(i), x, y);
 				}
 			}
 		}
