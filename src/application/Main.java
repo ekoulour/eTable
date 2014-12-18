@@ -7,7 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import tuio.ConnectTuioToFX;
 
-
+/**
+ * Application starts up here
+ */
 @SuppressWarnings("restriction")
 public class Main extends Application {
 

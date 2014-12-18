@@ -1,10 +1,10 @@
 package tuio;
 
-import TUIO.TuioClient;
 import javafx.scene.Node;
+import TUIO.TuioClient;
 
 /**
- * Used to bind different gesture recognisers to the JavaFX scene.
+ * Used to bind our different gesture recognisers to the JavaFX scene.
  */
 @SuppressWarnings("restriction")
 public class ConnectTuioToFX {

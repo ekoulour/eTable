@@ -6,7 +6,7 @@ import javafx.scene.input.SwipeEvent;
 import TUIO.TuioCursor;
 
 /**
- * Catches a swiping down of a user and handles accordingly.
+ * Catches a swiping left of a user and handles accordingly.
  */
 @SuppressWarnings("restriction")
 public class SwipeRight extends SwipeAbstract {

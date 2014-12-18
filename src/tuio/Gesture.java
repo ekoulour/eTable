@@ -10,8 +10,17 @@ import TUIO.TuioListener;
 import TUIO.TuioObject;
 import TUIO.TuioTime;
 
+/**
+ * Abstract class to hold things that are common between all our gesture
+ * recognisers: finding a node in JavaFX, knowing what the deadzone is and
+ * converting coordinates.
+ */
 @SuppressWarnings("restriction")
 public abstract class Gesture implements TuioListener {
+	/**
+	 * Root node of the JavaFX scene, used to find which of its children
+	 * a gesture should be sent to.
+	 */
 	protected Node root;
 
 	public Gesture(Node p) {

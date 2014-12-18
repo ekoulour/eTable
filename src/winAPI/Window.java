@@ -3,13 +3,11 @@ package winAPI;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * This class call contains methods for window handing.
- *  Methods of this class are triggered by the
- * corresponding gesture.
- *
+/**
+ * This class contains methods to handle windows (moving them around).
+ * Methods of this class are called at appropriate times via handlers
+ * in the JavaFX interface.
  */
-
 public class Window {
 
 	List<WindowInfo> windowsRight = new ArrayList<WindowInfo>();
@@ -19,7 +17,7 @@ public class Window {
 	int hWndChild;
 	int hWndParent;
 
-	/*
+	/**
 	 * Call win32 function to get the width of the monitor
 	 * @return monitorWidth
 	 */
@@ -30,7 +28,7 @@ public class Window {
 	}
 
 
-	/*
+	/**
 	 * Call win32 function to get the height of the monitor
 	 * @return monitorHeight
 	 */
@@ -41,7 +39,7 @@ public class Window {
 	}
 
 
-	/*
+	/**
 	 * Foreground window is the window that the user currently uses.
 	 * @return WindowInfo 	contains window handler and position (rectangle)
 	 */
@@ -55,28 +53,13 @@ public class Window {
         return new WindowInfo(foreground, r);
 	}
 
-
-	/*
-	 * Move window of either the left side or right side checking
-	 * first if the corresponding list is empty or not
-    */
-	/*public void moveWindow(List<WindowInfo> windowsList,int leftCoordinate,RECT rectClient){
-
-
-	    User32.instance.MoveWindow(hWndChild,leftCoordinate, rectClient.top, rectClient.right/4, rectClient.bottom-100, false);
-	    rectChild = new RECT(leftCoordinate,rectClient.top,rectClient.right/4,rectClient.bottom-100);
-	    windowsList.add(new WindowInfo(hWndChild, rectChild));
-
-	}
-*/
-
-	/*
+	/**
 	 * Move window in specific position of client area on the table.
 	 * Client area is defined as the area of the window's output
 	 *
 	 * @param parentTitle  title of the application's window (parent)
+	 * @param side         LEFT or RIGHT
 	 */
-
 	public void moveWindowtoTable(String parentTitle,String side){
 
 
@@ -123,9 +106,9 @@ public class Window {
 
 	}
 
-	/*
-	 * Move window in its previous position on the monitor
-	 *
+	/**
+	 * Move window to its previous position on the monitor
+	 * @param side LEFT or RIGHT, the window on which side of eTable
 	 */
 	public void moveWindowtoDesktop(String side){
 
@@ -164,70 +147,4 @@ public class Window {
 
 	}
 
-
-	/*
-	 * Destroy a window on table
-
-	public void deleteWindow(){
-		if (windowsLeft.size() == 0) {
-			System.out.println("No windows");
-			return;
-		}
-		WindowInfo window = windowsLeft.get(0);
-		//System.out.println(window.hwnd);
-		User32.instance.DestroyWindow(window.hwnd);
-
-		 new WindowProc(){
-			public LRESULT callback(int hWnd, int uMsg, WPARAM wParam, LPARAM lParam){
-
-				System.out.println();
-				System.out.println(uMsg+" "+hWnd);
-
-
-				switch(uMsg)
-			    {
-			        case WinUser.WM_CLOSE:
-			        	User32.instance.DestroyWindow(hWnd);
-			        break;
-			    }
-
-				 return User32.instance.DefWindowProc(hWnd, uMsg, wParam, lParam);
-			}
-
-		 };
-
-	}
-*/
-	/*
-	 * Scroll down event are handling sending the corresponding
-	 * msg to the window
-
-    public void scrollWindowDown(){
-
-    	WindowInfo window = windowsLeft.get(0);
-
-    	User32.instance.ScrollWindowEx(window.hwnd, 0, 5, null, null, null, null,0);
-
-
-
-
-    }
-
-
-	 * Scroll up event are handling sending the corresponding
-	 * msg to the window
-
-    public void scrollWindowUp(){
-
-    	WindowInfo window = windowsLeft.get(0);
-
-    	User32.instance.ScrollWindowEx(window.hwnd, 0, -5, null, null, null, null,0);
-
-
-
-
-    }*/
-
-
-
-  }
+}

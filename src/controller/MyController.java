@@ -29,10 +29,12 @@ import winAPI.Window;
 import GmailAPI.Philosopher;
 import GmailAPI.connectGmail;
 
-
+/**
+ * Controller that gets bound to the JavaFX scene. All event handlers
+ * have to be placed here.
+ */
 @SuppressWarnings("restriction")
 public class MyController implements Initializable {
-	//Initialize ArrayList<ArrayList<Philosopher>>
 	ArrayList<ArrayList<Philosopher>> MessagesList = new ArrayList<ArrayList<Philosopher>>();
 
 	@Override
@@ -48,13 +50,12 @@ public class MyController implements Initializable {
 		//Set UP panel as unvisible
 		UPPan.setVisible(false);
 
-	//Fill ListViewTwitter with Tweets
+		//Fill ListViewTwitter with Tweets
 		addTwittStreem();
-
 	}
 
 /*
- * For Twitter
+ * Start Twitter section
  */
 	public static int SizeTweettsList;
 	@FXML private ScrollPane scrolPan;
@@ -146,9 +147,8 @@ public class MyController implements Initializable {
 		e.consume();
 	}
 
-
-/*
- * Section for Gmail
+/* End Twitter section
+ * Start GMail section
  */
 	@FXML private Pane GMPan;
 	@FXML private Pane TWPan;
@@ -309,7 +309,11 @@ public class MyController implements Initializable {
 
 	public String EmailLink = null; //to store emails link to what is onclicked
 
-	//EmailContent swipe left to open on browser
+	/**
+	 * Handler for swiping left event on the email preview.
+	 * Opens the email in the browser and closes the preview.
+	 * @throws IOException
+	 */
 	@FXML
 	public void EmileContentPicOnSwipeLeft() throws IOException { //how to get where is clicked
 		//Open current email on gmail.com browser
@@ -324,6 +328,11 @@ public class MyController implements Initializable {
 		}
 	}
 
+	/**
+	 * Handler for swiping right event on the email preview.
+	 * Closes the preview.
+	 * @param e
+	 */
 	@FXML public void EmileContentPicOnSwipeRight(SwipeEvent e) {
 		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
 		{
@@ -351,180 +360,145 @@ public class MyController implements Initializable {
 	}
 
 
-
-	//Print Email on list
+	/**
+	 * Fills the email list with the actual emails
+	 */
 	public void fillEmails(){
-
 		Integer x = 1;
 		String FromSubj = null;
 
 		for(ArrayList<Philosopher> MessageList : MessagesList){
-
 			for(Philosopher ff : MessageList){
+	    		String unread = null;
+	    		for(String flag : ff.Flags){
+	    			if(flag.contains("UNREAD")){
+	    				unread = "* ";
+	    			}
+	    			else unread = "";
+	    		}
+	    		FromSubj = (unread + ff.From + " \n" + ff.Subject) ;
 
-		    		String unread = null;
-		    		for(String flag : ff.Flags){
-		    			if(flag.contains("UNREAD")){
-		    				unread = "* ";
-		    			}
-		    			else unread = "";
-		    		}
-		    		FromSubj = (unread + ff.From + " \n" + ff.Subject) ;
+	    		String EmContent = ff.EMcontent;
 
-		    		String EmContent = ff.EMcontent;
+	    		//create an text area and add it on grid new row
+	    		TextArea tt = new TextArea(FromSubj);
+	    		tt.setPrefHeight(50);
+	    		tt.setWrapText(true);
+	    		tt.setEditable(false);
+	    		tt.setMouseTransparent(false);
+	    		tt.setId(Integer.toString(x));
 
-		    		//create an text area and add it on grid new row
-		    		TextArea tt = new TextArea(FromSubj);
-		    		tt.setPrefHeight(50);
-		    		tt.setWrapText(true);
-		    		tt.setEditable(false);
-		    		tt.setMouseTransparent(false);
-		    		tt.setId(Integer.toString(x));
+	    		//Tap and open Email content
+	    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	    	        @Override public void handle(MouseEvent e) {
+	    	    		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+	    	    		{
+		    	        	//set content box visible
+		    	        	EmileContent.setVisible(true);
+		    	        	EmailContPic.setVisible(true);
+		    	        	//Set email text
+		    	        	EmileContent.setText(EmContent);
 
-		    		//Tap and open Email content
-		    		tt.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    	        @Override public void handle(MouseEvent e) {
-		    	    		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
-		    	    		{
-			    	        	//set content box visible
-			    	        	EmileContent.setVisible(true);
-			    	        	EmailContPic.setVisible(true);
-			    	        	//Set email text
-			    	        	EmileContent.setText(EmContent);
+		    	        	//Store globally the emails link
+		    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
+	    	    		}
+	    	        	e.consume();
+	    	        }
+	    		});
 
-			    	        	//Store globally the emails link
-			    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
-		    	    		}
-		    	        	e.consume();
-		    	        }
-		    		});
+	    		//Tap and open Email content on browser
+	    		tt.setOnSwipeLeft(new EventHandler<SwipeEvent>() {
+	    	        @Override public void handle(SwipeEvent e) {
+	    	    		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
+	    	    		{
+		    	        	//Store globally the emails link
+		    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
 
-		    		//Tap and open Email content on browser
-		    		tt.setOnSwipeLeft(new EventHandler<SwipeEvent>() {
-		    	        @Override public void handle(SwipeEvent e) {
-		    	    		if(GMPan.isVisible() || !GMPan.isMouseTransparent())
-		    	    		{
-			    	        	//Store globally the emails link
-			    	        	EmailLink = "https://mail.google.com/mail/u/0/#inbox/"+ff.id;
+		    				if (EmailLink != null) {
+								try {
+									java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+		    				}
+		    				EmileContent.setVisible(false);
+		    				EmileContent.setText(null);
+		    				EmailContPic.setVisible(false);
+		    				EmailLink = null;
+	    	    		}
+	    	        	e.consume();
+	    	        }
+	    		});
 
-			    				if (EmailLink != null) {
-									try {
-										java.awt.Desktop.getDesktop().browse(java.net.URI.create(EmailLink));
-									} catch (IOException e1) {
-										// TODO Auto-generated catch block
-										e1.printStackTrace();
-									}
-			    				}
-			    				EmileContent.setVisible(false);
-			    				EmileContent.setText(null);
-			    				EmailContPic.setVisible(false);
-			    				EmailLink = null;
-		    	    		}
-		    	        	e.consume();
-		    	        }
-		    		});
-
-
-
-
-		    		mailGrid.addRow(x, tt);
-		    		x+=1;
+	    		mailGrid.addRow(x, tt);
+	    		x+=1;
 			}
 		}
 	}
 
 
-/*
-* End of Gmail section
-*
-*/
-
-/*
- * Extra buttons
+/* End Gmail section
+ * Start Extra buttons
  */
 
 	//Lock
-		@FXML private ImageView btnpicLock;
-		@FXML private Button btnLock;
+	@FXML private ImageView btnpicLock;
+	@FXML private Button btnLock;
 
-		@FXML public void lockDesctopSwipeUP(SwipeEvent e) throws Exception{
-			System.out.print("Lock");
-			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
+	@FXML public void lockDesctopSwipeUP(SwipeEvent e) throws Exception{
+		System.out.print("Lock");
+		String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
+		Runtime.getRuntime().exec(lockDesctop);
+
+		e.consume();
+	}
+
+
+	//ShDown
+	@FXML private ImageView btnpicDown;
+	@FXML private Button btnDown;
+
+	@FXML public void openDownSwipeUP(SwipeEvent e) throws Exception{
+		System.out.print("CMD");
+		String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
 //			Runtime.getRuntime().exec(lockDesctop);
 
-			e.consume();
-		}
-
-
-		//ShDown
-		@FXML private ImageView btnpicDown;
-		@FXML private Button btnDown;
-
-		@FXML public void openDownSwipeUP(SwipeEvent e) throws Exception{
-			System.out.print("CMD");
-			String lockDesctop = "C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation";
-//			Runtime.getRuntime().exec(lockDesctop);
-
-			e.consume();
-		}
+		e.consume();
+	}
 
 
 /*
  * End of Extra buttons
-*/
+ */
 
 /*
  * Functions to move Right side(Twitter and Gmail) UP or to Right side again
  */
 
-public void RightUPFunct(){
-	//Set Right Gmail and Twitter unvisible
-	GMPan.setVisible(false);
-	GMPan.setMouseTransparent(true);
-	GMPan.setDisable(true);
+	public void RightUPFunct(){
+		//Set Right Gmail and Twitter unvisible
+		GMPan.setVisible(false);
+		GMPan.setMouseTransparent(true);
+		GMPan.setDisable(true);
 
-	TWPan.setVisible(false);
-	TWPan.setMouseTransparent(true);
-	TWPan.setDisable(true);
+		TWPan.setVisible(false);
+		TWPan.setMouseTransparent(true);
+		TWPan.setDisable(true);
 
-	panShort.setMouseTransparent(true);
-	mailGrid.setMouseTransparent(true);
-	EmailListGrid.setMouseTransparent(true);
+		panShort.setMouseTransparent(true);
+		mailGrid.setMouseTransparent(true);
+		EmailListGrid.setMouseTransparent(true);
 
-	panShort.setDisable(true);
-	mailGrid.setDisable(true);
-	EmailListGrid.setDisable(true);
+		panShort.setDisable(true);
+		mailGrid.setDisable(true);
+		EmailListGrid.setDisable(true);
 
-	//Set Up panel visible
-	UPPan.setVisible(true);
-}
+		//Set Up panel visible
+		UPPan.setVisible(true);
+	}
 
-public void RightToRightFunct(){
-	//Set Right panel Gmail and Twitter visible
-	GMPan.setVisible(true);
-	GMPan.setMouseTransparent(false);
-	GMPan.setDisable(false);
-
-	TWPan.setVisible(true);
-	TWPan.setMouseTransparent(false);
-	TWPan.setDisable(false);
-
-	panShort.setMouseTransparent(false);
-	mailGrid.setMouseTransparent(false);
-	EmailListGrid.setMouseTransparent(false);
-
-	panShort.setDisable(false);
-	mailGrid.setDisable(false);
-	EmailListGrid.setDisable(false);
-
-	//Hide Up panel
-	UPPan.setVisible(false);
-}
-
-
-@FXML public void UPPanSwipeRight(SwipeEvent e){
-	if(UPPan.isVisible()){
-
+	public void RightToRightFunct(){
 		//Set Right panel Gmail and Twitter visible
 		GMPan.setVisible(true);
 		GMPan.setMouseTransparent(false);
@@ -544,87 +518,105 @@ public void RightToRightFunct(){
 
 		//Hide Up panel
 		UPPan.setVisible(false);
-
-		//Move window up to dectop
-		String side = "RIGHT";
-		window.moveWindowtoDesktop(side);
-
 	}
-	e.consume();
-}
 
-	/*
+
+	@FXML public void UPPanSwipeRight(SwipeEvent e){
+		if(UPPan.isVisible()){
+
+			//Set Right panel Gmail and Twitter visible
+			GMPan.setVisible(true);
+			GMPan.setMouseTransparent(false);
+			GMPan.setDisable(false);
+
+			TWPan.setVisible(true);
+			TWPan.setMouseTransparent(false);
+			TWPan.setDisable(false);
+
+			panShort.setMouseTransparent(false);
+			mailGrid.setMouseTransparent(false);
+			EmailListGrid.setMouseTransparent(false);
+
+			panShort.setDisable(false);
+			mailGrid.setDisable(false);
+			EmailListGrid.setDisable(false);
+
+			//Hide Up panel
+			UPPan.setVisible(false);
+
+			//Move window up to dectop
+			String side = "RIGHT";
+			window.moveWindowtoDesktop(side);
+
+		}
+		e.consume();
+	}
+
+	Window window = new Window();
+	@FXML private Pane swipeWindow;
+	@FXML private Pane swipe_window_right;
+
+	/**
 	 * Windows handling in gesture events
 	 * For each gesture event the corresponding function
 	 * is called
 	 * @paramSwipeEvent  type of swipe event
 	 */
-		Window window = new Window();
-		@FXML private Pane swipeWindow;
-		@FXML private Pane swipe_window_right;
+	@FXML public void windowHanding(SwipeEvent e){
 
-		@FXML public void windowHanding(SwipeEvent e){
-
-			String side;
-			EventType<SwipeEvent> swipeType = e.getEventType();
-			String title = "NGUI";
+		String side;
+		EventType<SwipeEvent> swipeType = e.getEventType();
+		String title = "NGUI";
 
 
-			if(swipeType == SwipeEvent.SWIPE_DOWN){
-				System.out.println("SWIPE DOWN");
+		if(swipeType == SwipeEvent.SWIPE_DOWN){
+			System.out.println("SWIPE DOWN");
+			side = "LEFT";
+			window.moveWindowtoTable(title,side);
+
+		}else if(swipeType == SwipeEvent.SWIPE_UP){
+
+			side= null;
+			System.out.println(e.getX());
+
+			if(e.getX() >= 0 && e.getX() < 600){
 				side = "LEFT";
-				window.moveWindowtoTable(title,side);
-
-			}else if(swipeType == SwipeEvent.SWIPE_UP){
-
-				side= null;
-				System.out.println(e.getX());
-
-				if(e.getX() >= 0 && e.getX() < 600){
-					side = "LEFT";
-				}else
-					side = "RIGHT";
-
-
-				if(side == "RIGHT"){
-					RightToRightFunct();
-				}
-
-				window.moveWindowtoDesktop(side);
-
-			}else if(swipeType == SwipeEvent.SWIPE_RIGHT){
-
-				System.out.println(swipeType);
+			}else
 				side = "RIGHT";
-				RightUPFunct();
-				window.moveWindowtoTable(title,side);
 
+
+			if(side == "RIGHT"){
+				RightToRightFunct();
 			}
 
-		}
+			window.moveWindowtoDesktop(side);
 
-		@FXML private Pane swipeScrollWindow;
-		@FXML private Pane swipe_scroll_window_right;
+		}else if(swipeType == SwipeEvent.SWIPE_RIGHT){
 
-		@FXML public void scrollHanding(SwipeEvent e){
-
-			/*EventType<SwipeEvent> swipeType = e.getEventType();
-
-			if(swipeType == SwipeEvent.SWIPE_DOWN){
-				System.out.println("scroll down ");
-				window.scrollWindowDown();
-			}else
-				System.out.println("scroll up ");
-				window.scrollWindowUp();*/
+			System.out.println(swipeType);
+			side = "RIGHT";
+			RightUPFunct();
+			window.moveWindowtoTable(title,side);
 
 		}
 
+	}
 
+	@FXML private Pane swipeScrollWindow;
+	@FXML private Pane swipe_scroll_window_right;
 
+	@FXML public void scrollHanding(SwipeEvent e){
 
+		/*EventType<SwipeEvent> swipeType = e.getEventType();
 
+		if(swipeType == SwipeEvent.SWIPE_DOWN){
+			System.out.println("scroll down ");
+			window.scrollWindowDown();
+		}else
+			System.out.println("scroll up ");
+			window.scrollWindowUp();*/
 
-
+	}
 }
 
 

@@ -3,12 +3,11 @@ package tuio;
 import TUIO.TuioClient;
 import TUIO.TuioListener;
 
-
+/**
+ * Class simply for a main function that listens for TUIO events.
+ * Used to test new gesture listeners.
+ */
 public class Run {
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		final TuioListener listener = new Tracking();
 
@@ -20,5 +19,4 @@ public class Run {
 		System.out.println(client.isConnected());
 		System.out.println(client.getTuioCursors().size());
 	}
-
 }
