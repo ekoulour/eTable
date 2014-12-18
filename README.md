@@ -1,15 +1,38 @@
-# Libraries
+Source code for the *eTable* project for the Next Generation User Interfaces
+course at the Vrije Universiteit Brussel (VUB). Using a kinect and a projector
+hanging above the desk, we allow interaction on the desk.
 
-1. JavaFX Scene Builder 1.1
-   http://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html
-2. Are these still needed? 
-    * javax.mail.jar
-    * javax.mail-1.5.2.jar
-3. Gmail API
-    * https://developers.google.com/api-client-library/java/apis/gmail/v1 
-    add all jar files under lib
-    * https://code.google.com/p/google-api-java-client/wiki/Downloads?tm=2 
- 		add google-api-services-gmail-v1-[version].jar
-4. [Twitter4j](http://twitter4j.org/en/index.html)
-5. [Facebook4j](http://facebook4j.org/en/index.html#how_to_install)
-6. [libtuio.jar](http://www.tuio.org/?software)
+# Prerequisites
+
+* Java 8 (with JavaFX 8, should be included)
+* Maven, to handle the libraries
+* KinectTouch program to create events TUIO understands. Ensure KinectTouch is
+  calibrated to match up with the projector output.
+
+# Installing Libraries
+
+This project uses maven, so the libraries are described in `pom.xml`. Install
+them the usual way.
+
+# Other Stuff
+
+You'll want to update `twitter4j.properties` with your own API values to see
+your own Twitter stream.
+
+# Running the Program
+
+We will here assume that you are using Eclipse. Start up KinectTouch and ensure
+it has correctly started by checking the "Depth" window (when there is nothing
+on the desk, there should be no white/red to be seen. Run the `main()` function
+from the `Main` class in the `application` package.
+
+Use the authorize button to handle the GMail login, this is best done in
+advance. Afterwards, drag the window to the second screen (that is, the one
+projected by the projector).
+
+Use away!
+
+# In Action
+
+eTable can be seen in action at
+[https://www.youtube.com/watch?v=6eGFGI88Ofg](https://www.youtube.com/watch?v=6eGFGI88Ofg).
